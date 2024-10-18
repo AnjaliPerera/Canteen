@@ -1,0 +1,7 @@
+/* Adding vertical borders to the body or a main container */
+body {
+    border-left: 100px solid #e0e0e0; 
+    border-right: 100px solid #e0e0e0; 
+    box-sizing: border-box; /* Ensures padding doesn't affect the layout */
+    
+}
