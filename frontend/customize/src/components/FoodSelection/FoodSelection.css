@@ -1,0 +1,197 @@
+.food-selection {
+    padding: 2em;
+    background-color: #fff3e0;
+  }
+ 
+.food-selection h2{
+  text-align: center;
+}  
+  
+  .food-items {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 2em;
+    flex-wrap: wrap;
+  }
+  
+  .food-card {
+    position: relative;
+    width: 150px;
+    border: 1px solid #ddd;
+    padding: 1em;
+    text-align: center;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+  
+  }
+  .availability-label {
+    position: center;
+    top: 10px;
+    left: 10px;
+    padding: 5px 10px;
+    font-size: 12px;
+    font-weight: bold;
+    color: white;
+    border-radius: 20px;
+  }
+  .available {
+    background-color: #4CAF50; /* Green for available items */
+  }
+  
+  .out-of-stock {
+    background-color: #f44336; /* Red for out-of-stock items */
+  }
+  .food-card img{
+    margin-top: 5px;
+    width: 149px;
+    height: 150px;
+    object-fit: cover;
+  }
+  
+  .availability button{
+    background-color: green;
+    
+  }
+  .out-of-stock button{
+    background-color: #d84315;
+  }
+  .select-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .delete-btn {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  .order-summary {
+    margin-top: 20px;
+    background-color: #fff3e0;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+  }
+  .order-summary h3 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+    padding: 10px 0;
+    border-top: 2px solid #ddd;
+    border-bottom: 2px solid #ddd;
+    background-color: #e0e0e0;
+  }
+  
+  .selected-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f5f5f5;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 8px;
+  }
+  
+  .order-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 8px;
+    margin-right: 10px;
+  }
+  
+  .order-details {
+    flex: 1;
+  }
+  
+  .order-summary select {
+    padding: 10px;
+    margin-bottom: 20px;
+  }
+  .order-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .order-buttons button {
+    padding: 12px 20px;
+    font-size: 18px;
+    margin: 0 10px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }  
+
+  .quantity-control {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+    justify-content: center;
+  }
+  
+  .quantity-control button {
+    background-color: green;
+    color: white;
+    padding: 10px 15px;
+    font-size: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    margin: 0 10px;
+    z-index: 10;
+    pointer-events: auto;
+      
+  }
+  
+  .pickup-time {
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 20px 0;
+  }
+  
+  .pickup-time label{
+    background-color: #e0e0e0;
+    font-size: 16px;
+    padding: 10px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .pickup-time select{
+    padding: 8px 12px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+    
+  }
+  .cancel-btn {
+    background-color: #d32f2f;
+    color: white;
+  }
+  
+  .cancel-btn:hover {
+    background-color: #b71c1c;
+  }
+  
+  .send-btn {
+    background-color: #388e3c;
+    color: white;
+  }
+  
+  .send-btn:hover {
+    background-color: #2e7d32;
+  }
+  
+  
