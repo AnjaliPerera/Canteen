@@ -1,0 +1,124 @@
+/* Overall page background */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #FFF3E0;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  /* Signup container */
+  .signup-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Form container */
+  .signup-form {
+    background-color: #ffffff;
+    width: 350px;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Form title */
+  .signup-form h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #333333;
+    font-size: 24px;
+  }
+  
+  /* Labels */
+  .signup-form label {
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: #333;
+    display: block;
+  }
+  
+  /* Input fields */
+  .signup-form input[type="text"],
+  .signup-form input[type="email"],
+  .signup-form input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  /* Submit button */
+  .signup-form button {
+    width: 100%;
+    padding: 12px;
+    background-color: #D84315;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  /* Button hover effect */
+  .signup-form button:hover {
+    background-color: #bf3b12;
+  }
+  
+  /* Inline Remember Me and Forgot Password container */
+  .form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+  }
+  
+  /* Checkbox container */
+  .checkbox-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .remember-me-label {
+    margin-left: 8px;
+    font-size: 14px;
+  }
+  
+  /* Forgot Password link */
+  .forgot-password-link {
+    color: #D84315;
+    text-decoration: none;
+    font-size: 14px;
+  }
+  
+  .forgot-password-link:hover {
+    text-decoration: underline;
+  }
+  
+  /* Log In option */
+  .login-option {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 14px;
+  }
+  
+  .login-option a {
+    color: #D84315;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  
+  .login-option a:hover {
+    text-decoration: underline;
+  }
+  
