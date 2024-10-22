@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './LogIn.css';  // Assuming you have your CSS file for styling
+import { useNavigate } from 'react-router-dom';  // Import useNavigate
 
 const LogIn = () => {
   const [formData, setFormData] = useState({

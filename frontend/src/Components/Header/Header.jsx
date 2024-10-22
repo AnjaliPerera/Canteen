@@ -6,6 +6,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { IconButton } from '@mui/material';
 import { useState } from 'react';
+import React from 'react';
+
 
 const Header = () => {
   const [isSearch,setIsSearch] = useState(false)

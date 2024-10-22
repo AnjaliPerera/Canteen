@@ -1,4 +1,6 @@
 import { IconButton } from '@mui/material';
+import React from 'react';
+
 const Footer = () => {
   return (
   <footer className=' bottom-0 left-0 z-[100]  w-full p-5  bg-my-footer   drop-shadow-header-shadow text-white'>
@@ -109,4 +111,4 @@ const Footer = () => {
   )
 }
 
-export default Footer
+export default Footer;
