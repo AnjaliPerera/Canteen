@@ -25,11 +25,6 @@
     overflow: hidden;
   
   }
-.food-card:hover{
-    transform: scale(1.02);
-    box-shadow: 0 4px 20px;
-}
-
   .availability-label {
     position: center;
     top: 10px;
