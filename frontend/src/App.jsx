@@ -11,9 +11,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LogIn />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/Mainlayout" element={<Mainlayout />}>
-          <Route index element={<Home />} />
-        </Route>
+        <Route path="/extra-curry-selection" element={<ExtraCurrySelection />} />
       </Routes>
     </BrowserRouter>
   );
