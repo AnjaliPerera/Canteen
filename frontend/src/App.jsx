@@ -14,7 +14,8 @@ function App() {
         <Route path="/menu" element={<Menu />} /> {/* Menu route */}
         <Route path="/foodselection" element={<FoodSelection />} /> {/* Add FoodSelection route */}
       </Routes>
-    </BrowserRouter>
+      {/* conect my branch */}
+    </BrowserRouter> 
   );
 }
 
