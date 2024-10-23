@@ -5,7 +5,8 @@ import { useNavigate } from 'react-router-dom';  // Import useNavigate
 
 const LogIn = () => {
   const [formData, setFormData] = useState({
-    userId: '',   // Added userId to the state
+    name: '',
+    userId: '',
     email: '',
     password: '',
     rememberMe: false,
@@ -25,9 +26,8 @@ const LogIn = () => {
     e.preventDefault();
 
     try {
-      // Sending login request to the backend with email, userId, and password
+      // Sending login request to the backend with email and password
       const response = await axios.post('http://localhost:8080/auth/login', {
-        userId: formData.userId,  // Sending userId if required by the backend
         email: formData.email,
         password: formData.password,
       });
@@ -38,9 +38,13 @@ const LogIn = () => {
       // Store the token in localStorage
       localStorage.setItem('token', token);
 
-      // Redirect to Extra Curry Selection page
+      // Redirect to the Extra Curry Selection page
       alert('Login successful!');
-      navigate('/extra-curry-selection');  // Redirect after login
+
+
+
+     // Redirect to the Menu page after successful login
+           navigate('/menu');  // Navigate to Menu page
     } catch (error) {
       console.error('Error during login:', error);
       alert('Login failed. Check your credentials.');
@@ -52,49 +56,54 @@ const LogIn = () => {
       <form className="login-form" onSubmit={handleSubmit}>
         <h2>Log In</h2>
 
+        {/* Name input */}
+        <label htmlFor="name">Name</label>
+        <input
+          type="text"
+          name="name"
+          id="name"
+          placeholder="Name"
+          value={formData.name}
+          onChange={handleChange}
+        />
+
         {/* User ID input */}
-        <div className="form-group">
-          <label htmlFor="userId">User ID</label>
-          <input
-            type="text"
-            name="userId"
-            id="userId"
-            placeholder="User ID"
-            value={formData.userId}
-            onChange={handleChange}
-          />
-        </div>
+        <label htmlFor="userId">User ID</label>
+        <input
+          type="text"
+          name="userId"
+          id="userId"
+          placeholder="User ID"
+          value={formData.userId}
+          onChange={handleChange}
+        />
 
         {/* Email input */}
-        <div className="form-group">
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            name="email"
-            id="email"
-            placeholder="Email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-        </div>
+        <label htmlFor="email">Email</label>
+        <input
+          type="email"
+          name="email"
+          id="email"
+          placeholder="Email"
+          value={formData.email}
+          onChange={handleChange}
+          required
+        />
 
         {/* Password input */}
-        <div className="form-group">
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            name="password"
-            id="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
-        </div>
+        <label htmlFor="password">Password</label>
+        <input
+          type="password"
+          name="password"
+          id="password"
+          placeholder="Password"
+          value={formData.password}
+          onChange={handleChange}
+          required
+        />
 
         {/* Remember Me checkbox */}
-        <div className="form-group form-options">
+        <div className="form-options">
           <div className="checkbox-container">
             <input
               type="checkbox"
@@ -107,13 +116,14 @@ const LogIn = () => {
               Remember Me
             </label>
           </div>
+
           <a href="/forgot-password" className="forgot-password-link">
             Forgot Password?
           </a>
         </div>
 
         {/* Submit button */}
-        <button type="submit" className="submit-btn">Log In</button>
+        <button type="submit">Log In</button>
       </form>
 
       <div className="signup-option">
