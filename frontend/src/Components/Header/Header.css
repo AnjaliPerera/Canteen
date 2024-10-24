@@ -157,8 +157,8 @@
   }
   .back-button {
     padding: 8px 12px;
-    font-size: 14px; 
-    margin-left: 10px; 
+    font-size: 14px;
+    margin-left: 10px;
 }
   .sidebar-toggle {
     display: block;
@@ -185,9 +185,9 @@
   }
   .search-bar button {
     margin-left: -20px;
-    
+
   }
-  
+
   .header {
     flex-direction: column;
     justify-content: space-between;
