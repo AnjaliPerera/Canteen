@@ -3,6 +3,7 @@ import image1 from '../assets/Rectangle 8.png'
 
 export default function Order() {
   return (
+    <div>
     <div className="text-center">
   <img
     src={image1}
@@ -32,6 +33,25 @@ export default function Order() {
 >
   Order
 </button>
+
+</div>
+<div className="" style={{ backgroundColor: "#FFF3E0", width: "1040px" }}>
+  <h3 className="mt-20 text-4xl font-bold">YOUR PROFILE</h3>
+  <div className="grid grid-cols-2 gap-28  mt-20">
+    <div className="">
+      <div className="grid grid-cols-2 gap-8 border-dashed border-b-2 border-gray-400 ">
+        <div>
+          <p className="uppercase font-semibold text-2xl">Order No:</p>
+        </div>
+        <div className="mb-8">
+          <p className="uppercase mr-5 text-2xl text-right font-semibold">
+            L312
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 </div>
       
   )
