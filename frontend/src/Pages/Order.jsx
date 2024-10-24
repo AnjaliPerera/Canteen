@@ -26,6 +26,12 @@ export default function Order() {
   >
     Welcome
   </h1>
+  <button
+  className="absolute top-96 left-1/4 transform -translate-x-1/2 bg-blue-500 text-white py-4 px-14 font-bold rounded-full"
+  style={{ backgroundColor: "#D84315" }}
+>
+  Order
+</button>
 </div>
       
   )
