@@ -1,12 +1,16 @@
 import React from 'react'
-import image1 from '../assets/Rectangle 8.png'
+import welcomeImage from '../assets/Rectangle 8.png'
+import img1 from '../assets/product-selected.png'
+import img2 from '../assets/product-selected (1).png'
+import img3 from '../assets/product-selected (2).png'
+
 
 export default function Order() {
   return (
     <div>
     <div className="text-center">
   <img
-    src={image1}
+    src={welcomeImage}
     alt=""
     style={{
       width: "1040px",
@@ -49,6 +53,28 @@ export default function Order() {
           </p>
         </div>
       </div>
+      <div className="space-y-6 mt-6">
+  {[{ img: img1, name: "Rice and Curry (VEG)", price: "LKR 100", qty: 1 }, { img: img2, name: "Chicken Portion", price: "LKR 80", qty: 1 }, { img: img3, name: "Boiled Egg", price: "LKR 70", qty: 2 }]
+    .map((item, index) => (
+      <div key={index} className="flex justify-between items-center p-4 bg-gray-100 rounded-lg shadow-md">
+        <div className="flex items-center">
+          <img
+            src={item.img}
+            alt={item.name}
+            className="w-20 h-20 object-cover rounded-md"
+          />
+          <div className="ml-6 text-left">
+            <p className="uppercase text-lg">{item.name}</p>
+            <p className="text-4xl text-black font-semibold">{item.price}</p>
+          </div>
+        </div>
+        <div className="flex flex-col items-center">
+          <p className="text-xl uppercase">Quantity</p>
+          <p className="text-2xl font-extrabold">{item.qty}</p>
+        </div>
+      </div>
+    ))}
+</div>
     </div>
   </div>
 </div>
