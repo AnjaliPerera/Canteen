@@ -75,6 +75,15 @@ export default function Order() {
       </div>
     ))}
 </div>
+<div className="my-10 ">
+  <button
+    className="uppercase py-4 px-6 rounded-full font-semibold"
+    style={{ backgroundColor: "#EA4B48" }}
+  >
+    {" "}
+    cancel order
+  </button>
+</div>
     </div>
   </div>
 </div>
