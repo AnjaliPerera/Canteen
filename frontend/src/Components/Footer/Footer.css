@@ -1,0 +1,77 @@
+/* Footer Styling */
+.footer {
+  background-color: #e4d2b9;
+  padding: 40px 20px;
+  color: #333;
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-section {
+  flex: 1;
+  margin: 10px;
+}
+
+.footer-section h4 {
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+
+.footer-section p,
+.footer-section a {
+  font-size: 14px;
+  color: #333;
+  text-decoration: none;
+}
+
+.footer-section a:hover {
+  color: #ff6700;
+}
+
+.footer-bottom {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #757575;
+}
+
+/* Media Queries for Mobile Responsiveness */
+@media (max-width: 768px) {
+  .footer-container {
+      flex-direction: column;
+      align-items: center;
+  }
+
+  .footer-section {
+      text-align: center;
+      margin-bottom: 20px;
+      width: 100%; /* Make each section take full width on smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .footer {
+      padding: 20px 10px;
+  }
+
+  .footer-section h4 {
+      font-size: 16px;
+  }
+
+  .footer-section p,
+  .footer-section a {
+      font-size: 12px;
+  }
+
+  .footer-bottom {
+      font-size: 12px; /* Make footer text slightly smaller for mobile */
+  }
+}

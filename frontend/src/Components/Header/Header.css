@@ -1,0 +1,200 @@
+/* Overall Header Styling */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #e4d2b9;
+  position: relative;
+  flex-wrap: wrap;
+}
+.back-button {
+  position: absolute; /* Position it absolutely */
+    top: 2px; /* Adjust distance from the top */
+    left: 2px; /* Adjust distance from the right */
+    background-color: #e4d2b9; /* Background color */
+    border: none;
+    color: #333;
+    padding: 5px 10px; /* Padding for the button */
+    cursor: pointer;
+    font-size: 14px; /* Font size */
+    display: flex;
+    align-items: center; /* Center icon and text */
+    transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+.back-button:hover {
+  background-color: #ff6700; /* Hover background color */
+  color: white; /* Hover text color */
+}
+
+/* Logo Section Styling */
+.logo-section {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.logo {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  margin-right: 15px;
+}
+
+.logo-text h1 {
+  font-size: 18px;
+  margin: 0;
+}
+
+.logo-text p {
+  font-size: 12px;
+  color: #757575;
+}
+
+/* Navigation Links Styling */
+.nav-links {
+  flex: 2;
+}
+
+.nav-links ul {
+  display: flex;
+  list-style: none;
+  gap: 20px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #333;
+  font-size: 16px;
+}
+
+.nav-links a:hover {
+  color: #ff6700; /* Highlight on hover */
+}
+
+/* Search Bar Styling */
+.search-bar {
+  flex: 1;
+  display: flex;
+  margin: 20px;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.search-bar input {
+  padding: 10px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  transition: width 0.3s ease;
+}
+
+.search-bar button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin-left: -30px;
+}
+
+/* Sidebar Styling */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -250px; /* Hidden initially */
+  width: 250px;
+  height: 100%;
+  background-color: #fff3e0;
+  padding-top: 60px;
+  transition: 0.3s ease;
+  z-index: 1000;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding-left: 20px;
+}
+
+.sidebar ul li {
+  margin: 15px 0;
+}
+
+.sidebar ul li a {
+  text-decoration: none;
+  color: #333;
+  font-size: 18px;
+}
+
+.sidebar ul li a:hover {
+  color: #ff6700;
+}
+
+/* Sidebar toggle button styling */
+.sidebar-toggle {
+  display: none;
+  background-color: transparent;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 2000;
+  color: #333;
+}
+
+/* Show the sidebar when it is toggled */
+.sidebar.open {
+  left: 0;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+  }
+
+  .header h1 {
+    font-size: 10px;
+    margin: 0;
+  }
+  .back-button {
+    padding: 8px 12px;
+    font-size: 14px; 
+    margin-left: 10px; 
+}
+  .sidebar-toggle {
+    display: block;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    background-color: transparent;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+  }
+  .sidebar {
+    display: block; /* Ensure sidebar is visible */
+  }
+  .search-bar {
+    width: 100%;
+    justify-content: flex-start;
+    margin: 5px 5px 10px 10px;
+  }
+  .search-bar input {
+    width: 80%;
+    padding: 8px;
+    order: -1;
+  }
+  .search-bar button {
+    margin-left: -20px;
+    
+  }
+  
+  .header {
+    flex-direction: column;
+    justify-content: space-between;
+    justify-content: flex-start;
+  }
+  .logo-section {
+    flex: 2;
+    justify-content: space-between;
+  }
+}
