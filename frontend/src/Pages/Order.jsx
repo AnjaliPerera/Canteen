@@ -85,6 +85,15 @@ export default function Order() {
   </button>
 </div>
     </div>
+    <div className="w-full">
+  <h3 className="text-3xl mb-5">CONDITIONS</h3>
+  <ul className="list-decimal text-left text-gray-700 text-lg pl-5 mr-8">
+    <li>You may cancel your order within 30 minutes of placing it...</li>
+    <li>Orders can be collected at the university canteen premises...</li>
+    <li>If your order is not collected within the selected time slot...</li>
+    <li>Once your order has been collected, you will receive a pop-up...</li>
+  </ul>
+</div>
   </div>
 </div>
 </div>
