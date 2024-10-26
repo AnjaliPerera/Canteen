@@ -3,13 +3,14 @@ import welcomeImage from "../assets/Rectangle 8.png";
 import img1 from "../assets/product-selected.png";
 import img2 from "../assets/product-selected (1).png";
 import img3 from "../assets/product-selected (2).png";
+import Header from '../Components/Header/Header';
 
 
 
 export default function Order() {
   return (
     <>
-      
+     <Header/> 
 
       <div className=" flex flex-col items-center justify-center text-center relative">
         <div className="text-center">
