@@ -4,6 +4,7 @@ import img1 from "../assets/product-selected.png";
 import img2 from "../assets/product-selected (1).png";
 import img3 from "../assets/product-selected (2).png";
 import Header from '../Components/Header/Header';
+import Footer from '../Components/Footer/Footer'
 
 
 
@@ -136,7 +137,7 @@ export default function Order() {
           </div>
         </div>
       </div>
-      
+     <Footer/> 
     </>
   );
 }
