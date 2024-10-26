@@ -4,6 +4,7 @@ import LogIn from './Pages/LogIn.jsx';
 import SignUp from './Pages/SignUp.jsx';
 import Menu from './Pages/Menu.jsx'; // Import Menu page
 import FoodSelection from './Pages/FoodSelection.jsx'; // Import FoodSelection page
+import Order from './Pages/Order.jsx';
 
 function App() {
   return (
@@ -13,8 +14,10 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/menu" element={<Menu />} /> {/* Menu route */}
         <Route path="/foodselection" element={<FoodSelection />} /> {/* Add FoodSelection route */}
+        <Route path="/order" element={<Order />} />
       </Routes>
-    </BrowserRouter>
+      
+    </BrowserRouter> 
   );
 }
 
