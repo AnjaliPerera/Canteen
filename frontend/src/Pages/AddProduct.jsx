@@ -83,10 +83,31 @@ const AddProduct = () => {
       console.error("Error uploading image or saving data:", error);
       alert(`An error occurred: ${error.message || 'Unexpected error'}`);
     }
+    // clear the form fields after submission
+    setMealName('');
+    setPrice('');
+    setFoodType('');
   };
 
   return (
     <div className="add-product-container">
+      <div className="sidebar">
+        <div className="logo">
+          <img src="/logo.jpg" alt="logo" />
+        </div>
+        <ul className="menu">
+            <li>Dashboard</li>
+            <li>Order List</li>
+            <li>Order Detail</li>
+            <li>Customer</li>
+            <li>Analytics</li>
+            <li>Reviews</li>
+            <li>Foods</li>
+            <li className="active">Food Edit</li>
+
+        </ul>
+      </div>
+
       <div className="form-section">
         <h1>Add New Product</h1>
         <form onSubmit={handleSubmit}>
@@ -117,7 +138,6 @@ const AddProduct = () => {
           <div className="form-group">
             <label>Price</label>
             <input
-              type="number"
               placeholder="LKR"
               value={price}
               onChange={(e) => setPrice(e.target.value)}

@@ -24,6 +24,6 @@ dist-ssr
 *.sw?
 
 
-.DS_Store
+.DS_Store/
 .idea/
 node_modules/
