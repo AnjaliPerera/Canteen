@@ -1,3 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+
 /* Adding vertical borders to the body or a main container */
 body {
     border-left: 100px solid #e0e0e0; 

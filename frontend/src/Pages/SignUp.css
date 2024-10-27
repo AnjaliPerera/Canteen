@@ -1,5 +1,8 @@
 /* Overall page background */
-body {
+
+  
+  /* Signup container */
+  .signup-container {
     font-family: 'Poppins', sans-serif;
     background-color: #FFF3E0;
     margin: 0;
@@ -8,10 +11,6 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-  }
-  
-  /* Signup container */
-  .signup-container {
     display: flex;
     flex-direction: column;
     align-items: center;
