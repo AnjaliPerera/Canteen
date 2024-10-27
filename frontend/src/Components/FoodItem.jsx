@@ -1,5 +1,5 @@
 import React from 'react';
-
+import './FoodItem.css';
 
 const FoodItem = ({ item, onToggleSelect }) => {
   return (
@@ -7,7 +7,7 @@ const FoodItem = ({ item, onToggleSelect }) => {
       <div className={`availability-label ${item.available ? 'available' : 'out-of-stock'}`}>
         {item.available ? 'Available' : 'Out of Stock'}
       </div>
-      <img src={item.image} alt={`${item.name}`} />
+      <img src={item.image} alt={item.name} />
       <h3>{item.name}</h3>
       <p>LKR {item.price}.00</p>
       <div className="button-control">

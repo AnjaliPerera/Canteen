@@ -36,7 +36,7 @@ const SignUp = () => {
       userId: formData.userId,
       email: formData.email,
       password: formData.password,
-      otp: formData.otp
+
     };
 
     try {
