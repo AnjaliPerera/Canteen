@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import './LogIn.css';  // Assuming you have your CSS file for styling
-import { useNavigate } from 'react-router-dom';  // Import useNavigate
+import './LogIn.css';
+import { useNavigate } from 'react-router-dom';
 
 const LogIn = () => {
   const [formData, setFormData] = useState({
     name: '',
-    userId: '',
-    email: '',
-    password: '',
-    rememberMe: false,
+           userId: '',
+           email: '',
+           password: '',
+           rememberMe: false,
   });
 
-  const navigate = useNavigate();  // Initialize useNavigate for redirection
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -26,25 +26,35 @@ const LogIn = () => {
     e.preventDefault();
 
     try {
-      // Sending login request to the backend with email and password
       const response = await axios.post('http://localhost:8080/auth/login', {
         email: formData.email,
         password: formData.password,
       });
 
-      const token = response.data.jwt;  // Assuming the JWT token is returned as plain text
+      const token = response.data.jwt;
       console.log('Token:', token);
 
-      // Store the token in localStorage
-      localStorage.setItem('token', token);
+      // Decode JWT to retrieve role and check expiration
+      const decodedToken = JSON.parse(atob(token.split('.')[1]));
+      const role = decodedToken.role;
+      const isExpired = decodedToken.exp * 1000 < Date.now();
 
-      // Redirect to the Extra Curry Selection page
-      alert('Login successful!');
+      if (isExpired) {
+        alert("Session expired. Please log in again.");
+        return;
+      }
 
+      // Store token and role in either localStorage or sessionStorage based on rememberMe
+      const storage = formData.rememberMe ? localStorage : sessionStorage;
+      storage.setItem('token', token);
+      storage.setItem('role', role);
 
-
-     // Redirect to the Menu page after successful login
-           navigate('/menu');  // Navigate to Menu page
+      // Redirect based on the role
+      if (role === 'OWNER') {
+        navigate('/dashboard'); // Go to Dashboard if role is OWNER
+      } else {
+        navigate('/menu'); // Go to Menu for other users
+      }
     } catch (error) {
       console.error('Error during login:', error);
       alert('Login failed. Check your credentials.');
@@ -56,27 +66,17 @@ const LogIn = () => {
       <form className="login-form" onSubmit={handleSubmit}>
         <h2>Log In</h2>
 
-        {/* Name input */}
-        <label htmlFor="name">Name</label>
-        <input
-          type="text"
-          name="name"
-          id="name"
-          placeholder="Name"
-          value={formData.name}
-          onChange={handleChange}
-        />
+<label htmlFor="userId">User ID</label>
+  <input
+    type="text"
+    name="userId"
+    id="userId"
+    placeholder="User ID"
+    value={formData.userId}
+    onChange={handleChange}
+    required
+  />
 
-        {/* User ID input */}
-        <label htmlFor="userId">User ID</label>
-        <input
-          type="text"
-          name="userId"
-          id="userId"
-          placeholder="User ID"
-          value={formData.userId}
-          onChange={handleChange}
-        />
 
         {/* Email input */}
         <label htmlFor="email">Email</label>
