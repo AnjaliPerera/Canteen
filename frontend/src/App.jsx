@@ -5,6 +5,7 @@ import SignUp from './Pages/SignUp.jsx';
 import Menu from './Pages/Menu.jsx';
 import FoodSelection from './Pages/FoodSelection.jsx';
 import AddProduct from './Pages/AddProduct.jsx'; // Assuming Dashboard is renamed to AddProduct
+import Contact from './Pages/Contact.jsx';
 
 function App() {
   const ProtectedRoute = ({ children, roleRequired }) => {
@@ -31,6 +32,7 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/menu" element={<Menu />} />
         <Route path="/foodselection" element={<FoodSelection />} />
+        <Route path="/Contact" element={<Contact/>} />
 
         {/* Protected route for OWNER role to access AddProduct (Dashboard) */}
         <Route
