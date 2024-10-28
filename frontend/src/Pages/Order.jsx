@@ -1,8 +1,8 @@
 import React from 'react'
 import welcomeImage from '../assets/Rectangle 8.png'
+import img1 from '../assets/product-selected.png'
 import img2 from '../assets/product-selected (1).png'
 import img3 from '../assets/product-selected (2).png'
-import img1 from '../assets/product-selected.png'
 
 
 export default function Order() {
