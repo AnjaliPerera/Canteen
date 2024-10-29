@@ -5,28 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c9fd74cc-f38a-40ee-a066-b3e30bd2f996" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../../.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../.idea/Canteen.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../.idea/jarRepositories.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../frontend/public/Boiled_egg.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../frontend/public/Chicken_potion.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rome/canteen/CanteenApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rome/canteen/CanteenApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../frontend/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontend/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontend/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontend/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontend/eslint.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontend/eslint.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontend/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontend/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontend/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontend/src/App.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../frontend/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontend/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontend/src/Components/Header/Header.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontend/src/Components/Header/Header.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontend/src/Components/MyComponent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontend/src/Components/MyComponent.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../frontend/src/Pages/AddProduct.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontend/src/Pages/AddProduct.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontend/src/Pages/LogIn.css" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontend/src/Pages/LogIn.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../frontend/src/Pages/LogIn.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontend/src/Pages/LogIn.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontend/src/Pages/Menu.css" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontend/src/Pages/Menu.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../frontend/src/Pages/Menu.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontend/src/Pages/Menu.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontend/src/Pages/SignUp.css" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontend/src/Pages/SignUp.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../frontend/src/Pages/SignUp.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontend/src/Pages/SignUp.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontend/src/config/firebaseConfig.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontend/src/config/firebaseConfig.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../frontend/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontend/src/index.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../frontend/src/main.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontend/src/main.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../frontend/tailwind.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontend/tailwind.config.js" afterDir="false" />
