@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import './LogIn.css';
-import { useNavigate } from 'react-router-dom';
+import './LogIn.css';  // Assuming you have your CSS file for styling
+import { useNavigate } from 'react-router-dom';  // Import useNavigate
 
 const LogIn = () => {
   const [formData, setFormData] = useState({
-    name: '',
+           name: '',
            userId: '',
            email: '',
            password: '',
            rememberMe: false,
   });
 
-  const navigate = useNavigate();
+  const navigate = useNavigate();  // Initialize useNavigate for redirection
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -31,7 +31,7 @@ const LogIn = () => {
         password: formData.password,
       });
 
-      const token = response.data.jwt;
+      const token = response.data.jwt;  // Assuming the JWT token is returned as plain text
       console.log('Token:', token);
 
       // Decode JWT to retrieve role and check expiration
