@@ -2,14 +2,15 @@ package com.rome.canteen.controller;
 
 import com.rome.canteen.model.FoodItem;
 import com.rome.canteen.service.FoodItemService;
+import com.google.firebase.cloud.StorageClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.Base64;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
@@ -26,146 +27,72 @@ public class FoodItemController {
         return ResponseEntity.ok(foodItems);
     }
 
-    // GET all food items with mealType "DINNER"
-    @GetMapping("/dinner")
-    public ResponseEntity<List<FoodItem>> getDinnerItems() {
-        List<FoodItem> dinnerItems = foodItemService.getFoodItemsByMealType("DINNER");
-        if (dinnerItems.isEmpty()) {
-            return ResponseEntity.noContent().build(); // Return 204 No Content if no dinner items found
-        }
-        return ResponseEntity.ok(dinnerItems); // Return 200 OK with the list of dinner items
-    }
-
-
-
-
-    // GET all food items with mealType "BREAKFAST"
-    @GetMapping("/breakfast")
-    public ResponseEntity<List<FoodItem>> getBreakfastItems() {
-        List<FoodItem> breakfastItems = foodItemService.getFoodItemsByMealType("BREAKFAST");
-        if (breakfastItems.isEmpty()) {
-            return ResponseEntity.noContent().build(); // Return 204 No Content if no breakfast items found
-        }
-        return ResponseEntity.ok(breakfastItems); // Return 200 OK with the list of breakfast items
-    }
-
-    // GET all food items with mealType "LUNCH"
-    @GetMapping("/lunch")
-    public ResponseEntity<List<FoodItem>> getLunchItems() {
-        List<FoodItem> lunchItems = foodItemService.getFoodItemsByMealType("LUNCH");
-        if (lunchItems.isEmpty()) {
-            return ResponseEntity.noContent().build(); // Return 204 No Content if no lunch items found
-        }
-        return ResponseEntity.ok(lunchItems); // Return 200 OK with the list of lunch items
-    }
-
-    // GET all food items with mealType "DRINKS"
-    @GetMapping("/drinks")
-    public ResponseEntity<List<FoodItem>> getDrinksItems() {
-        List<FoodItem> drinksItems = foodItemService.getFoodItemsByMealType("DRINKS");
-        if (drinksItems.isEmpty()) {
-            return ResponseEntity.noContent().build(); // Return 204 No Content if no drinks items found
-        }
-        return ResponseEntity.ok(drinksItems); // Return 200 OK with the list of drinks items
-    }
-
-    // GET all food items with mealType "DESSERT"
-    @GetMapping("/dessert")
-    public ResponseEntity<List<FoodItem>> getDessertItems() {
-        List<FoodItem> dessertItems = foodItemService.getFoodItemsByMealType("DESSERT");
-        if (dessertItems.isEmpty()) {
-            return ResponseEntity.noContent().build(); // Return 204 No Content if no dessert items found
-        }
-        return ResponseEntity.ok(dessertItems); // Return 200 OK with the list of dessert items
-    }
-
-    // GET all food items with mealType "SHORT EAT"
-    @GetMapping("/short-eat")
-    public ResponseEntity<List<FoodItem>> getShortEatItems() {
-        List<FoodItem> shortEatItems = foodItemService.getFoodItemsByMealType("SHORT EAT");
-        if (shortEatItems.isEmpty()) {
-            return ResponseEntity.noContent().build(); // Return 204 No Content if no short eat items found
-        }
-        return ResponseEntity.ok(shortEatItems); // Return 200 OK with the list of short eat items
-    }
-
-
-
-    // GET all available food items
+    // GET available food items only
     @GetMapping("/available")
     public ResponseEntity<List<FoodItem>> getAvailableFoodItems() {
         List<FoodItem> availableItems = foodItemService.getAvailableFoodItems();
-        if (availableItems.isEmpty()) {
-            return ResponseEntity.noContent().build(); // Return 204 No Content if no items are available
-        }
-        return ResponseEntity.ok(availableItems); // Return 200 OK with the list of available items
+        return availableItems.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(availableItems);
     }
 
-
-
-
-    // GET a specific food item by ID
-    @GetMapping("/{id}")
-    public ResponseEntity<FoodItem> getFoodItemById(@PathVariable String id) {
-        Optional<FoodItem> foodItem = foodItemService.getFoodItemById(id);
-        return foodItem.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    // GET food items by food type
+    @GetMapping("/type/{foodType}")
+    public ResponseEntity<List<FoodItem>> getFoodItemsByFoodType(@PathVariable String foodType) {
+        List<FoodItem> items = foodItemService.getFoodItemsByType(foodType);
+        return items.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(items);
     }
 
-    // POST a new food item
+    // POST add a new food item (with image upload)
     @PostMapping("/add")
-    public ResponseEntity<String> addFoodItem(@RequestParam("name") String name,
-                                              @RequestParam("description") String description,
-                                              @RequestParam("price") double price,
-                                              @RequestParam("availability") String availability,
-                                              @RequestParam("mealType") String mealType,
-                                              @RequestParam("image") MultipartFile image) {
+    public ResponseEntity<String> addFoodItem(
+            @RequestParam("name") String name,
+            @RequestParam("price") double price,
+            @RequestParam("foodType") String foodType,
+            @RequestParam("imageUrl") String imageUrl, // URL from Firebase
+            @RequestParam(value = "available", defaultValue = "true") boolean available) {
+
         try {
-            // Convert image to Base64 string
-            String imageBase64 = Base64.getEncoder().encodeToString(image.getBytes());
+            // Create a new FoodItem object with the received parameters
+            FoodItem foodItem = new FoodItem();
+            foodItem.setName(name);
+            foodItem.setPrice(price);
+            foodItem.setFoodType(foodType);
+            foodItem.setImageUrl(imageUrl); // Image URL with Firebase token
+            foodItem.setAvailable(available);
 
-            // Create a new FoodItem object and save it
-            FoodItem foodItem = new FoodItem(null, name, description, price, availability, mealType, imageBase64);
-            foodItemService.save(foodItem);
+            // Save the food item using the service
+            foodItemService.addFoodItem(foodItem);
 
-            return ResponseEntity.ok("Food item added successfully!");
+            return ResponseEntity.ok("Food item added successfully with image uploaded to Firebase!");
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error: " + e.getMessage());
+
         }
     }
 
-    // PUT (Update) an existing food item by ID
+
+    // PUT update an existing food item by ID
     @PutMapping("/{id}")
     public ResponseEntity<String> updateFoodItem(@PathVariable String id,
                                                  @RequestParam("name") String name,
-                                                 @RequestParam("description") String description,
                                                  @RequestParam("price") double price,
-                                                 @RequestParam("availability") String availability,
-                                                 @RequestParam("mealType") String mealType,
-                                                 @RequestParam(value = "image", required = false) MultipartFile image) {
+                                                 @RequestParam("foodType") String foodType,
+                                                 @RequestParam(value = "image", required = false) MultipartFile image,
+                                                 @RequestParam("available") boolean available) {
         try {
-            // Find the existing food item by ID
             Optional<FoodItem> existingFoodItem = foodItemService.getFoodItemById(id);
             if (existingFoodItem.isEmpty()) {
                 return ResponseEntity.status(404).body("Food item not found");
             }
 
-            // Update the fields of the existing food item
             FoodItem foodItem = existingFoodItem.get();
             foodItem.setName(name);
-            foodItem.setDescription(description);
             foodItem.setPrice(price);
-            foodItem.setAvailability(availability);
-            foodItem.setMealType(mealType);
+            foodItem.setFoodType(foodType);
+            foodItem.setAvailable(available);
 
-            // If an image is provided, update it
-            if (image != null && !image.isEmpty()) {
-                String imageBase64 = Base64.getEncoder().encodeToString(image.getBytes());
-                foodItem.setImageBase64(imageBase64);
-            }
 
-            // Save the updated food item
-            foodItemService.save(foodItem);
 
+            foodItemService.updateFoodItem(id, foodItem);
             return ResponseEntity.ok("Food item updated successfully!");
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error: " + e.getMessage());
@@ -182,4 +109,7 @@ public class FoodItemController {
             return ResponseEntity.status(500).body("Error: " + e.getMessage());
         }
     }
+
+
+
 }

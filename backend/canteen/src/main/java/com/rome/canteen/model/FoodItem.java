@@ -3,86 +3,73 @@ package com.rome.canteen.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "fooditems")
+@Document(collection = "foodItems")
 public class FoodItem {
 
     @Id
     private String id;
+
     private String name;
-    private String description;
+
     private double price;
-    private String availability;
-    private String mealType;// short eat, drinks, dessert, breakfast, lunch, dinner
-    private String imageBase64;
 
-    // Default constructor
-    public FoodItem() {}
+    private String foodType;
 
-    // Constructor with all fields
-    public FoodItem(String id, String name, String description, double price, String availability, String mealType, String imageBase64) {
-        this.id = id;
+    private String imageUrl;
+
+    private boolean available; // Field to indicate availability, defaults to true
+
+    // No-argument constructor for Spring Data
+    public FoodItem() {
+        this.available = true; // Default to available if not explicitly set
+    }
+
+    // Parameterized constructor for ease of object creation
+    public FoodItem(String name, double price, String foodType, String imageUrl) {
         this.name = name;
-        this.description = description;
         this.price = price;
-        this.availability = availability;
-        this.mealType = mealType;
-        this.imageBase64 = imageBase64;
+        this.foodType = foodType;
+        this.imageUrl = imageUrl;
+        this.available = true; // Default to available if not explicitly set
+    }
+
+    // Optionally add another constructor to explicitly set 'available' status if needed
+    public FoodItem(String name, double price, String foodType, String imageUrl, boolean available) {
+        this.name = name;
+        this.price = price;
+        this.foodType = foodType;
+        this.imageUrl = imageUrl;
+        this.available = available; // Allows flexibility to set availability
     }
 
     // Getters and Setters
-    public String getId() {
-        return id;
-    }
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
-    public String getName() {
-        return name;
-    }
+    public double getPrice() { return price; }
+    public void setPrice(double price) { this.price = price; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public String getFoodType() { return foodType; }
+    public void setFoodType(String foodType) { this.foodType = foodType; }
 
-    public String getDescription() {
-        return description;
-    }
+    public String getImageUrl() { return imageUrl; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    public boolean isAvailable() { return available; }
+    public void setAvailable(boolean available) { this.available = available; }
 
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public String getAvailability() {
-        return availability;
-    }
-
-    public void setAvailability(String availability) {
-        this.availability = availability;
-    }
-
-    public String getMealType() {
-        return mealType;
-    }
-
-    public void setMealType(String mealType) {
-        this.mealType = mealType;
-    }
-
-    public String getImageBase64() {
-        return imageBase64;
-    }
-
-    public void setImageBase64(String imageBase64) {
-        this.imageBase64 = imageBase64;
+    @Override
+    public String toString() {
+        return "FoodItem{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", foodType='" + foodType + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", available=" + available +
+                '}';
     }
 }
