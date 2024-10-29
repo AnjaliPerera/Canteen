@@ -3,19 +3,19 @@
     background-color: #fff3e0;
   }
 
-  .food-section h2 {
+.food-section h2 {
     text-align: left;
     margin-left: 2em;
   }
 
-  .food-items {
+.food-items {
     display: flex;
     justify-content: space-around;
     margin-bottom: 2em;
     flex-wrap: wrap;
   }
 
-  .food-card {
+.food-card {
     position: relative;
     width: 150px;
     border: 1px solid #ddd;
@@ -27,12 +27,12 @@
     transition: transform 0.2s ease, box-shadow 0.2s ease; /* Add transition for smooth effect */
   }
 
-  .food-card:hover {
+.food-card:hover {
     transform: scale(1.02); /* Scale up the card */
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Add a shadow effect */
 }
 
-  .availability-label {
+.availability-label {
     position: absolute;
     top: 10px;
     left: 10px;
@@ -43,20 +43,20 @@
     border-radius: 20px;
   }
 
-  .available {
+.available {
     background-color: #4CAF50; /* Green for available items */
-  }
+}
 
-  .out-of-stock {
+.out-of-stock {
     background-color: #f44336; /* Red for out-of-stock items */
-  }
+}
 
-  .food-card img {
+.food-card img {
     margin-top: 5px;
     width: 149px;
     height: 150px;
     object-fit: cover;
-  }
+}
 
   .select-btn {
     background-color: #4CAF50;
@@ -140,5 +140,4 @@
       flex: 0 0 45%; /* 45% width for two items per row with some space around */
       margin-bottom: 5px;
     }
-  }  
-  
+}
