@@ -52,4 +52,3 @@ public class TimeSlotService {
         timeSlotOrders.get(category).put(timeSlot, timeSlotOrders.get(category).get(timeSlot) + 1);
     }
 }
-

@@ -41,6 +41,25 @@
             <scope>runtime</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+
+
+            <!-- Firebase Admin SDK -->
+            <dependency>
+                <groupId>com.google.firebase</groupId>
+                <artifactId>firebase-admin</artifactId>
+                <version>9.1.1</version> <!-- Use the latest version available -->
+            </dependency>
+
+            <!-- Google Auth Library (Required by Firebase) -->
+            <dependency>
+                <groupId>com.google.auth</groupId>
+                <artifactId>google-auth-library-oauth2-http</artifactId>
+                <version>1.17.0</version> <!-- Use the latest version available -->
+            </dependency>
 
 
 

@@ -14,47 +14,40 @@ public class FoodItemService {
     @Autowired
     private FoodItemRepository foodItemRepository;
 
+    // Retrieve all food items from the database
     public List<FoodItem> getAllFoodItems() {
         return foodItemRepository.findAll();
     }
 
-    public List<FoodItem> getFoodItemsByMealType(String mealType) {
-        return foodItemRepository.findByMealType(mealType);
-    }
-
-
+    // Retrieve available food items from the database
     public List<FoodItem> getAvailableFoodItems() {
-        return foodItemRepository.findByAvailability("Available");
+        return foodItemRepository.findByAvailableTrue();
     }
 
-
-
-
-    public Optional<FoodItem> getFoodItemById(String id) {
-        return foodItemRepository.findById(id);
+    // Retrieve food items by food type
+    public List<FoodItem> getFoodItemsByType(String foodType) {
+        return foodItemRepository.findByFoodTypeIgnoreCase(foodType);
     }
 
-    public void save(FoodItem foodItem) {
-        // Save the food item to MongoDB
+    // Add a new food item to the database
+    public void addFoodItem(FoodItem foodItem) {
         foodItemRepository.save(foodItem);
     }
 
-    public FoodItem updateFoodItem(String id, FoodItem foodItemDetails) {
-        Optional<FoodItem> optionalFoodItem = foodItemRepository.findById(id);
-        if (optionalFoodItem.isPresent()) {
-            FoodItem foodItem = optionalFoodItem.get();
-            foodItem.setName(foodItemDetails.getName());
-            foodItem.setDescription(foodItemDetails.getDescription());
-            foodItem.setPrice(foodItemDetails.getPrice());
-            foodItem.setAvailability(foodItemDetails.getAvailability());
-            foodItem.setMealType(foodItemDetails.getMealType());
-            return foodItemRepository.save(foodItem);
-        } else {
-            return null; // Handle appropriately in the controller
-        }
+    // Update an existing food item in the database by ID
+    public void updateFoodItem(String id, FoodItem foodItem) {
+        // Ensure the ID is set correctly for update
+        foodItem.setId(id);
+        foodItemRepository.save(foodItem);
     }
 
+    // Delete a food item from the database by ID
     public void deleteFoodItem(String id) {
         foodItemRepository.deleteById(id);
+    }
+
+    // Retrieve a specific food item by ID
+    public Optional<FoodItem> getFoodItemById(String id) {
+        return foodItemRepository.findById(id);
     }
 }

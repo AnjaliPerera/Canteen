@@ -15,6 +15,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebSecurity
@@ -28,11 +30,13 @@ public class SecurityConfig {
         this.userService = userService;
     }
 
+    // Password encoder bean using BCrypt
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    // Custom Authentication Provider using UserService and BCrypt Password Encoder
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
@@ -41,6 +45,7 @@ public class SecurityConfig {
         return provider;
     }
 
+    // Define AuthenticationManager bean
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
         return http.getSharedObject(AuthenticationManagerBuilder.class)
@@ -48,44 +53,52 @@ public class SecurityConfig {
                 .build();
     }
 
+    // CORS configuration to allow requests from the frontend
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedOrigins("http://localhost:5173")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedHeaders("*")
+                        .allowCredentials(true);
+            }
+        };
+    }
+
+    // SecurityFilterChain configuration
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                // Disable CSRF as we are using a stateless API with JWT
                 .csrf(AbstractHttpConfigurer::disable)
+                // Enable CORS settings defined in `corsConfigurer`
+                .cors()
+                .and()
+                // Authorization configuration for different endpoints
                 .authorizeHttpRequests(authorize -> authorize
-                        // Public access to login, signup, and contact submit endpoints
-                        .requestMatchers("/auth/login", "/auth/signup", "/api/contact/submit", "/api/fooditems/**").permitAll()
+                        // Public endpoints
+                        .requestMatchers("/auth/login", "/auth/signup", "/auth/forgot-password", "/auth/reset-password").permitAll()
+                        .requestMatchers("/api/contact/submit", "/api/fooditems/**").permitAll()
 
-                        // Only the OWNER can add and delete food items
-                        .requestMatchers("/api/fooditems/add", "/api/fooditems/delete/{id}").hasRole("OWNER")
+                        // Restricted endpoints
+                        .requestMatchers("/api/fooditems/add", "/api/fooditems/delete/**", "/api/fooditems/{id}").hasRole("OWNER") // Only OWNER role can add/delete food items
+                        .requestMatchers("/auth/users/**").hasAnyRole("ADMIN", "OWNER") // ADMIN or OWNER can access user-related endpoints
+                        .requestMatchers("/api/contact/messages").hasAnyRole("ADMIN", "OWNER") // ADMIN or OWNER can view contact messages
+                        .requestMatchers("/api/orders/**").hasAnyRole("USER", "ADMIN", "OWNER") // USER, ADMIN, OWNER roles can manage orders
 
-                        // Only ADMIN and OWNER can access all users
-                        .requestMatchers("/auth/users/**").hasAnyRole("ADMIN", "OWNER")
-
-
-                        // Only the ADMIN and OWNER can view contact messages
-                        .requestMatchers("/api/contact/messages").hasAnyRole("ADMIN", "OWNER")
-
-
-
-
-
-                        // Users with role "USER" can view and manage orders
-                        .requestMatchers("/api/orders/**").hasAnyRole("USER", "ADMIN", "OWNER")  // Permit user, admin, and owner roles
-
-
-
-
-
-
-                        // All other requests require authentication
-                        .anyRequest().authenticated()
+                        .anyRequest().authenticated() // All other requests require authentication
                 )
+                // Set session management to stateless as we are using JWT for authentication
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
+                // Register the custom authentication provider and JWT filter
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 }

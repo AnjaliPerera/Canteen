@@ -3,6 +3,8 @@ package com.rome.canteen.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDateTime;
+
 @Document(collection = "users")
 public class User {
     @Id
@@ -14,7 +16,9 @@ public class User {
     private String role;
     private String imageBase64;  // Base64 encoded image string
 
-    // Role could be: student, staff, admin, owner, etc.
+    // Fields for password reset functionality
+    private String resetToken;  // Token for resetting password
+    private LocalDateTime tokenExpiration;  // Token expiration time
 
     // Default constructor
     public User() {
@@ -73,6 +77,18 @@ public class User {
     public void setImageBase64(String imageBase64) {
         this.imageBase64 = imageBase64;
     }
+    public String getResetToken() {
+        return resetToken;
+    }
+    public void setResetToken(String resetToken) {
+        this.resetToken = resetToken;
+    }
+    public LocalDateTime getTokenExpiration() {
+        return tokenExpiration;
+    }
+    public void setTokenExpiration(LocalDateTime tokenExpiration) {
+        this.tokenExpiration = tokenExpiration;
+    }
 
     // toString() method for better logging and debugging
     @Override
@@ -83,6 +99,8 @@ public class User {
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", role='" + role + '\'' +
+                ", resetToken='" + resetToken + '\'' +
+                ", tokenExpiration=" + tokenExpiration +
                 '}';
     }
 }
