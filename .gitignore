@@ -15,7 +15,7 @@ target/
 
 ### IntelliJ IDEA ###
 .idea
-.idea/*
+*/.idea/*
 *.iws
 *.iml
 *.ipr
@@ -34,4 +34,4 @@ build/
 .vscode/
 .DS_Store
 node_modules/
-
+backend/canteen/src/main/resources/serviceAccountKey.json
