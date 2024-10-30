@@ -1,10 +1,10 @@
 import React from "react";
-import welcomeImage from "../assets/Rectangle 8.png";
-import img1 from "../assets/product-selected.png";
 import img2 from "../assets/product-selected (1).png";
 import img3 from "../assets/product-selected (2).png";
-import Header from '../Components/Header/Header';
+import img1 from "../assets/product-selected.png";
+import welcomeImage from "../assets/Rectangle 8.png";
 import Footer from '../Components/Footer/Footer';
+import Header from '../Components/Header/Header';
 import "./Order.css";
 
 export default function Order() {

@@ -1,10 +1,11 @@
+
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import LogIn from './Pages/LogIn.jsx';
-import SignUp from './Pages/SignUp.jsx';
-import Menu from './Pages/Menu.jsx';
-import FoodSelection from './Pages/FoodSelection.jsx';
 import AddProduct from './Pages/AddProduct.jsx'; // Assuming Dashboard is renamed to AddProduct
+import FoodSelection from './Pages/FoodSelection.jsx';
+import LogIn from './Pages/LogIn.jsx';
+import Menu from './Pages/Menu.jsx';
+import SignUp from './Pages/SignUp.jsx';
 
 function App() {
   const ProtectedRoute = ({ children, roleRequired }) => {
@@ -45,5 +46,4 @@ function App() {
     </BrowserRouter>
   );
 }
-
 export default App;
