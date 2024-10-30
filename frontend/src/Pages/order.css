@@ -1,0 +1,153 @@
+/* Main container for Order component */
+.order-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+  }
+  
+  .welcome-image {
+    width: 1040px;
+    height: 600px;
+    background-color: #FFF3E0;
+  }
+  
+  .welcome-text {
+    position: absolute;
+    top: 12rem; /* Adjust based on positioning */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    letter-spacing: 0.1em;
+    font-size: 8rem;
+    font-weight: bold;
+    font-family: monospace;
+    text-shadow: -1px -1px 0px black, 1px -1px 0px black, -1px 1px 0px black, 1px 1px 0px black;
+  }
+  
+  .order-button {
+    position: absolute;
+    top: 24rem;
+    left: 25%;
+    transform: translateX(-50%);
+    background-color: #D84315;
+    color: white;
+    padding: 1rem 3.5rem;
+    font-weight: bold;
+    border-radius: 9999px;
+  }
+  
+  .profile-section {
+    background-color: #FFF3E0;
+    width: 1040px;
+  }
+  
+  .profile-title {
+    margin-top: 5rem;
+    font-size: 2.5rem;
+    font-weight: bold;
+  }
+  
+  .grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 7rem;
+    margin-top: 5rem;
+  }
+  
+  .order-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    border-bottom: 2px dashed #9E9E9E;
+    margin-bottom: 2rem;
+  }
+  
+  .order-no {
+    font-size: 2rem;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  
+  .order-no-value {
+    font-size: 2rem;
+    font-weight: 600;
+    text-align: right;
+    text-transform: uppercase;
+    margin-right: 1.25rem;
+  }
+  
+  .product-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: #f5f5f5;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .product-image {
+    width: 5rem;
+    height: 5rem;
+    object-fit: cover;
+    border-radius: 0.25rem;
+  }
+  
+  .product-details {
+    margin-left: 1.5rem;
+    text-align: left;
+  }
+  
+  .product-name {
+    font-size: 1.125rem;
+    text-transform: uppercase;
+  }
+  
+  .product-price {
+    font-size: 2rem;
+    color: black;
+    font-weight: 600;
+  }
+  
+  .quantity-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .quantity-label {
+    font-size: 1.25rem;
+    text-transform: uppercase;
+  }
+  
+  .quantity-value {
+    font-size: 1.5rem;
+    font-weight: 800;
+  }
+  
+  .cancel-order-button {
+    margin-top: 2.5rem;
+    padding: 1rem 1.5rem;
+    border-radius: 9999px;
+    font-weight: 600;
+    text-transform: uppercase;
+    background-color: #EA4B48;
+  }
+  
+  .conditions-title {
+    font-size: 1.875rem;
+    margin-bottom: 1.25rem;
+  }
+  
+  .conditions-list {
+    list-style-type: decimal;
+    text-align: left;
+    color: #616161;
+    font-size: 1.125rem;
+    padding-left: 1.25rem;
+    margin-right: 2rem;
+  }
+  
