@@ -1,0 +1,127 @@
+/* styles/OrderCard.css */
+.order-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid orange;
+  border-radius: 10px;
+  padding: 20px;
+  max-width: 100%; /* Allow card to take full width */
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin: 10px;
+  flex-grow: 1; /* Allows it to grow with content */
+}
+
+.order-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.order-card h3 {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.order-items {
+  border-top: 1px solid #f0f0f0;
+  padding-top: 10px;
+  margin-top: 10px;
+}
+
+.order-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.order-status {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #777;
+}
+
+.order-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: auto;
+}
+
+.reject-btn, .accept-btn {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.reject-btn {
+  background-color: #ff4d4d;
+  color: white;
+}
+
+.reject-btn:hover {
+  background-color: #cc0000;
+}
+
+.accept-btn {
+  background-color: #4caf50;
+  color: white;
+}
+
+.accept-btn:hover {
+  background-color: #388e3c;
+}
+
+/* Media query for tablets (max-width: 768px) */
+@media (max-width: 768px) {
+  .order-card {
+    padding: 15px;
+    margin: 8px;
+  }
+
+  .order-card h3 {
+    font-size: 16px;
+  }
+
+  .order-item {
+    font-size: 13px;
+  }
+
+  .reject-btn, .accept-btn {
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+}
+
+/* Media query for mobile devices (max-width: 480px) */
+@media (max-width: 480px) {
+  .order-card {
+    padding: 15px;
+    margin: 10px 0; /* Add some spacing between cards */
+    width: 100%; /* Full-width on mobile */
+  }
+
+  .order-card h3 {
+    font-size: 15px;
+  }
+
+  .order-item {
+    font-size: 12px;
+  }
+
+  .order-actions {
+    flex-direction: column;
+  }
+
+  .reject-btn, .accept-btn {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 5px;
+    font-size: 14px;
+  }
+}
