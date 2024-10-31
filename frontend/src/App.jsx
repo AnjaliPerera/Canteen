@@ -12,6 +12,14 @@ function App() {
     const token = localStorage.getItem('token');
     const role = localStorage.getItem('role');
 
+
+    const [selectedItems, setSelectedItems] = useState([]);
+
+  // Update selected items when toggled in Menu
+    const updateSelectedItems = (items) => {
+      setSelectedItems(items);
+    };
+
     if (!token) {
       console.log("Redirecting to login: No token found");
       return <Navigate to="/" />;
@@ -30,10 +38,11 @@ function App() {
       <Routes>
         <Route path="/" element={<LogIn />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/menu" element={<Menu />} />
+        <Route path="/" element={<Menu updateSelectedItems={updateSelectedItems} />} />
         <Route path="/foodselection" element={<FoodSelection />} />
 
         {/* Protected route for OWNER role to access AddProduct (Dashboard) */}
+        
         <Route
           path="/dashboard"
           element={

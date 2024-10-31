@@ -17,10 +17,7 @@ const Header = () => {
     <header className="header">
       <div className="logo-section">
         <img src="/logo.jpg" alt="Logo" className="logo" />
-        <div className="logo-text">
-          <h1>The best delicious food that meets your needs</h1>
-          <p></p>
-        </div>
+        
       </div>
 
       <div className="nav-links">
