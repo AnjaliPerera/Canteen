@@ -1,0 +1,117 @@
+.about-us {
+    font-family: Arial, sans-serif;
+    background-color: #FFF3E0;
+    color: #333;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  h1 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+  }
+  
+  .intro, .mission, .testimonials {
+    margin: 40px 0;
+  }
+  
+  /* Mission Section */
+  .mission {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    text-align: left;
+    padding: 20px;
+  }
+  
+  .mission-content {
+    display: flex;
+    align-items: flex-start;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  
+  .mission-content img {
+    flex-shrink: 0;
+    max-width: 300px; /* Fixed width for the image */
+    height: auto;
+    margin-right: 30px; /* Larger margin to create space between image and text */
+  }
+  
+  .mission-text {
+    flex-grow: 1;
+  }
+  
+  .mission-text h2 {
+    font-size: 2em;
+    margin-bottom: 15px;
+    color: #333;
+  }
+  
+  .mission-text p {
+    font-size: 1.1em;
+    line-height: 1.6;
+    margin-top: 0;
+  }
+  
+  .testimonials {
+    display: flex;
+    align-items: flex-start; /* Align image and text horizontally */
+    justify-content: space-between; /* Ensure the image stays on the right */
+    margin: 2rem 0;
+    gap: 2rem;
+  }
+  
+  .testimonials-content {
+    display: flex;
+    flex-direction: row; /* Horizontal alignment */
+    width: 100%;
+    max-width: 1200px;
+  }
+  
+  .testimonials-text {
+    flex: 1; /* Make text take up the remaining space */
+  }
+  
+  .testimonials img {
+    max-width: 400px;
+    height: auto;
+    margin-left: 2rem; /* Add space between the image and the text */
+  }
+  
+  h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  blockquote {
+    font-style: italic;
+    margin-bottom: 1.5rem;
+    padding-left: 1rem;
+    border-left: none;
+  }
+  
+  span {
+    display: block;
+    margin-top: 0.5rem;
+    font-weight: bold;
+  }
+  
+  /* Responsive design for smaller screens */
+@media (max-width: 768px) {
+    .mission-content, .testimonials-content {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+  
+    .mission-content img, .testimonials-content img {
+      margin-bottom: 20px;
+      margin-left: 0;
+    }
+  
+    .mission-text, .testimonials-text {
+      text-align: center;
+    }
+  }
+  
