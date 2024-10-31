@@ -1,18 +1,16 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import './LogIn.css';  // Assuming you have your CSS file for styling
-import { useNavigate } from 'react-router-dom';  // Import useNavigate
+import './LogIn.css';
+import { useNavigate } from 'react-router-dom';
 
 const LogIn = () => {
   const [formData, setFormData] = useState({
-           name: '',
-           userId: '',
-           email: '',
-           password: '',
-           rememberMe: false,
+    email: '',
+    password: '',
+    rememberMe: false,
   });
-
-  const navigate = useNavigate();  // Initialize useNavigate for redirection
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -24,6 +22,7 @@ const LogIn = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(null); // Clear any previous errors
 
     try {
       const response = await axios.post('http://localhost:8080/auth/login', {
@@ -31,16 +30,24 @@ const LogIn = () => {
         password: formData.password,
       });
 
-      const token = response.data.jwt;  // Assuming the JWT token is returned as plain text
+      const token = response.data.jwt;
       console.log('Token:', token);
 
-      // Decode JWT to retrieve role and check expiration
-      const decodedToken = JSON.parse(atob(token.split('.')[1]));
-      const role = decodedToken.role;
-      const isExpired = decodedToken.exp * 1000 < Date.now();
+      // Decode JWT to retrieve email and role, and check expiration
+      let decodedToken;
+      try {
+        decodedToken = JSON.parse(atob(token.split('.')[1]));
+      } catch (error) {
+        console.error('Error decoding JWT:', error);
+        setError('Invalid token received. Please try logging in again.');
+        return;
+      }
+
+      const { email, role, exp } = decodedToken;
+      const isExpired = exp * 1000 < Date.now();
 
       if (isExpired) {
-        alert("Session expired. Please log in again.");
+        setError("Session expired. Please log in again.");
         return;
       }
 
@@ -51,13 +58,13 @@ const LogIn = () => {
 
       // Redirect based on the role
       if (role === 'OWNER') {
-        navigate('/dashboard'); // Go to Dashboard if role is OWNER
+        navigate('/addProduct');
       } else {
-        navigate('/menu'); // Go to Menu for other users
+        navigate('/menu');
       }
     } catch (error) {
       console.error('Error during login:', error);
-      alert('Login failed. Check your credentials.');
+      setError(error.response?.data?.message || 'Login failed. Check your credentials.');
     }
   };
 
@@ -66,17 +73,8 @@ const LogIn = () => {
       <form className="login-form" onSubmit={handleSubmit}>
         <h2>Log In</h2>
 
-<label htmlFor="userId">User ID</label>
-  <input
-    type="text"
-    name="userId"
-    id="userId"
-    placeholder="User ID"
-    value={formData.userId}
-    onChange={handleChange}
-    required
-  />
-
+        {/* Display error message */}
+        {error && <p className="error-message">{error}</p>}
 
         {/* Email input */}
         <label htmlFor="email">Email</label>
