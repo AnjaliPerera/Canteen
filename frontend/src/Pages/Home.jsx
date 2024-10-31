@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
-import homemain from "../assets/restaurants-in-vietnam.jpg"
+import React, { useEffect, useState } from 'react'
+import homemain from '../assets/restaurants-in-vietnam.jpg'
 import './Home.css';
-import food1 from "../assets/images.jpg"
-import food2 from "../assets/download.jpg"
+import food1 from '../assets/images.jpg'
+import food2 from '../assets/download.jpg'
 
 
 const Reviewusers = [
@@ -134,59 +134,31 @@ const Reviewusers1 = [
 
 const Home = () => {
   const [count, setCount] = useState(0);
-  const [count1, setCount1] = useState(0); // for the second swiper
+  const [count1, setCount1] = useState(0);
+  const [visibleItems, setVisibleItems] = useState(6); // default visible items
+
+  useEffect(() => {
+    const updateVisibleItems = () => {
+      if (window.innerWidth < 640) setVisibleItems(1);
+      else if (window.innerWidth < 840) setVisibleItems(2);
+      else if (window.innerWidth < 1040) setVisibleItems(3);
+      else if (window.innerWidth < 1240) setVisibleItems(5);
+      else setVisibleItems(6);
+    };
+
+    updateVisibleItems(); // Set initial count
+    window.addEventListener('resize', updateVisibleItems); // Listen to resize events
+    return () => window.removeEventListener('resize', updateVisibleItems); // Clean up
+  }, []);
 
   const handleSlideChange = (type, listLength, isPrimary) => {
-    // Determine if we are modifying the first or second list
     const currentCount = isPrimary ? count : count1;
     const setCurrentCount = isPrimary ? setCount : setCount1;
 
-    // Update the count based on increment or decrement
     if (type === "increment") {
-      setCurrentCount(currentCount >= listLength - 6 ? currentCount : currentCount + 1);
-    } else if (type === "decrement") {
+      setCurrentCount(currentCount >= listLength - visibleItems ? currentCount : currentCount + 1);
+    } else {
       setCurrentCount(currentCount <= 0 ? 0 : currentCount - 1);
-    }
-  };
-  const increament=()=>{
-    if(window.innerWidth<640){
-      if(count==Reviewusers.length-1){
-        setCount(Reviewusers.length-1)
-      }else{
-        setCount(count+1)
-      }
-    }else if(window.innerWidth<840){
-      if(count==Reviewusers.length-2){
-        setCount(Reviewusers.length-2)
-      }else{
-        setCount(count+1)
-      }
-    }else if(window.innerWidth<1040){
-      if(count==Reviewusers.length-3){
-        setCount(Reviewusers.length-3)
-      }else{
-        setCount(count+1)
-      }
-    }
-    else if(window.innerWidth<1240){
-      if(count==Reviewusers.length-4){
-        setCount(Reviewusers.length-4)
-      }else{
-        setCount(count+1)
-      }
-    }else{
-      if(count==Reviewusers.length-6){
-        setCount(Reviewusers.length-6)
-      }else{
-        setCount(count+1)
-      }
-    }
-  };
-  const decreament=()=>{
-    if(count==0){
-      setCount(0)
-    }else{
-      setCount(count-1)
     }
   };
   return (
