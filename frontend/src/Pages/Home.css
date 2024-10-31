@@ -4,7 +4,7 @@
   width: 98%;
   height: 1460px;
   top:0;
-  left: 18px;
+  left: 0;
   overflow: hidden;
   background-color: #FFF3E0;
   
@@ -194,8 +194,8 @@
 .stars-outer{
   position: relative;
   display: inline-block;
-  width: 122px;
-  font-size: 1.33rem; 
+  width: 150px;
+  font-size: 1.35rem; 
 }
 .stars-inner{
   position: absolute;
