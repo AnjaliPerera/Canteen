@@ -43,8 +43,8 @@ const LogIn = () => {
 
       if (role === 'OWNER') {
         navigate('/dashboard');
-      } else {
-        navigate('/menu');
+      } else if (role === 'user') { // Redirect users with "user" role to Home page
+        navigate('/home');
       }
     } catch (error) {
       console.error('Error during login:', error);
