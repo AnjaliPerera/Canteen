@@ -1,48 +1,67 @@
-import React, { useState } from 'react';
-import './FoodSelection.css';
-import Header from '../Components/Header/Header';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import Footer from '../Components/Footer/Footer';
+import Header from '../Components/Header/Header';
+import '../Pages/FoodSelection.css';
 
 function FoodSelection() {
+  const location = useLocation();
+  const { selectedItems = [] } = location.state || {}; // Get selected items from Menu
+
   const [orderItems, setOrderItems] = useState([
-    { id: 0, name: 'Chicken Potion', price: 100, quantity: 1, image: 'Chicken_potion.png', available: true, selected: false },
-    { id: 1, name: 'Sausage', price: 80, quantity: 1, image: 'Sausage.png', available: false, selected: false },
-    { id: 2, name: 'Boiled Egg', price: 70, quantity: 1, image: 'Boiled_egg.png', available: true, selected: false },
-    { id: 3, name: 'Fried Egg', price: 70, quantity: 1, image: 'Fried_egg.png', available: false, selected: false },
-    { id: 4, name: 'Fried Fish', price: 80, quantity: 1, image: 'Fried_fish.png', available: true, selected: false }
+    { id: 0, name: 'Chicken Portion', price: 100, quantity: 1, image: './Chicken_potion.png', available: true, selected: false, fromMenu: false },
+    { id: 1, name: 'Sausage', price: 80, quantity: 1, image: './Sausage.png', available: false, selected: false, fromMenu: false },
+    { id: 2, name: 'Boiled Egg', price: 70, quantity: 1, image: './Boiled_egg.png', available: true, selected: false, fromMenu: false },
+    { id: 3, name: 'Fried Egg', price: 70, quantity: 1, image: './Fried_egg.png', available: false, selected: false, fromMenu: false },
+    { id: 4, name: 'Fried Fish', price: 80, quantity: 1, image: './Fried_fish.png', available: true, selected: false, fromMenu: false }
   ]);
 
-  const handleAdd = (id) => {
-    const newOrder = orderItems.map(item => {
-      if (item.id === id) {
-        return { ...item, quantity: item.quantity + 1 };
+  useEffect(() => {
+    const updatedOrderItems = [...orderItems];
+
+    selectedItems.forEach(selectedItem => {
+      const existingItem = updatedOrderItems.find(item => item.id === selectedItem.id);
+      if (existingItem) {
+        existingItem.selected = true;
+        existingItem.quantity = selectedItem.quantity;
+        existingItem.fromMenu = true;
+      } else {
+        updatedOrderItems.push({ ...selectedItem, selected: true, fromMenu: true });
       }
-      return item;
     });
-    setOrderItems(newOrder);
+    
+    setOrderItems(updatedOrderItems);
+  }, [selectedItems]);
+
+  const handleAdd = (id) => {
+    setOrderItems((prevItems) =>
+      prevItems.map(item =>
+        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+      )
+    );
   };
 
   const handleRemove = (id) => {
-    const newOrder = orderItems.map(item => {
-      if (item.id === id && item.quantity > 1) {
-        return { ...item, quantity: item.quantity - 1 };
-      }
-      return item;
-    });
-    setOrderItems(newOrder);
+    setOrderItems((prevItems) =>
+      prevItems.map(item =>
+        item.id === id && item.quantity > 1 ? { ...item, quantity: item.quantity - 1 } : item
+      )
+    );
   };
 
   const handleToggleSelect = (id) => {
-    const newOrder = [...orderItems];
-    newOrder[id].selected = !newOrder[id].selected;
-    setOrderItems(newOrder);
+    setOrderItems((prevItems) =>
+      prevItems.map(item =>
+        item.id === id ? { ...item, selected: !item.selected } : item
+      )
+    );
   };
 
   const handleCancelOrder = () => {
     const resetOrder = orderItems.map(item => ({
-      ...item,
-      quantity: 1,
-      selected: false,
+        ...item,
+        selected: false,
+        quantity: item.fromMenu ? 1 : item.quantity
     }));
     setOrderItems(resetOrder);
   };
@@ -82,9 +101,9 @@ function FoodSelection() {
     }
   };
 
-  const totalPrice = orderItems
-    .filter(item => item.selected)
-    .reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const totalPrice = orderItems.reduce((acc, item) => {
+    return item.selected ? acc + item.price * item.quantity : acc;
+  }, 0);
 
   return (
     <>
@@ -92,34 +111,35 @@ function FoodSelection() {
       <div className="food-selection">
         <h2>Extra Curry Selection</h2>
         <div className="food-items">
-          {orderItems.map((item) => (
-            <div className="food-card" key={item.id}>
-              <div className={`availability-label ${item.available ? 'available' : 'out-of-stock'}`}>
-                {item.available ? 'Available' : 'Out of Stock'}
+          {orderItems
+            .filter(item => !item.fromMenu) // Only display extra curry items
+            .map((item) => (
+              <div className="food-card" key={item.id}>
+                <div className={`availability-label ${item.available ? 'available' : 'out-of-stock'}`}>
+                  {item.available ? 'Available' : 'Out of Stock'}
+                </div>
+                <img src={item.image} alt={item.name} />
+                <h3>{item.name}</h3>
+                <p>LKR {item.price}.00</p>
+                <div className="button-control">
+                  <button
+                    onClick={() => handleToggleSelect(item.id)}
+                    className={item.selected ? 'delete-btn' : 'select-btn'}
+                    disabled={!item.available}
+                  >
+                    {item.selected ? 'Delete' : 'Select'}
+                  </button>
+                </div>
               </div>
-              <img src={item.image} alt={`${item.name}`} />
-              <h3>{item.name}</h3>
-              <p>LKR {item.price}.00</p>
-
-              <div className="button-control">
-                <button
-                  onClick={() => handleToggleSelect(item.id)}
-                  className={item.selected ? 'delete-btn' : 'select-btn'}
-                  disabled={!item.available}
-                >
-                  {item.selected ? 'Delete' : 'Select'}
-                </button>
-              </div>
-            </div>
-          ))}
+            ))}
         </div>
         <div className="order-summary">
           <h4>Order No: L312</h4>
           {orderItems
-            .filter(item => item.selected)
+            .filter(item => item.selected) // Only display selected items
             .map((item, id) => (
               <div className="selected-item" key={id}>
-                <img src={item.image} alt={`${item.name}`} className="order-image" />
+                <img src={item.image} alt={item.name} className="order-image" />
                 <div className="order-details">
                   <h3>{item.name}</h3>
                   <p>LKR {item.price}.00</p>
