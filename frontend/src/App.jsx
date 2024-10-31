@@ -6,6 +6,8 @@ import FoodSelection from './Pages/FoodSelection.jsx';
 import LogIn from './Pages/LogIn.jsx';
 import Menu from './Pages/Menu.jsx';
 import SignUp from './Pages/SignUp.jsx';
+import Contact from './Pages/Contact.jsx';
+import Home from './Pages/Home.jsx';
 
 function App() {
   const ProtectedRoute = ({ children, roleRequired }) => {
@@ -38,8 +40,14 @@ function App() {
       <Routes>
         <Route path="/" element={<LogIn />} />
         <Route path="/signup" element={<SignUp />} />
+
         <Route path="/" element={<Menu updateSelectedItems={updateSelectedItems} />} />
+
+        <Route path="/Home" element={<Home />} />
+        <Route path="/menu" element={<Menu />} />
+
         <Route path="/foodselection" element={<FoodSelection />} />
+        <Route path="/Contact" element={<Contact/>} />
 
         {/* Protected route for OWNER role to access AddProduct (Dashboard) */}
         
