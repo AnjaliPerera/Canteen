@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
-import AddProduct from './Pages/AddProduct.jsx'; // Assuming Dashboard is renamed to AddProduct
+import AddProduct from './Pages/AddProduct.jsx';
 import FoodSelection from './Pages/FoodSelection.jsx';
 import LogIn from './Pages/LogIn.jsx';
 import Menu from './Pages/Menu.jsx';
 import SignUp from './Pages/SignUp.jsx';
+import Contact from './Pages/Contact.jsx';
+import Home from './Pages/Home.jsx';
 
 function ProtectedRoute({ children, roleRequired }) {
   const token = localStorage.getItem('token');
@@ -15,6 +17,13 @@ function ProtectedRoute({ children, roleRequired }) {
     return <Navigate to="/" />;
   }
 
+  // Redirect "USER" role directly to Home if not already there
+  if (role === "USER" && roleRequired !== "USER") {
+    console.log("Redirecting to home: Role is USER");
+    return <Navigate to="/home" />;
+  }
+
+  // Redirect to Menu if the required role doesn't match
   if (roleRequired && role !== roleRequired) {
     console.log(`Redirecting to menu: Role is ${role}, but ${roleRequired} required`);
     return <Navigate to="/menu" />;
@@ -34,21 +43,34 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Public routes */}
         <Route path="/" element={<LogIn />} />
         <Route path="/signup" element={<SignUp />} />
 
-        {/* Main menu accessible without protection */}
+        {/* Home and menu accessible after login */}
+        <Route path="/home" element={<Home />} />
         <Route path="/menu" element={<Menu updateSelectedItems={updateSelectedItems} />} />
 
-        {/* Food Selection page */}
+        {/* Food Selection and Contact pages */}
         <Route path="/foodselection" element={<FoodSelection selectedItems={selectedItems} />} />
+        <Route path="/contact" element={<Contact />} />
 
-        {/* Protected route for OWNER role to access AddProduct */}
+        {/* Protected route for OWNER role to access AddProduct (Dashboard) */}
         <Route
           path="/dashboard"
           element={
             <ProtectedRoute roleRequired="OWNER">
               <AddProduct />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Protected route for USER role to access Home */}
+        <Route
+          path="/home"
+          element={
+            <ProtectedRoute roleRequired="USER">
+              <Home />
             </ProtectedRoute>
           }
         />
