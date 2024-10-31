@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
-import homemain from '../assets/restaurants-in-vietnam.jpg'
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import homemain from '../assets/restaurants-in-vietnam.jpg';
 import './Home.css';
-import food1 from '../assets/images.jpg'
-import food2 from '../assets/download.jpg'
-
+import food1 from '../assets/images.jpg';
+import food2 from '../assets/download.jpg';
 
 const Reviewusers = [
   {
@@ -66,8 +66,8 @@ const Reviewusers = [
       productTitle:"Product10",
       rating:4,
   },
-  
-]
+];
+
 const Reviewusers1 = [
   {
       imageUrl:food1,
@@ -129,13 +129,13 @@ const Reviewusers1 = [
       productTitle:"Product10",
       rating:4,
   },
-  
-]
+];
 
 const Home = () => {
   const [count, setCount] = useState(0);
   const [count1, setCount1] = useState(0);
   const [visibleItems, setVisibleItems] = useState(6); // default visible items
+  const navigate = useNavigate(); // Initialize useNavigate for navigation
 
   useEffect(() => {
     const updateVisibleItems = () => {
@@ -161,93 +161,90 @@ const Home = () => {
       setCurrentCount(currentCount <= 0 ? 0 : currentCount - 1);
     }
   };
+
+  // Button click handler to navigate to the Menu page
+  const handleViewMenuClick = () => {
+    navigate('/menu'); // Navigate to the menu page
+  };
+
   return (
-    
     <div className='Home-container'>
-
-        {/**first imag */}
-        <div className='fistimage'>
-            <img src={homemain} alt='homemain'/>
-            <button class="btn">View Menu</button>
-            <div className='text'>
-                <h1>WELCOME to ROME</h1>
-                <p>"More Than Meals – It's Where Memories Are Made."</p>
-            </div>
+      <div className='fistimage'>
+        <img src={homemain} alt='homemain' />
+        <button className="btn" onClick={handleViewMenuClick}>View Menu</button>
+        <div className='text'>
+          <h1>WELCOME to ROME</h1>
+          <p>"More Than Meals – It's Where Memories Are Made."</p>
         </div>
+      </div>
 
-        {/**About */}
-        <div></div>
-        
-
-        {/**rating */}
-        <div className='swiper'>
-          <div className="card-swiper">
-            <h1>Short-Eates</h1>
-            <div className="card-list">
-              <div className="card-item">
-              <div className='arr1 left'
-              onClick={() => handleSlideChange("decrement", Reviewusers.length, true)}
-              ><div></div></div>
-                {Reviewusers.slice(count,count+6 ).map(({imageUrl,price,productTitle,rating},index)=>(
-                  <ReviewUser 
-                  imageUrl={imageUrl} 
-                  price={price} 
-                  productTitle={productTitle} 
-                  rating={rating || 0}
-                  id={index}/>
-                ))}
-                <div className='arr right'
-                onClick={() => handleSlideChange("increment", Reviewusers.length, true)}
-                ><div></div></div>
+      <div className='swiper'>
+        <div className="card-swiper">
+          <h1>Short-Eates</h1>
+          <div className="card-list">
+            <div className="card-item">
+              <div className='arr1 left' onClick={() => handleSlideChange("decrement", Reviewusers.length, true)}>
+                <div></div>
               </div>
-            </div>
-          </div>
-          <div className="card-swiper1">
-            <h1>Drinks</h1>
-            <div className="card-list">
-              <div className="card-item">
-              <div className='arr1 left'
-              onClick={() => handleSlideChange("decrement", Reviewusers1.length, false)}
-              ><div></div></div>
-                {Reviewusers1.slice(count1,count1+6 ).map(({imageUrl,price,productTitle,rating},index)=>(
-                  <ReviewUser 
-                  imageUrl={imageUrl} 
-                  price={price} 
-                  productTitle={productTitle} 
+              {Reviewusers.slice(count, count + 6).map(({ imageUrl, price, productTitle, rating }, index) => (
+                <ReviewUser
+                  key={index}
+                  imageUrl={imageUrl}
+                  price={price}
+                  productTitle={productTitle}
                   rating={rating || 0}
-                  id={index}/>
-                ))}
-                <div className='arr right'
-                onClick={() => handleSlideChange("increment", Reviewusers1.length, false)}
-                ><div></div></div>
+                  id={index}
+                />
+              ))}
+              <div className='arr right' onClick={() => handleSlideChange("increment", Reviewusers.length, true)}>
+                <div></div>
               </div>
             </div>
           </div>
         </div>
-
-        {/**rating */}
+        <div className="card-swiper1">
+          <h1>Drinks</h1>
+          <div className="card-list">
+            <div className="card-item">
+              <div className='arr1 left' onClick={() => handleSlideChange("decrement", Reviewusers1.length, false)}>
+                <div></div>
+              </div>
+              {Reviewusers1.slice(count1, count1 + 6).map(({ imageUrl, price, productTitle, rating }, index) => (
+                <ReviewUser
+                  key={index}
+                  imageUrl={imageUrl}
+                  price={price}
+                  productTitle={productTitle}
+                  rating={rating || 0}
+                  id={index}
+                />
+              ))}
+              <div className='arr right' onClick={() => handleSlideChange("increment", Reviewusers1.length, false)}>
+                <div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  )
-  
-}
+  );
+};
 
-export default Home
+export default Home;
 
-const ReviewUser = ({imageUrl,price,productTitle,index,rating})=>{
+const ReviewUser = ({ imageUrl, price, productTitle, index, rating }) => {
   const starPercentage = (rating / 5) * 100;
-  return(
-  <div className='card-link '>
-      <img src={imageUrl} alt={`review_user_${index}`} className="imge"/>
-      <h3 className=' titel'>{productTitle}</h3>
+  return (
+    <div className='card-link '>
+      <img src={imageUrl} alt={`review_user_${index}`} className="imge" />
+      <h3 className='titel'>{productTitle}</h3>
       <h3 className='price'>Rs.{price}</h3>
 
-      {/**rating part */}
-      <div class="star">
-      <div class="stars-outer">
-        <div class="stars-inner" style={{ width: `${starPercentage}%` }}></div>
+      <div className="star">
+        <div className="stars-outer">
+          <div className="stars-inner" style={{ width: `${starPercentage}%` }}></div>
+        </div>
       </div>
-      </div>
-      
-  </div>
-)
-}
+    </div>
+  );
+};
