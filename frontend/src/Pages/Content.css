@@ -1,0 +1,45 @@
+
+.content-list {
+  padding: 20px;
+}
+
+.content-list {
+  font-size: large;
+}
+
+.order-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+/* Media query for tablets (max-width: 768px) */
+@media (max-width: 768px) {
+  .content-list {
+    padding: 15px;
+  }
+
+  .content-list h2 {
+    font-size: medium;
+  }
+
+  .order-cards {
+    gap: 15px;
+  }
+}
+
+/* Media query for mobile devices (max-width: 480px) */
+@media (max-width: 480px) {
+  .content-list {
+    padding: 10px;
+  }
+
+  .content-list h2 {
+    font-size: small;
+  }
+
+  .order-cards {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
