@@ -1,22 +1,30 @@
 
-import React from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import React, { useState } from 'react';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import './App.css';
 import AddProduct from './Pages/AddProduct.jsx'; // Assuming Dashboard is renamed to AddProduct
+import Contact from './Pages/Contact.jsx';
 import FoodSelection from './Pages/FoodSelection.jsx';
+import Home from './Pages/Home.jsx';
 import LogIn from './Pages/LogIn.jsx';
 import Menu from './Pages/Menu.jsx';
+import OrderList from './Pages/OrderList.jsx';
+import SearchBar from './Pages/SearchBar.jsx';
+import Sidebar from './Pages/Sidebar.jsx';
 import SignUp from './Pages/SignUp.jsx';
-import Contact from './Pages/Contact.jsx';
-import Home from './Pages/Home.jsx';
+
 
 function App() {
+
   const ProtectedRoute = ({ children, roleRequired }) => {
     const token = localStorage.getItem('token');
     const role = localStorage.getItem('role');
 
 
     const [selectedItems, setSelectedItems] = useState([]);
+    const [mealType, setMealType] = useState('Breakfast'); // State for meal type, default to 'Breakfast'
 
+    
   // Update selected items when toggled in Menu
     const updateSelectedItems = (items) => {
       setSelectedItems(items);
@@ -51,8 +59,24 @@ function App() {
 
         {/* Protected route for OWNER role to access AddProduct (Dashboard) */}
         
+
         <Route
-          path="/dashboard"
+          path="/Order List"
+          element={
+            <ProtectedRoute roleRequired="OWNER">
+              <div className="dashboard">
+                <Sidebar />
+                <div className="main-content">
+                  <SearchBar mealType={mealType} setMealType={setMealType} />
+                  <OrderList mealType={mealType} />
+                </div>
+              </div>
+            </ProtectedRoute>
+          }
+        />
+      
+        <Route
+          path="/Food Edit"
           element={
             <ProtectedRoute roleRequired="OWNER">
               <AddProduct /> {/* Update the path if your component name is different */}
