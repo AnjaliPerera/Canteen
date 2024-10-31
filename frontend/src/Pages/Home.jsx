@@ -1,141 +1,37 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import homemain from '../assets/restaurants-in-vietnam.jpg';
 import './Home.css';
-import food1 from '../assets/images.jpg';
-import food2 from '../assets/download.jpg';
-
-const Reviewusers = [
-  {
-      imageUrl:food1,
-      price:"100",
-      productTitle:"Product1",
-      rating: 3.4,
-  },
-  {
-      imageUrl:food2,
-      price:"100",
-      productTitle:"Product2",
-      rating:4,
-  },
-  {
-      imageUrl:food1,
-      price:"100",
-      productTitle:"Product3",
-      rating:4,
-  },
-  {
-      imageUrl:food2,
-      price:"100",
-      productTitle:"Product4",
-      rating:4,
-  },
-  {
-      imageUrl:food1,
-      price:"100",
-      productTitle:"Product5",
-      rating:4,
-  },
-  {
-      imageUrl:food2,
-      price:"100",
-      productTitle:"Product6",
-      rating:4,
-  },
-  {
-      imageUrl:food1,
-      price:"100",
-      productTitle:"Product7",
-      rating:4,
-  },
-  {
-      imageUrl:food2,
-      price:"100",
-      productTitle:"Product8",
-      rating:4,
-  },
-  {
-      imageUrl:food1,
-      price:"100",
-      productTitle:"Product9",
-      rating:4,
-  },
-  {
-      imageUrl:food2,
-      price:"100",
-      productTitle:"Product10",
-      rating:4,
-  },
-];
-
-const Reviewusers1 = [
-  {
-      imageUrl:food1,
-      price:"100",
-      productTitle:"Product1",
-      rating: 3.4,
-  },
-  {
-      imageUrl:food2,
-      price:"100",
-      productTitle:"Product2",
-      rating:4,
-  },
-  {
-      imageUrl:food1,
-      price:"100",
-      productTitle:"Product3",
-      rating:4,
-  },
-  {
-      imageUrl:food2,
-      price:"100",
-      productTitle:"Product4",
-      rating:4,
-  },
-  {
-      imageUrl:food1,
-      price:"100",
-      productTitle:"Product5",
-      rating:4,
-  },
-  {
-      imageUrl:food2,
-      price:"100",
-      productTitle:"Product6",
-      rating:4,
-  },
-  {
-      imageUrl:food1,
-      price:"100",
-      productTitle:"Product7",
-      rating:4,
-  },
-  {
-      imageUrl:food2,
-      price:"100",
-      productTitle:"Product8",
-      rating:4,
-  },
-  {
-      imageUrl:food1,
-      price:"100",
-      productTitle:"Product9",
-      rating:4,
-  },
-  {
-      imageUrl:food2,
-      price:"100",
-      productTitle:"Product10",
-      rating:4,
-  },
-];
 
 const Home = () => {
+  const [shortEats, setShortEats] = useState([]);
+  const [drinks, setDrinks] = useState([]);
+  const [desserts, setDesserts] = useState([]);
   const [count, setCount] = useState(0);
   const [count1, setCount1] = useState(0);
-  const [visibleItems, setVisibleItems] = useState(6); // default visible items
-  const navigate = useNavigate(); // Initialize useNavigate for navigation
+  const [count2, setCount2] = useState(0); // For Desserts
+  const [visibleItems, setVisibleItems] = useState(6);
+  const navigate = useNavigate();
+
+  // Fetch data from backend
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const shortEatsResponse = await axios.get('http://localhost:8080/api/fooditems/type/Short%20Eats');
+        const drinksResponse = await axios.get('http://localhost:8080/api/fooditems/type/Drinks');
+        const dessertsResponse = await axios.get('http://localhost:8080/api/fooditems/type/Desserts');
+
+        setShortEats(shortEatsResponse.data);
+        setDrinks(drinksResponse.data);
+        setDesserts(dessertsResponse.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   useEffect(() => {
     const updateVisibleItems = () => {
@@ -146,14 +42,14 @@ const Home = () => {
       else setVisibleItems(6);
     };
 
-    updateVisibleItems(); // Set initial count
-    window.addEventListener('resize', updateVisibleItems); // Listen to resize events
-    return () => window.removeEventListener('resize', updateVisibleItems); // Clean up
+    updateVisibleItems();
+    window.addEventListener('resize', updateVisibleItems);
+    return () => window.removeEventListener('resize', updateVisibleItems);
   }, []);
 
-  const handleSlideChange = (type, listLength, isPrimary) => {
-    const currentCount = isPrimary ? count : count1;
-    const setCurrentCount = isPrimary ? setCount : setCount1;
+  const handleSlideChange = (type, listLength, isPrimary, isSecondary = false) => {
+    const currentCount = isPrimary ? count : isSecondary ? count1 : count2;
+    const setCurrentCount = isPrimary ? setCount : isSecondary ? setCount1 : setCount2;
 
     if (type === "increment") {
       setCurrentCount(currentCount >= listLength - visibleItems ? currentCount : currentCount + 1);
@@ -162,9 +58,8 @@ const Home = () => {
     }
   };
 
-  // Button click handler to navigate to the Menu page
   const handleViewMenuClick = () => {
-    navigate('/menu'); // Navigate to the menu page
+    navigate('/menu');
   };
 
   return (
@@ -179,55 +74,80 @@ const Home = () => {
       </div>
 
       <div className='swiper'>
+        {/* Short Eats Section */}
         <div className="card-swiper">
-          <h1>Short-Eates</h1>
+          <h1>Short Eats</h1>
           <div className="card-list">
             <div className="card-item">
-              <div className='arr1 left' onClick={() => handleSlideChange("decrement", Reviewusers.length, true)}>
+              <div className='arr1 left' onClick={() => handleSlideChange("decrement", shortEats.length, true)}>
                 <div></div>
               </div>
-              {Reviewusers.slice(count, count + 6).map(({ imageUrl, price, productTitle, rating }, index) => (
+              {shortEats.slice(count, count + visibleItems).map(({ imageUrl, price, name, rating }, index) => (
                 <ReviewUser
                   key={index}
                   imageUrl={imageUrl}
                   price={price}
-                  productTitle={productTitle}
+                  productTitle={name}
                   rating={rating || 0}
                   id={index}
                 />
               ))}
-              <div className='arr right' onClick={() => handleSlideChange("increment", Reviewusers.length, true)}>
+              <div className='arr right' onClick={() => handleSlideChange("increment", shortEats.length, true)}>
                 <div></div>
               </div>
             </div>
           </div>
         </div>
+
+        {/* Drinks Section */}
         <div className="card-swiper1">
           <h1>Drinks</h1>
           <div className="card-list">
             <div className="card-item">
-              <div className='arr1 left' onClick={() => handleSlideChange("decrement", Reviewusers1.length, false)}>
+              <div className='arr1 left' onClick={() => handleSlideChange("decrement", drinks.length, false, true)}>
                 <div></div>
               </div>
-              {Reviewusers1.slice(count1, count1 + 6).map(({ imageUrl, price, productTitle, rating }, index) => (
+              {drinks.slice(count1, count1 + visibleItems).map(({ imageUrl, price, name, rating }, index) => (
                 <ReviewUser
                   key={index}
                   imageUrl={imageUrl}
                   price={price}
-                  productTitle={productTitle}
+                  productTitle={name}
                   rating={rating || 0}
                   id={index}
                 />
               ))}
-              <div className='arr right' onClick={() => handleSlideChange("increment", Reviewusers1.length, false)}>
+              <div className='arr right' onClick={() => handleSlideChange("increment", drinks.length, false, true)}>
                 <div></div>
               </div>
             </div>
           </div>
         </div>
 
-
-
+        {/* Desserts Section */}
+        <div className="card-swiper2">
+          <h1>Desserts</h1>
+          <div className="card-list">
+            <div className="card-item">
+              <div className='arr1 left' onClick={() => handleSlideChange("decrement", desserts.length, false, false)}>
+                <div></div>
+              </div>
+              {desserts.slice(count2, count2 + visibleItems).map(({ imageUrl, price, name, rating }, index) => (
+                <ReviewUser
+                  key={index}
+                  imageUrl={imageUrl}
+                  price={price}
+                  productTitle={name}
+                  rating={rating || 0}
+                  id={index}
+                />
+              ))}
+              <div className='arr right' onClick={() => handleSlideChange("increment", desserts.length, false, false)}>
+                <div></div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -235,14 +155,13 @@ const Home = () => {
 
 export default Home;
 
-const ReviewUser = ({ imageUrl, price, productTitle, index, rating }) => {
+const ReviewUser = ({ imageUrl, price, productTitle, rating }) => {
   const starPercentage = (rating / 5) * 100;
   return (
-    <div className='card-link '>
-      <img src={imageUrl} alt={`review_user_${index}`} className="imge" />
+    <div className='card-link'>
+      <img src={imageUrl} alt={`review_user_${productTitle}`} className="imge" />
       <h3 className='titel'>{productTitle}</h3>
       <h3 className='price'>Rs.{price}</h3>
-
       <div className="star">
         <div className="stars-outer">
           <div className="stars-inner" style={{ width: `${starPercentage}%` }}></div>
