@@ -1,16 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import b1 from '../assets/b1.jpg';
-import b2 from '../assets/b2.jpg';
-import b3 from '../assets/b3.jpg';
-import b4 from '../assets/b4.jpg';
-import d1 from '../assets/d1.jpg';
-import d2 from '../assets/d2.jpg';
-import d3 from '../assets/d3.jpg';
-import d4 from '../assets/d4.jpg';
-import l1 from '../assets/l1.jpg';
-import l2 from '../assets/l2.jpg';
-import l3 from '../assets/l3.jpg';
+import axios from 'axios';
 import FoodItem from '../Components/FoodItem';
 import Footer from '../Components/Footer/Footer';
 import Header from '../Components/Header/Header';
@@ -19,25 +9,34 @@ import '../Pages/Menu.css';
 function Menu({ updateSelectedItems }) {
     const navigate = useNavigate();
 
-    const [breakfastItems, setBreakfastItems] = useState([
-        { id: 0, name: 'Dhal curry and Bread', price: 80, quantity: 1, image: b1, available: true, selected: false },
-        { id: 1, name: 'String Hoppers', price: 80, quantity: 1, image: b2, available: false, selected: false },
-        { id: 2, name: 'Rice and Curry', price: 120, quantity: 1, image: b3, available: true, selected: false },
-        { id: 3, name: 'Noodles', price: 80, quantity: 1, image: b4, available: false, selected: false },
-    ]);
+    const [breakfastItems, setBreakfastItems] = useState([]);
+    const [lunchItems, setLunchItems] = useState([]);
+    const [dinnerItems, setDinnerItems] = useState([]);
 
-    const [lunchItems, setLunchItems] = useState([
-        { id: 4, name: 'Rice and Curry (Veg)', price: 100, quantity: 1, image: l1, available: true, selected: false },
-        { id: 5, name: 'Rice and Curry (Non-Veg)', price: 120, quantity: 1, image: l2, available: true, selected: false },
-        { id: 6, name: 'Noodles', price: 80, quantity: 1, image: l3, available: true, selected: false },
-    ]);
+    // Fetch items from backend on component mount
+    useEffect(() => {
+        const fetchFoodItems = async (type, setItems) => {
+            try {
+                // Call your backend API to get food items by type
+                const response = await axios.get(`http://localhost:8080/api/fooditems/type/${type}`);
+                const items = response.data;
 
-    const [dinnerItems, setDinnerItems] = useState([
-        { id: 7, name: 'Kottu', price: 200, quantity: 1, image: d1, available: true, selected: false },
-        { id: 8, name: 'Noodles', price: 80, quantity: 1, image: d2, available: true, selected: false },
-        { id: 9, name: 'Rice and Curry', price: 120, quantity: 1, image: d3, available: false, selected: false },
-        { id: 10, name: 'String Hoppers', price: 80, quantity: 1, image: d4, available: true, selected: false },
-    ]);
+                // If Firebase is used, retrieve the URL for each image here
+                const itemsWithImages = await Promise.all(items.map(async (item) => {
+                    const imageUrl = item.imageUrl; // Assuming your backend provides this URL directly
+                    return { ...item, image: imageUrl };
+                }));
+
+                setItems(itemsWithImages);
+            } catch (error) {
+                console.error(`Error fetching ${type} items:`, error);
+            }
+        };
+
+        fetchFoodItems("Breakfast", setBreakfastItems);
+        fetchFoodItems("Lunch", setLunchItems);
+        fetchFoodItems("Dinner", setDinnerItems);
+    }, []);
 
     const handleToggleSelect = (id, items, setItems) => {
         const updatedItems = items.map((item) =>
