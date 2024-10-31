@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import AddProduct from './Pages/AddProduct.jsx';
+import Contact from './Pages/Contact.jsx';
 import FoodSelection from './Pages/FoodSelection.jsx';
+import Home from './Pages/Home.jsx';
 import LogIn from './Pages/LogIn.jsx';
 import Menu from './Pages/Menu.jsx';
 import SignUp from './Pages/SignUp.jsx';
-import Contact from './Pages/Contact.jsx';
-import Home from './Pages/Home.jsx';
 
 function ProtectedRoute({ children, roleRequired }) {
   const token = localStorage.getItem('token');
@@ -74,6 +74,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+        
       </Routes>
     </BrowserRouter>
   );
