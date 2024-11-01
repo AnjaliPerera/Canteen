@@ -1,0 +1,19 @@
+.dashboard {
+  display: flex;
+  flex-direction: row-reverse;
+  font-family: Arial, sans-serif;
+  
+}
+
+/* Sidebar styling for positioning */
+.sidebar {
+  width: 250px;
+  background-color: #f1e1d1;
+  padding: 20px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Food details styling to occupy the remaining space on the left */

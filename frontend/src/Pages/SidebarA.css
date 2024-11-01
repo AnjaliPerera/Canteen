@@ -1,64 +1,94 @@
+/* Sidebar.css */
 
+/* Base Sidebar Styles */
 .sidebar {
-    width: 200px;
-    background-color: #e0e0e0;
-    padding: 20px;
+  width: 200px; /* or adjust as needed */
+  height: 100vh; /* Full height */
+  background-color: #e0e0e0;
+  padding: 20px;
+  position: fixed; /* Fix to the left */
+  top: 0;
+  left: 0;
+  transform: translateX(-100%); /* Initially hidden */
+  transition: transform 0.3s ease;
+  z-index: 10;
+}
+
+.sidebar.open {
+  transform: translateX(0); /* Show sidebar */
+}
+
+.logo {
+  width: 161px;
+  height: 161px;
+  margin-bottom: 20px;
+}
+
+.menu {
+  list-style: none;
+  padding: 0;
+}
+
+.menu li {
+  padding: 10px 0;
+  cursor: pointer;
+}
+
+.menu li.active {
+  font-weight: bold;
+  color: #ff6600;
+}
+
+/* Hamburger Button */
+.hamburger {
+  display: none; /* Hidden by default */
+  font-size: 1.5em;
+  color: #333;
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  z-index: 20;
+}
+
+/* Tablet Screens (max-width: 768px) */
+@media (max-width: 768px) {
+  .hamburger {
+      display: block; /* Show on mobile */
   }
-  
-  .logo {
-    width: 161px;
-    height: 161px;
-    margin-bottom: 20px;
-  }
-  
-  .menu {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .menu li {
-    padding: 10px 0;
-    cursor: pointer;
-  }
-  
-  .menu li.active {
-    font-weight: bold;
-    color: #ff6600;
-  }
-  
-  /* Media query for tablets (max-width: 768px) */
-  @media (max-width: 768px) {
-    .sidebar {
+
+  .sidebar {
       width: 150px;
       padding: 15px;
-    }
-  
-    .logo {
+  }
+
+  .logo {
       width: 120px;
       height: 120px;
-    }
-  
-    .menu li {
-      padding: 8px 0;
-    }
   }
-  
-  /* Media query for mobile devices (max-width: 480px) */
-  @media (max-width: 480px) {
-    .sidebar {
+
+  .menu li {
+      padding: 8px 0;
+  }
+}
+
+/* Mobile Devices (max-width: 480px) */
+@media (max-width: 480px) {
+  .sidebar {
       width: 100%;
       padding: 10px;
-    }
-  
-    .logo {
+  }
+
+  .logo {
       width: 100px;
       height: 100px;
       margin-bottom: 15px;
-    }
-  
-    .menu li {
+  }
+
+  .menu li {
       padding: 6px 0;
       font-size: 14px;
-    }
   }
-  
+}
