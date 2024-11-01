@@ -20,7 +20,6 @@ function ProtectedRoute({ children, roleRequired }) {
 
   if (roleRequired && role !== roleRequired) {
     console.log(`Redirecting to appropriate route: Role is ${role}, but ${roleRequired} required`);
-    // Redirect users to the appropriate default page based on their role
     return role === "USER" ? <Navigate to="/home" /> : <Navigate to="/menu" />;
   }
 
@@ -30,7 +29,6 @@ function ProtectedRoute({ children, roleRequired }) {
 function App() {
   const [selectedItems, setSelectedItems] = useState([]);
 
-  // Update selected items when toggled in Menu
   const updateSelectedItems = (items) => {
     setSelectedItems(items);
   };
@@ -46,7 +44,7 @@ function App() {
         <Route
           path="/home"
           element={
-            <ProtectedRoute roleRequired="USER">
+            <ProtectedRoute>
               <Home />
             </ProtectedRoute>
           }
@@ -78,9 +76,9 @@ function App() {
           }
         />
 
-        {/* Order page for viewing specific orders, accessible to logged-in users */}
+        {/* Order page with dynamic order number */}
         <Route
-          path="/order"
+          path="/order/:orderNumber"
           element={
             <ProtectedRoute>
               <Order />
@@ -97,6 +95,9 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+        {/* Fallback to Home */}
+        <Route path="*" element={<Navigate to="/home" />} />
       </Routes>
     </BrowserRouter>
   );

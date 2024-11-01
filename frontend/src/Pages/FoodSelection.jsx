@@ -14,6 +14,7 @@ function FoodSelection() {
   const [totalPrice, setTotalPrice] = useState(0);
   const [pickupTime, setPickupTime] = useState(timeSlots[0] || ""); // Default to the first time slot
 
+  // Fetch available items and merge with selected items
   useEffect(() => {
     const fetchExtraCurryItems = async () => {
       try {
@@ -25,17 +26,18 @@ function FoodSelection() {
           fromMenu: false,
         }));
 
+        // Merge with selected items from Menu
         const mergedItems = fetchedItems.map(item => {
           const menuItem = selectedItems.find(selected => selected.id === item.id);
           if (menuItem) {
-            return { ...item, selected: true, quantity: 1, fromMenu: true };
+            return { ...item, selected: true, quantity: menuItem.quantity || 1, fromMenu: true };
           }
           return item;
         });
 
         const newMenuItems = selectedItems.filter(
           selected => !fetchedItems.some(item => item.id === selected.id)
-        ).map(item => ({ ...item, selected: true, quantity: 1, fromMenu: true }));
+        ).map(item => ({ ...item, selected: true, quantity: item.quantity || 1, fromMenu: true }));
 
         setOrderItems([...mergedItems, ...newMenuItems]);
       } catch (error) {
@@ -102,8 +104,8 @@ function FoodSelection() {
         const orderId = response.data.orderId;
         alert(`Your order has been placed successfully! Order ID: ${orderId}`);
 
-        // Navigate to the Order page and pass order details
-        navigate('/order', { state: { orderNumber: orderId, items: selectedItems, totalPrice, pickupTime } });
+        // Navigate to the Order page with order ID as a parameter
+        navigate(`/order/${orderId}`, { state: { orderNumber: orderId, items: selectedItems, totalPrice, pickupTime } });
 
         handleCancelOrder();
       } else {
