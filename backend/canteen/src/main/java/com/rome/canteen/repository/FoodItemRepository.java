@@ -10,4 +10,12 @@ public interface FoodItemRepository extends MongoRepository<FoodItem, String> {
 
     // Custom query method to find only available food items
     List<FoodItem> findByAvailableTrue();
-}
+
+    // Custom query method for partial matching by name (case-insensitive)
+    List<FoodItem> findByNameContainingIgnoreCase(String name);
+
+
+
+    }
+
+
