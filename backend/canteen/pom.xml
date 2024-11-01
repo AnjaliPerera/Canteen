@@ -2,27 +2,29 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
+    <!-- Spring Boot parent pom to manage dependencies and versions -->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.3.3</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+
+    <!-- Basic project information -->
     <groupId>com.rome</groupId>
     <artifactId>canteen</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>canteen</name>
     <description>A project to manage the science faculty canteen.</description>
 
+    <!-- Java version property -->
     <properties>
-        <java.version>17</java.version>
+        <java.version>17</java.version> <!-- Java 17 version -->
     </properties>
 
     <dependencies>
-
-
-
-
+        <!-- JSON Web Token (JWT) dependencies for token generation and validation -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-api</artifactId>
@@ -32,62 +34,63 @@
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-impl</artifactId>
             <version>0.11.5</version>
-            <scope>runtime</scope>
+            <scope>runtime</scope> <!-- Used at runtime only -->
         </dependency>
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt-jackson</artifactId> <!-- or jjwt-gson if you prefer Gson -->
+            <artifactId>jjwt-jackson</artifactId> <!-- For using Jackson with JWT -->
             <version>0.11.5</version>
             <scope>runtime</scope>
         </dependency>
 
+        <!-- Spring Boot starter for sending emails -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-mail</artifactId>
         </dependency>
 
 
-            <!-- Firebase Admin SDK -->
-            <dependency>
-                <groupId>com.google.firebase</groupId>
-                <artifactId>firebase-admin</artifactId>
-                <version>9.1.1</version> <!-- Use the latest version available -->
-            </dependency>
-
-            <!-- Google Auth Library (Required by Firebase) -->
-            <dependency>
-                <groupId>com.google.auth</groupId>
-                <artifactId>google-auth-library-oauth2-http</artifactId>
-                <version>1.17.0</version> <!-- Use the latest version available -->
-            </dependency>
 
 
 
 
 
+        <dependency>
+            <groupId>jakarta.persistence</groupId>
+            <artifactId>jakarta.persistence-api</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+
+        <!-- Firebase Admin SDK for integrating with Firebase services -->
+        <dependency>
+            <groupId>com.google.firebase</groupId>
+            <artifactId>firebase-admin</artifactId>
+            <version>9.1.1</version> <!-- Firebase SDK version -->
+        </dependency>
+
+        <!-- Google Auth Library for Firebase Authentication -->
+        <dependency>
+            <groupId>com.google.auth</groupId>
+            <artifactId>google-auth-library-oauth2-http</artifactId>
+            <version>1.17.0</version>
+        </dependency>
 
 
-
-
-
-
+        <!-- Spring Boot Autoconfigure for automatic configuration of Spring Boot components -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-autoconfigure</artifactId>
         </dependency>
 
-
-
-
-
+        <!-- Java Servlet API for building web applications -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
-            <version>4.0.1</version> <!-- Added version 4.0.1 -->
-            <scope>provided</scope>
+            <version>4.0.1</version> <!-- Java Servlet API version -->
+            <scope>provided</scope> <!-- Provided by the application server -->
         </dependency>
 
-
+        <!-- Jakarta Servlet API, an alternative to javax.servlet for servlet handling -->
         <dependency>
             <groupId>jakarta.servlet</groupId>
             <artifactId>jakarta.servlet-api</artifactId>
@@ -95,62 +98,52 @@
             <scope>provided</scope>
         </dependency>
 
-
-
-
-
-
-
-
-
-
-
-
-
         <!-- Spring Web for building REST APIs -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!-- Spring Data MongoDB -->
+        <!-- Spring Data MongoDB for connecting and working with MongoDB databases -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-mongodb</artifactId>
         </dependency>
 
-        <!-- Spring Security -->
+        <!-- Spring Security for application security -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
-        <!-- JWT for token generation and validation -->
-
-
-
-
-        <!-- Testing Dependencies -->
+        <!-- Testing dependencies for Spring Boot applications -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
+            <scope>test</scope> <!-- Only used for testing -->
         </dependency>
 
+        <!-- Spring Security Test for testing secured endpoints -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
+    <!-- Build configurations -->
     <build>
         <plugins>
+            <!-- Spring Boot Maven Plugin for packaging the application as a Spring Boot jar/war -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
+
+
+
+
+
 </project>
