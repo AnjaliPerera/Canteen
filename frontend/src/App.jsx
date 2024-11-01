@@ -7,6 +7,7 @@ import Menu from './Pages/Menu.jsx';
 import SignUp from './Pages/SignUp.jsx';
 import Contact from './Pages/Contact.jsx';
 import Home from './Pages/Home.jsx';
+import Order from './Pages/Order.jsx';
 
 function ProtectedRoute({ children, roleRequired }) {
   const token = localStorage.getItem('token');
@@ -17,16 +18,10 @@ function ProtectedRoute({ children, roleRequired }) {
     return <Navigate to="/" />;
   }
 
-  // Redirect "USER" role directly to Home if not already there
-  if (role === "USER" && roleRequired !== "USER") {
-    console.log("Redirecting to home: Role is USER");
-    return <Navigate to="/home" />;
-  }
-
-  // Redirect to Menu if the required role doesn't match
   if (roleRequired && role !== roleRequired) {
-    console.log(`Redirecting to menu: Role is ${role}, but ${roleRequired} required`);
-    return <Navigate to="/menu" />;
+    console.log(`Redirecting to appropriate route: Role is ${role}, but ${roleRequired} required`);
+    // Redirect users to the appropriate default page based on their role
+    return role === "USER" ? <Navigate to="/home" /> : <Navigate to="/menu" />;
   }
 
   return children;
@@ -47,13 +42,51 @@ function App() {
         <Route path="/" element={<LogIn />} />
         <Route path="/signup" element={<SignUp />} />
 
-        {/* Home and menu accessible after login */}
-        <Route path="/home" element={<Home />} />
-        <Route path="/menu" element={<Menu updateSelectedItems={updateSelectedItems} />} />
+        {/* Routes accessible after login */}
+        <Route
+          path="/home"
+          element={
+            <ProtectedRoute roleRequired="USER">
+              <Home />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/menu"
+          element={
+            <ProtectedRoute>
+              <Menu updateSelectedItems={updateSelectedItems} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/foodselection"
+          element={
+            <ProtectedRoute>
+              <FoodSelection selectedItems={selectedItems} />
+            </ProtectedRoute>
+          }
+        />
 
-        {/* Food Selection and Contact pages */}
-        <Route path="/foodselection" element={<FoodSelection selectedItems={selectedItems} />} />
-        <Route path="/contact" element={<Contact />} />
+        {/* Contact page, accessible by all logged-in users */}
+        <Route
+          path="/contact"
+          element={
+            <ProtectedRoute>
+              <Contact />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Order page for viewing specific orders, accessible to logged-in users */}
+        <Route
+          path="/order"
+          element={
+            <ProtectedRoute>
+              <Order />
+            </ProtectedRoute>
+          }
+        />
 
         {/* Protected route for OWNER role to access AddProduct (Dashboard) */}
         <Route
@@ -61,16 +94,6 @@ function App() {
           element={
             <ProtectedRoute roleRequired="OWNER">
               <AddProduct />
-            </ProtectedRoute>
-          }
-        />
-
-        {/* Protected route for USER role to access Home */}
-        <Route
-          path="/home"
-          element={
-            <ProtectedRoute roleRequired="USER">
-              <Home />
             </ProtectedRoute>
           }
         />

@@ -1,38 +1,54 @@
 import React from "react";
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import img2 from "../assets/product-selected (1).png";
 import img3 from "../assets/product-selected (2).png";
 import img1 from "../assets/product-selected.png";
-import welcomeImage from "../assets/Rectangle 8.png";
 import Footer from '../Components/Footer/Footer';
 import Header from '../Components/Header/Header';
 import "./Order.css";
 
 export default function Order() {
+  const navigate = useNavigate();
+
+  // Sample order details data
+  const orderDetails = {
+    orderNumber: "L312",
+    items: [
+      { img: img1, name: "Rice and Curry (VEG)", price: "LKR 100", qty: 1 },
+      { img: img2, name: "Chicken Portion", price: "LKR 80", qty: 1 },
+      { img: img3, name: "Boiled Egg", price: "LKR 70", qty: 2 },
+    ],
+  };
+
+  // Handle the cancel order functionality
+  const handleCancelOrder = async () => {
+    try {
+      // Replace this URL with your backend endpoint
+      await axios.delete(`http://localhost:8080/api/orders/${orderDetails.orderNumber}`);
+      alert("Order canceled successfully.");
+      navigate('/'); // Redirect user after cancellation, if needed
+    } catch (error) {
+      alert("Failed to cancel the order. Please try again.");
+      console.error("Cancel order error:", error);
+    }
+  };
+
   return (
     <>
       <Header />
 
       <div className="order-container">
-        <div className="text-center">
-          <img src={welcomeImage} alt="" className="welcome-image" />
-          <h1 className="welcome-text">Welcome</h1>
-          <button className="order-button">Order</button>
-        </div>
-
         <div className="profile-section">
           <h3 className="profile-title">YOUR PROFILE</h3>
           <div className="grid-container">
             <div>
               <div className="order-details">
                 <p className="order-no">Order No:</p>
-                <p className="order-no-value">L312</p>
+                <p className="order-no-value">{orderDetails.orderNumber}</p>
               </div>
               <div className="space-y-6 mt-6">
-                {[
-                  { img: img1, name: "Rice and Curry (VEG)", price: "LKR 100", qty: 1 },
-                  { img: img2, name: "Chicken Portion", price: "LKR 80", qty: 1 },
-                  { img: img3, name: "Boiled Egg", price: "LKR 70", qty: 2 },
-                ].map((item, index) => (
+                {orderDetails.items.map((item, index) => (
                   <div key={index} className="product-item">
                     <div className="flex items-center">
                       <img src={item.img} alt={item.name} className="product-image" />
@@ -50,7 +66,9 @@ export default function Order() {
               </div>
 
               <div>
-                <button className="cancel-order-button">Cancel Order</button>
+                <button className="cancel-order-button" onClick={handleCancelOrder}>
+                  Cancel Order
+                </button>
               </div>
             </div>
             <div>
