@@ -50,4 +50,10 @@ public class FoodItemService {
     public Optional<FoodItem> getFoodItemById(String id) {
         return foodItemRepository.findById(id);
     }
+
+
+    // Method to search food items by name using partial matching
+    public List<FoodItem> getFoodItemsByName(String name) {
+        return foodItemRepository.findByNameContainingIgnoreCase(name);
+    }
 }

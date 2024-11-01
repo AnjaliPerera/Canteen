@@ -8,13 +8,13 @@ import '../Pages/FoodSelection.css';
 function FoodSelection() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { selectedItems = [], timeSlots = [] } = location.state || {}; // Get selected items and time slots from Menu
+  const { selectedItems = [], timeSlots = [] } = location.state || {};
 
   const [orderItems, setOrderItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [pickupTime, setPickupTime] = useState(timeSlots[0] || ""); // Default to the first time slot
+  const [searchQuery, setSearchQuery] = useState('');
 
-  // Fetch available items and merge with selected items
   useEffect(() => {
     const fetchExtraCurryItems = async () => {
       try {
@@ -26,18 +26,17 @@ function FoodSelection() {
           fromMenu: false,
         }));
 
-        // Merge with selected items from Menu
         const mergedItems = fetchedItems.map(item => {
           const menuItem = selectedItems.find(selected => selected.id === item.id);
           if (menuItem) {
-            return { ...item, selected: true, quantity: menuItem.quantity || 1, fromMenu: true };
+            return { ...item, selected: true, quantity: 1, fromMenu: true };
           }
           return item;
         });
 
         const newMenuItems = selectedItems.filter(
           selected => !fetchedItems.some(item => item.id === selected.id)
-        ).map(item => ({ ...item, selected: true, quantity: item.quantity || 1, fromMenu: true }));
+        ).map(item => ({ ...item, selected: true, quantity: 1, fromMenu: true }));
 
         setOrderItems([...mergedItems, ...newMenuItems]);
       } catch (error) {
@@ -104,8 +103,8 @@ function FoodSelection() {
         const orderId = response.data.orderId;
         alert(`Your order has been placed successfully! Order ID: ${orderId}`);
 
-        // Navigate to the Order page with order ID as a parameter
-        navigate(`/order/${orderId}`, { state: { orderNumber: orderId, items: selectedItems, totalPrice, pickupTime } });
+        // Navigate to the Order page and pass order details
+        navigate('/order', { state: { orderNumber: orderId, items: selectedItems, totalPrice, pickupTime } });
 
         handleCancelOrder();
       } else {
@@ -124,13 +123,33 @@ function FoodSelection() {
     setTotalPrice(total);
   }, [orderItems]);
 
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const filteredItems = orderItems.filter(item =>
+    item.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <>
       <Header />
       <div className="food-selection">
         <h2>Extra Curry Selection</h2>
+
+        {/* Search Bar */}
+        <div className="search-bar">
+          <input
+            type="text"
+            placeholder="Search for items..."
+            value={searchQuery}
+            onChange={handleSearchChange}
+          />
+        </div>
+
+        {/* Food Items */}
         <div className="food-items">
-          {orderItems
+          {filteredItems
             .filter(item => !item.fromMenu)
             .map(item => (
               <div className="food-card" key={item.id}>
@@ -152,6 +171,8 @@ function FoodSelection() {
               </div>
             ))}
         </div>
+
+        {/* Order Summary */}
         <div className="order-summary">
           {orderItems
             .filter(item => item.selected)

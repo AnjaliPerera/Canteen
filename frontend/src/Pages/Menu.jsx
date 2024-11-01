@@ -12,21 +12,22 @@ function Menu({ updateSelectedItems }) {
     const [breakfastItems, setBreakfastItems] = useState([]);
     const [lunchItems, setLunchItems] = useState([]);
     const [dinnerItems, setDinnerItems] = useState([]);
-    const [selectedCategory, setSelectedCategory] = useState('Breakfast'); // Default to Breakfast
+    const [selectedCategory, setSelectedCategory] = useState('Breakfast');
+    const [searchQuery, setSearchQuery] = useState(''); // State for search input
 
     // Time slots for each category
     const timeSlots = {
         Breakfast: [
-            "7:00 - 7:30", "7:30 - 8:00", "8:00 - 8:30", "8:30 - 9:00",
-            "9:00 - 9:30", "9:30 - 10:00 ", "10:00 - 10:30", "10:30 - 11:00"
+            "7:00 AM - 7:30 AM", "7:30 AM - 8:00 AM", "8:00 AM - 8:30 AM", "8:30 AM - 9:00 AM",
+            "9:00 AM - 9:30 AM", "9:30 AM - 10:00 AM", "10:00 AM - 10:30 AM", "10:30 AM - 11:00 AM"
         ],
         Lunch: [
-            "12:00 - 12:30", "12:30 - 13:00", "13:00 - 13:30", "13:30 - 14:00",
-            "14:00 - 14:30", "14:30 - 14:00", "15:00 - 15:30", "15:30 - 16:00",
-            "16:00 - 16:30", "16:30 - 17:00"
+            "12:00 PM - 12:30 PM", "12:30 PM - 1:00 PM", "1:00 PM - 1:30 PM", "1:30 PM - 2:00 PM",
+            "2:00 PM - 2:30 PM", "2:30 PM - 3:00 PM", "3:00 PM - 3:30 PM", "3:30 PM - 4:00 PM",
+            "4:00 PM - 4:30 PM", "4:30 PM - 5:00 PM"
         ],
         Dinner: [
-            "18:00 - 18:30", "18:30 - 19:00", "19:00 - 19:30"
+            "6:00 PM - 6:30 PM", "6:30 PM - 7:00 PM", "7:00 PM - 7:30 PM"
         ]
     };
 
@@ -83,10 +84,31 @@ function Menu({ updateSelectedItems }) {
         });
     };
 
+    const handleSearchChange = (event) => {
+        setSearchQuery(event.target.value);
+    };
+
+    // Filter items based on search query and selected category
+    const filteredItems = (items) =>
+        items.filter(item =>
+            item.name.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+
     return (
         <div>
             <Header />
             <div className="food-section">
+                {/* Search bar */}
+                <div className="search-bar">
+                    <input
+                        type="text"
+                        placeholder="Search for food items..."
+                        value={searchQuery}
+                        onChange={handleSearchChange}
+                    />
+                </div>
+
+                {/* Category selection */}
                 <nav className="category-select">
                     <ul>
                         {["Breakfast", "Lunch", "Dinner"].map((category) => (
@@ -102,24 +124,25 @@ function Menu({ updateSelectedItems }) {
                     </ul>
                 </nav>
 
+                {/* Display filtered items based on search query and category */}
                 <section id={selectedCategory.toLowerCase()}>
                     <h2>{selectedCategory}</h2>
                     <div className="food-items">
-                        {selectedCategory === 'Breakfast' && breakfastItems.map((item) => (
+                        {selectedCategory === 'Breakfast' && filteredItems(breakfastItems).map((item) => (
                             <FoodItem
                                 key={item.id}
                                 item={item}
                                 onToggleSelect={() => handleToggleSelect(item.id, breakfastItems, setBreakfastItems)}
                             />
                         ))}
-                        {selectedCategory === 'Lunch' && lunchItems.map((item) => (
+                        {selectedCategory === 'Lunch' && filteredItems(lunchItems).map((item) => (
                             <FoodItem
                                 key={item.id}
                                 item={item}
                                 onToggleSelect={() => handleToggleSelect(item.id, lunchItems, setLunchItems)}
                             />
                         ))}
-                        {selectedCategory === 'Dinner' && dinnerItems.map((item) => (
+                        {selectedCategory === 'Dinner' && filteredItems(dinnerItems).map((item) => (
                             <FoodItem
                                 key={item.id}
                                 item={item}

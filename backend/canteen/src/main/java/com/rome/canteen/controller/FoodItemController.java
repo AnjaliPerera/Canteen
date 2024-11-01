@@ -111,5 +111,13 @@ public class FoodItemController {
     }
 
 
+    // Endpoint for searching food items by name
+    @GetMapping("api/search")
+    public ResponseEntity<List<FoodItem>> searchFoodItemsByName(@RequestParam("name") String name) {
+        List<FoodItem> items = foodItemService.getFoodItemsByName(name);
+        return items.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(items);
+    }
+
+
 
 }
