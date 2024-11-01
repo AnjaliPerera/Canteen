@@ -1,18 +1,17 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import './LogIn.css';  // Assuming you have your CSS file for styling
-import { useNavigate } from 'react-router-dom';  // Import useNavigate
+import './LogIn.css';
+import { useNavigate } from 'react-router-dom';
 
 const LogIn = () => {
   const [formData, setFormData] = useState({
-           name: '',
-           userId: '',
-           email: '',
-           password: '',
-           rememberMe: false,
+    email: '',
+    password: '',
+    rememberMe: false,
   });
-
-  const navigate = useNavigate();  // Initialize useNavigate for redirection
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -26,38 +25,32 @@ const LogIn = () => {
     e.preventDefault();
 
     try {
+      setIsLoading(true);
       const response = await axios.post('http://localhost:8080/auth/login', {
         email: formData.email,
         password: formData.password,
       });
 
-      const token = response.data.jwt;  // Assuming the JWT token is returned as plain text
+      const token = response.data.jwt;
       console.log('Token:', token);
 
-      // Decode JWT to retrieve role and check expiration
       const decodedToken = JSON.parse(atob(token.split('.')[1]));
       const role = decodedToken.role;
-      const isExpired = decodedToken.exp * 1000 < Date.now();
 
-      if (isExpired) {
-        alert("Session expired. Please log in again.");
-        return;
-      }
-
-      // Store token and role in either localStorage or sessionStorage based on rememberMe
       const storage = formData.rememberMe ? localStorage : sessionStorage;
       storage.setItem('token', token);
       storage.setItem('role', role);
 
-      // Redirect based on the role
       if (role === 'OWNER') {
-        navigate('/dashboard'); // Go to Dashboard if role is OWNER
-      } else {
-        navigate('/menu'); // Go to Menu for other users
+        navigate('/dashboard');
+      } else if (role === 'user') { // Redirect users with "user" role to Home page
+        navigate('/home');
       }
     } catch (error) {
       console.error('Error during login:', error);
       alert('Login failed. Check your credentials.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -66,19 +59,8 @@ const LogIn = () => {
       <form className="login-form" onSubmit={handleSubmit}>
         <h2>Log In</h2>
 
-<label htmlFor="userId">User ID</label>
-  <input
-    type="text"
-    name="userId"
-    id="userId"
-    placeholder="User ID"
-    value={formData.userId}
-    onChange={handleChange}
-    required
-  />
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
 
-
-        {/* Email input */}
         <label htmlFor="email">Email</label>
         <input
           type="email"
@@ -90,7 +72,6 @@ const LogIn = () => {
           required
         />
 
-        {/* Password input */}
         <label htmlFor="password">Password</label>
         <input
           type="password"
@@ -102,7 +83,6 @@ const LogIn = () => {
           required
         />
 
-        {/* Remember Me checkbox */}
         <div className="form-options">
           <div className="checkbox-container">
             <input
@@ -122,8 +102,9 @@ const LogIn = () => {
           </a>
         </div>
 
-        {/* Submit button */}
-        <button type="submit">Log In</button>
+        <button type="submit" disabled={isLoading}>
+          {isLoading ? 'Logging In...' : 'Log In'}
+        </button>
       </form>
 
       <div className="signup-option">

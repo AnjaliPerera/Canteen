@@ -1,0 +1,64 @@
+
+.sidebar {
+    width: 200px;
+    background-color: #e0e0e0;
+    padding: 20px;
+  }
+  
+  .logo {
+    width: 161px;
+    height: 161px;
+    margin-bottom: 20px;
+  }
+  
+  .menu {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .menu li {
+    padding: 10px 0;
+    cursor: pointer;
+  }
+  
+  .menu li.active {
+    font-weight: bold;
+    color: #ff6600;
+  }
+  
+  /* Media query for tablets (max-width: 768px) */
+  @media (max-width: 768px) {
+    .sidebar {
+      width: 150px;
+      padding: 15px;
+    }
+  
+    .logo {
+      width: 120px;
+      height: 120px;
+    }
+  
+    .menu li {
+      padding: 8px 0;
+    }
+  }
+  
+  /* Media query for mobile devices (max-width: 480px) */
+  @media (max-width: 480px) {
+    .sidebar {
+      width: 100%;
+      padding: 10px;
+    }
+  
+    .logo {
+      width: 100px;
+      height: 100px;
+      margin-bottom: 15px;
+    }
+  
+    .menu li {
+      padding: 6px 0;
+      font-size: 14px;
+    }
+  }
+  

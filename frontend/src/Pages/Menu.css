@@ -140,4 +140,42 @@ nav ul li a:hover {
     flex: 0 0 45%; /* 45% width for two items per row with some space around */
     margin-bottom: 5px;
   }
+
+ /* Category selection buttons */
+ .category-select button {
+   background-color: #f0c987; /* Light peach background */
+   color: #333; /* Dark text for readability */
+   border: none;
+   padding: 10px 20px;
+   margin: 0 5px;
+   font-size: 1em;
+   font-weight: bold;
+   cursor: pointer;
+   border-radius: 8px;
+   transition: background-color 0.3s ease, color 0.3s ease;
+ }
+
+ .category-select button:hover {
+   background-color: #e89f5b; /* Darker peach on hover */
+   color: #fff;
+ }
+
+ .category-select button.active {
+   background-color: #4CAF50; /* Green to indicate the active category */
+   color: white;
+ }
+
+ /* Adjustments for nav list */
+ nav ul {
+   list-style-type: none;
+   padding: 0;
+   margin: 0;
+   text-align: center;
+ }
+
+ nav ul li {
+   display: inline;
+   margin: 0 1em;
+ }
+
 }  
