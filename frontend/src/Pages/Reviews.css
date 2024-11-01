@@ -1,0 +1,38 @@
+/* Components/Reviews/Reviews.css */
+.reviews-dashboard {
+    display: flex;
+    background-color: #f5e5d9;
+    margin-left: 250px;
+    
+  }
+  
+  .reviews-content {
+    
+    padding: 10px;
+    background-color: #f5e5d9;
+    
+  }
+  .reviews-content h2 {
+    margin-bottom: 20px; /* Remove default margin */
+    font-size: 2rem; /* Set a font size that suits your design */
+    font-weight: bold; /* Make it bold for emphasis */
+  }
+  
+  .review-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  
+  }
+  
+  @media (max-width: 768px) {
+    .reviews-dashboard {
+      flex-direction: column;
+    }
+  
+    .sidebar {
+      width: 100%;
+      padding: 10px;
+    }
+  }
+  

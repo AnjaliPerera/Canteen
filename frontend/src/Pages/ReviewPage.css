@@ -1,0 +1,11 @@
+/* styles/App.css */
+.app {
+  display: flex;
+  
+}
+
+.main-content {
+  flex: 1;
+  background-color: #f5e5d9;
+  margin: -10px;
+}
