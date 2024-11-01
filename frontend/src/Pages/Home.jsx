@@ -10,8 +10,9 @@ const Home = () => {
   const [desserts, setDesserts] = useState([]);
   const [count, setCount] = useState(0);
   const [count1, setCount1] = useState(0);
-  const [count2, setCount2] = useState(0); // For Desserts
+  const [count2, setCount2] = useState(0);
   const [visibleItems, setVisibleItems] = useState(6);
+  const [searchQuery, setSearchQuery] = useState(''); // State for search query
   const navigate = useNavigate();
 
   // Fetch data from backend
@@ -62,6 +63,15 @@ const Home = () => {
     navigate('/menu');
   };
 
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
+  // Filter items based on search query
+  const filterItems = (items) => items.filter(item =>
+    item.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div className='Home-container'>
       <div className='fistimage'>
@@ -73,6 +83,16 @@ const Home = () => {
         </div>
       </div>
 
+      {/* Search bar */}
+      <div className="search-bar">
+        <input
+          type="text"
+          placeholder="Search for food items..."
+          value={searchQuery}
+          onChange={handleSearchChange}
+        />
+      </div>
+
       <div className='swiper'>
         {/* Short Eats Section */}
         <div className="card-swiper">
@@ -82,7 +102,7 @@ const Home = () => {
               <div className='arr1 left' onClick={() => handleSlideChange("decrement", shortEats.length, true)}>
                 <div></div>
               </div>
-              {shortEats.slice(count, count + visibleItems).map(({ imageUrl, price, name, rating }, index) => (
+              {filterItems(shortEats).slice(count, count + visibleItems).map(({ imageUrl, price, name, rating }, index) => (
                 <ReviewUser
                   key={index}
                   imageUrl={imageUrl}
@@ -107,7 +127,7 @@ const Home = () => {
               <div className='arr1 left' onClick={() => handleSlideChange("decrement", drinks.length, false, true)}>
                 <div></div>
               </div>
-              {drinks.slice(count1, count1 + visibleItems).map(({ imageUrl, price, name, rating }, index) => (
+              {filterItems(drinks).slice(count1, count1 + visibleItems).map(({ imageUrl, price, name, rating }, index) => (
                 <ReviewUser
                   key={index}
                   imageUrl={imageUrl}
@@ -132,7 +152,7 @@ const Home = () => {
               <div className='arr1 left' onClick={() => handleSlideChange("decrement", desserts.length, false, false)}>
                 <div></div>
               </div>
-              {desserts.slice(count2, count2 + visibleItems).map(({ imageUrl, price, name, rating }, index) => (
+              {filterItems(desserts).slice(count2, count2 + visibleItems).map(({ imageUrl, price, name, rating }, index) => (
                 <ReviewUser
                   key={index}
                   imageUrl={imageUrl}

@@ -90,7 +90,7 @@ function App() {
         <Route
           path="/dashboard"
           element={
-            <ProtectedRoute roleRequired="OWNER">
+            <ProtectedRoute roleRequired="ADMIN">
               <AddProduct />
             </ProtectedRoute>
           }
