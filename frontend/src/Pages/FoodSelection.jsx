@@ -7,29 +7,29 @@ import '../Pages/FoodSelection.css';
 
 function FoodSelection() {
   const location = useLocation();
-  const { selectedItems = [] } = location.state || {}; // Get selected items from Menu
+  const { selectedItems = [], timeSlots = [] } = location.state || {}; // Get selected items and time slots from Menu
 
   const [orderItems, setOrderItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [pickupTime, setPickupTime] = useState("10.30 AM - 11.00 AM");
+  const [pickupTime, setPickupTime] = useState(timeSlots[0] || ""); // Default to the first time slot
 
-  // Fetch extra curry items from backend on component mount
+  // Fetch extra curry items from the backend on component mount
   useEffect(() => {
     const fetchExtraCurryItems = async () => {
       try {
         const response = await axios.get('http://localhost:8080/api/fooditems/type/Extra Curry');
         const fetchedItems = response.data.map(item => ({
           ...item,
-          quantity: 1,
+          quantity: 1, // Set default quantity to 1 for extra curry items
           selected: false,
           fromMenu: false,
         }));
 
-        // Merge fetched items with selected items from Menu
+        // Merge fetched items with selected items from Menu, setting quantity to 1 for all
         const mergedItems = fetchedItems.map(item => {
           const menuItem = selectedItems.find(selected => selected.id === item.id);
           if (menuItem) {
-            return { ...item, selected: true, quantity: menuItem.quantity, fromMenu: true };
+            return { ...item, selected: true, quantity: 1, fromMenu: true }; // Quantity set to 1 for menu items as well
           }
           return item;
         });
@@ -37,7 +37,7 @@ function FoodSelection() {
         // Add any new selected items from the Menu that aren’t in the extra curry list
         const newMenuItems = selectedItems.filter(
           selected => !fetchedItems.some(item => item.id === selected.id)
-        ).map(item => ({ ...item, selected: true, fromMenu: true }));
+        ).map(item => ({ ...item, selected: true, quantity: 1, fromMenu: true })); // Set quantity to 1
 
         setOrderItems([...mergedItems, ...newMenuItems]);
       } catch (error) {
@@ -81,7 +81,7 @@ function FoodSelection() {
     const resetOrder = orderItems.map(item => ({
       ...item,
       selected: false,
-      quantity: item.fromMenu ? 1 : item.quantity,
+      quantity: 1, // Reset quantity to 1 for all items
     }));
     setOrderItems(resetOrder);
   };
@@ -102,7 +102,7 @@ function FoodSelection() {
     };
 
     try {
-      const response = await axios.post('https://your-backend-api.com/orders', order, {
+      const response = await axios.post('http://localhost:8080/api/orders', order, {
         headers: { 'Content-Type': 'application/json' },
       });
 
@@ -120,7 +120,9 @@ function FoodSelection() {
 
   // Calculate total price for selected items
   useEffect(() => {
-    const total = orderItems.reduce((acc, item) => (item.selected ? acc + item.price * item.quantity : acc), 0);
+    const total = orderItems.reduce((acc, item) =>
+      item.selected ? acc + item.price * item.quantity : acc
+    , 0);
     setTotalPrice(total);
   }, [orderItems]);
 
@@ -183,10 +185,9 @@ function FoodSelection() {
           <div className="pickup-time">
             <label>Select pickup time:</label>
             <select value={pickupTime} onChange={(e) => setPickupTime(e.target.value)}>
-              <option>10.30 AM - 11.00 AM</option>
-              <option>11:00 AM - 11:30 AM</option>
-              <option>12:00 PM - 12:30 PM</option>
-              <option>1:00 PM - 1:30 PM</option>
+              {timeSlots.map((slot, index) => (
+                <option key={index} value={slot}>{slot}</option>
+              ))}
             </select>
           </div>
           <h3>Total: LKR {totalPrice}</h3>
