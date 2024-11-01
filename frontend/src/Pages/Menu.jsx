@@ -12,19 +12,34 @@ function Menu({ updateSelectedItems }) {
     const [breakfastItems, setBreakfastItems] = useState([]);
     const [lunchItems, setLunchItems] = useState([]);
     const [dinnerItems, setDinnerItems] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState('Breakfast'); // Default to Breakfast
+
+    // Time slots for each category
+    const timeSlots = {
+        Breakfast: [
+            "7:00 AM - 7:30 AM", "7:30 AM - 8:00 AM", "8:00 AM - 8:30 AM", "8:30 AM - 9:00 AM",
+            "9:00 AM - 9:30 AM", "9:30 AM - 10:00 AM", "10:00 AM - 10:30 AM", "10:30 AM - 11:00 AM"
+        ],
+        Lunch: [
+            "12:00 PM - 12:30 PM", "12:30 PM - 1:00 PM", "1:00 PM - 1:30 PM", "1:30 PM - 2:00 PM",
+            "2:00 PM - 2:30 PM", "2:30 PM - 3:00 PM", "3:00 PM - 3:30 PM", "3:30 PM - 4:00 PM",
+            "4:00 PM - 4:30 PM", "4:30 PM - 5:00 PM"
+        ],
+        Dinner: [
+            "6:00 PM - 6:30 PM", "6:30 PM - 7:00 PM", "7:00 PM - 7:30 PM"
+        ]
+    };
 
     // Fetch items from backend on component mount
     useEffect(() => {
         const fetchFoodItems = async (type, setItems) => {
             try {
-                // Call your backend API to get food items by type
                 const response = await axios.get(`http://localhost:8080/api/fooditems/type/${type}`);
                 const items = response.data;
 
-                // If Firebase is used, retrieve the URL for each image here
-                const itemsWithImages = await Promise.all(items.map(async (item) => {
-                    const imageUrl = item.imageUrl; // Assuming your backend provides this URL directly
-                    return { ...item, image: imageUrl };
+                const itemsWithImages = items.map((item) => ({
+                    ...item,
+                    image: item.imageUrl,
                 }));
 
                 setItems(itemsWithImages);
@@ -37,6 +52,10 @@ function Menu({ updateSelectedItems }) {
         fetchFoodItems("Lunch", setLunchItems);
         fetchFoodItems("Dinner", setDinnerItems);
     }, []);
+
+    const handleCategorySelect = (category) => {
+        setSelectedCategory(category);
+    };
 
     const handleToggleSelect = (id, items, setItems) => {
         const updatedItems = items.map((item) =>
@@ -58,51 +77,49 @@ function Menu({ updateSelectedItems }) {
             ...lunchItems.filter(item => item.selected),
             ...dinnerItems.filter(item => item.selected),
         ];
-        navigate('/foodselection', { state: { selectedItems } });
+        // Pass selectedItems, selectedCategory, and time slots to FoodSelection page
+        navigate('/foodselection', {
+            state: { selectedItems, selectedCategory, timeSlots: timeSlots[selectedCategory] }
+        });
     };
 
     return (
         <div>
             <Header />
             <div className="food-section">
-                <nav>
+                <nav className="category-select">
                     <ul>
-                        <li><a href="#breakfast">Breakfast</a></li>
-                        <li><a href="#lunch">Lunch</a></li>
-                        <li><a href="#dinner">Dinner</a></li>
+                        {["Breakfast", "Lunch", "Dinner"].map((category) => (
+                            <li key={category}>
+                                <button
+                                    onClick={() => handleCategorySelect(category)}
+                                    className={selectedCategory === category ? 'active' : ''}
+                                >
+                                    {category}
+                                </button>
+                            </li>
+                        ))}
                     </ul>
                 </nav>
 
-                <section id="breakfast">
-                    <h2>Breakfast</h2>
+                <section id={selectedCategory.toLowerCase()}>
+                    <h2>{selectedCategory}</h2>
                     <div className="food-items">
-                        {breakfastItems.map((item) => (
+                        {selectedCategory === 'Breakfast' && breakfastItems.map((item) => (
                             <FoodItem
                                 key={item.id}
                                 item={item}
                                 onToggleSelect={() => handleToggleSelect(item.id, breakfastItems, setBreakfastItems)}
                             />
                         ))}
-                    </div>
-                </section>
-
-                <section id="lunch">
-                    <h2>Lunch</h2>
-                    <div className="food-items">
-                        {lunchItems.map((item) => (
+                        {selectedCategory === 'Lunch' && lunchItems.map((item) => (
                             <FoodItem
                                 key={item.id}
                                 item={item}
                                 onToggleSelect={() => handleToggleSelect(item.id, lunchItems, setLunchItems)}
                             />
                         ))}
-                    </div>
-                </section>
-
-                <section id="dinner">
-                    <h2>Dinner</h2>
-                    <div className="food-items">
-                        {dinnerItems.map((item) => (
+                        {selectedCategory === 'Dinner' && dinnerItems.map((item) => (
                             <FoodItem
                                 key={item.id}
                                 item={item}
