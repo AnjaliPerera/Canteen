@@ -1,0 +1,95 @@
+.review-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid orange;
+  transition: transform 0.3s ease;
+}
+
+.review-card:hover {
+  transform: scale(1.02);
+}
+
+.review-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.review-header h4 {
+  text-align: left;
+  margin-left: 20px;
+}
+
+.profile-image {
+  width: 70px; /* Desktop size */
+  height: 70px;
+  border-radius: 50%;
+  border: 2px solid orange;
+  object-fit: cover;
+  transition: width 0.3s, height 0.3s;
+}
+
+.review-text {
+  font-size: 14px;
+  color: #333;
+  margin: 10px 0;
+  line-height: 1.4;
+}
+
+.food-image img {
+  width: 90px;
+  height: 90px;
+  border-radius: 10px;
+  object-fit: cover;
+  border: 1px solid #ddd;
+  margin-top: 10px;
+  transition: width 0.3s, height 0.3s;
+}
+
+.rating {
+  font-size: 14px;
+  color: #2e2916;
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .review-card {
+    padding: 15px;
+  }
+
+  .profile-image {
+    width: 50px;
+    height: 50px;
+  }
+
+  .food-image img {
+    width: 70px;
+    height: 70px;
+  }
+
+  .review-header h4 {
+    font-size: 1rem;
+    margin-left: 10px;
+  }
+
+  .review-text {
+    font-size: 13px;
+  }
+
+  .rating {
+    font-size: 13px;
+    margin-left: 0; /* Removing the fixed margin */
+  }
+}
+
+/* Additional alignment for mobile */
+.review-header p {
+  margin-left: 10px; /* Minor adjustment for alignment */
+}
