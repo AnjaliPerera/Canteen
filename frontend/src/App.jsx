@@ -1,31 +1,12 @@
 import React, { useState } from 'react';
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import './App.css';
-import AddProduct from './Pages/AddProduct.jsx'; // Assuming Dashboard is renamed to AddProduct
-import React, { useState } from 'react';
-import { BrowserRouter, Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-import './App.css';
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import AddProduct from './Pages/AddProduct.jsx';
-import AddUser from './Pages/AddUser.jsx';
-import Contact from './Pages/Contact.jsx';
 import FoodSelection from './Pages/FoodSelection.jsx';
-import Home from './Pages/Home.jsx';
 import LogIn from './Pages/LogIn.jsx';
 import Menu from './Pages/Menu.jsx';
-import OrderList from './Pages/OrderList.jsx';
-import SearchBar from './Pages/SearchBar.jsx';
-import Sidebar from './Pages/Sidebar.jsx';
 import SignUp from './Pages/SignUp.jsx';
-
-
-function App() {
-
-  const ProtectedRoute = ({ children, roleRequired }) => {
-    const token = localStorage.getItem('token');
-    const role = localStorage.getItem('role');
-import SidebarA from './Pages/SidebarA.jsx';
-import SignUp from './Pages/SignUp.jsx';
-import UserTable from './Pages/UserTable.jsx';
+import Contact from './Pages/Contact.jsx';
+import Home from './Pages/Home.jsx';
 
 function ProtectedRoute({ children, roleRequired }) {
   const token = localStorage.getItem('token');
@@ -35,16 +16,6 @@ function ProtectedRoute({ children, roleRequired }) {
     console.log("Redirecting to login: No token found");
     return <Navigate to="/" />;
   }
-
-
-    const [selectedItems, setSelectedItems] = useState([]);
-    const [mealType, setMealType] = useState('Breakfast'); // State for meal type, default to 'Breakfast'
-
-    
-  // Update selected items when toggled in Menu
-    const updateSelectedItems = (items) => {
-      setSelectedItems(items);
-    };
 
   // Redirect "USER" role directly to Home if not already there
   if (role === "USER" && roleRequired !== "USER") {
@@ -57,7 +28,6 @@ function ProtectedRoute({ children, roleRequired }) {
     console.log(`Redirecting to menu: Role is ${role}, but ${roleRequired} required`);
     return <Navigate to="/menu" />;
   }
-
 
   return children;
 }
@@ -86,27 +56,8 @@ function App() {
         <Route path="/contact" element={<Contact />} />
 
         {/* Protected route for OWNER role to access AddProduct (Dashboard) */}
-
-        
-
         <Route
-          path="/Order List"
-          element={
-            <ProtectedRoute roleRequired="OWNER">
-              <div className="dashboard">
-                <Sidebar />
-                <div className="main-content">
-                  <SearchBar mealType={mealType} setMealType={setMealType} />
-                  <OrderList mealType={mealType} />
-                </div>
-              </div>
-            </ProtectedRoute>
-          }
-        />
-      
-
-        <Route
-          path="/Food Edit"
+          path="/dashboard"
           element={
             <ProtectedRoute roleRequired="OWNER">
               <AddProduct />
@@ -123,19 +74,7 @@ function App() {
             </ProtectedRoute>
           }
         />
-        
       </Routes>
-      <Router>
-            <div className="app">
-                <SidebarA />
-                <div className="main-content">
-                    <Routes>
-                        <Route path="/" element={<UserTable />} />
-                        <Route path="/add-user" element={<AddUser />} /> {/* Corrected the route path for AddUser */}
-                    </Routes>
-                </div>
-            </div>
-        </Router>
     </BrowserRouter>
   );
 }
