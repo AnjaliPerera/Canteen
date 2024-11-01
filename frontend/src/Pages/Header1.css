@@ -1,0 +1,46 @@
+/* General header styling */
+.header1 {
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: left;
+  padding: 10px 20px;
+  font-family: Arial, sans-serif;
+  margin-bottom: 20px; /* Adds space below the header */
+}
+
+/* Search bar styling */
+.search-bar {
+  width: 100%;
+  max-width: 300px;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: width 0.3s ease; /* Smooth transition for resizing */
+}
+
+/* Responsive styling for tablets and smaller screens */
+@media (max-width: 768px) {
+  .header1 {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 15px;
+  }
+
+  .search-bar {
+    width: 100%;
+    max-width: none; /* Allows the search bar to take full width on small screens */
+    font-size: 14px;
+    padding: 8px;
+  }
+}
+
+/* Responsive styling for mobile screens */
+@media (max-width: 480px) {
+  .search-bar {
+    font-size: 13px;
+    padding: 6px;
+  }
+}

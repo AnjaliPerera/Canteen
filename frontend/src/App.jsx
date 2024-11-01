@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
-import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import './App.css';
 import AddProduct from './Pages/AddProduct.jsx';
+import AddUser from './Pages/AddUser.jsx';
+import Contact from './Pages/Contact.jsx';
 import FoodSelection from './Pages/FoodSelection.jsx';
+import Home from './Pages/Home.jsx';
 import LogIn from './Pages/LogIn.jsx';
 import Menu from './Pages/Menu.jsx';
+import SidebarA from './Pages/SidebarA.jsx';
 import SignUp from './Pages/SignUp.jsx';
-import Contact from './Pages/Contact.jsx';
-import Home from './Pages/Home.jsx';
+import UserTable from './Pages/UserTable.jsx';
 
 function ProtectedRoute({ children, roleRequired }) {
   const token = localStorage.getItem('token');
@@ -74,7 +78,19 @@ function App() {
             </ProtectedRoute>
           }
         />
+        
       </Routes>
+      <Router>
+            <div className="app">
+                <SidebarA />
+                <div className="main-content">
+                    <Routes>
+                        <Route path="/" element={<UserTable />} />
+                        <Route path="/add-user" element={<AddUser />} /> {/* Corrected the route path for AddUser */}
+                    </Routes>
+                </div>
+            </div>
+        </Router>
     </BrowserRouter>
   );
 }
