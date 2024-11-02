@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import './Sidebar.css';
 
 const Sidebar = () => {
@@ -9,44 +10,29 @@ const Sidebar = () => {
         setIsOpen(!isOpen);
     };
 
-    // Function to handle window resize
-    const handleResize = () => {
-        const mobileView = window.innerWidth <= 768;
-        setIsMobile(mobileView);
-        if (!mobileView) {
-            setIsOpen(false); // Close sidebar if the width is greater than 768px
-        }
-    };
-
     useEffect(() => {
-        window.addEventListener('resize', handleResize);
-        return () => {
-            window.removeEventListener('resize', handleResize);
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 768);
+            if (!isMobile) setIsOpen(false);
         };
-    }, []);
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, [isMobile]);
 
     return (
         <>
-            {/* Only show the hamburger button in mobile view */}
-            {isMobile && (
-                <button className="hamburger" onClick={toggleSidebar}>
-                    ☰
-                </button>
-            )}
-            {/* Always render sidebar, but its visibility is controlled */}
+            {isMobile && <button className="hamburger" onClick={toggleSidebar}>☰</button>}
             <div className={`sidebar ${isOpen || !isMobile ? 'open' : ''}`}>
                 <div>
                     <img src="/logo.jpg" alt="Logo" className="logo" />
                 </div>
                 <ul className="menu">
-                    <li>Dashboard</li>
-                    <li>Order List</li>
-                    <li>Order Details</li>
-                    <li>Customer</li>
-                    <li>Analytics</li>
-                    <li>Reviews</li>
-                    <li className="active">Foods</li>
-                    <li>Food Edit</li>
+                    <li><Link to="/dashboard">Dashboard</Link></li>
+                    <li><Link to="/dashboard/add-product">Add Product</Link></li>
+                    <li><Link to="/dashboard/order-list">Order List</Link></li>
+                    <li><Link to="/dashboard/food-edit">Food Edit</Link></li>
+                    {/* More links as needed */}
                 </ul>
             </div>
         </>
