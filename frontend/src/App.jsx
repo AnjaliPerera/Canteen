@@ -5,7 +5,7 @@ import FoodSelection from './Pages/FoodSelection.jsx';
 import LogIn from './Pages/LogIn.jsx';
 import Menu from './Pages/Menu.jsx';
 import SignUp from './Pages/SignUp.jsx';
-import Contact from './Pages/Contact.jsx';
+import Order from './Pages/Order.jsx';
 import Home from './Pages/Home.jsx';
 
 function ProtectedRoute({ children, roleRequired }) {
@@ -53,7 +53,8 @@ function App() {
 
         {/* Food Selection and Contact pages */}
         <Route path="/foodselection" element={<FoodSelection selectedItems={selectedItems} />} />
-        <Route path="/contact" element={<Contact />} />
+        <Route path="/order" element={<Order />} />
+
 
         {/* Protected route for OWNER role to access AddProduct (Dashboard) */}
         <Route
