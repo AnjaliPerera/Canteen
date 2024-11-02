@@ -28,12 +28,14 @@ const Sidebar = () => {
                     <img src="/logo.jpg" alt="Logo" className="logo" />
                 </div>
                 <ul className="menu">
-                    <li><Link to="/dashboard">Dashboard</Link></li>
-                    <li><Link to="/dashboard/add-product">Add Product</Link></li>
-                    <li><Link to="/dashboard/order-list">Order List</Link></li>
-                    <li><Link to="/dashboard/food-edit">Food Edit</Link></li>
-                    {/* More links as needed */}
-                </ul>
+                                <li><Link to="/">Dashboard</Link></li>
+                                <li><Link to="add-product">Add Product</Link></li>
+                                <li><Link to="order-list">Order List</Link></li>
+                                <li><Link to="customer-table">Customer Table</Link></li>
+                                <li><Link to="food-details">Food Details</Link></li>
+                                <li><Link to="reviews">Reviews</Link></li>
+                                <li><Link to="orders">Orders</Link></li>
+                            </ul>
             </div>
         </>
     );
