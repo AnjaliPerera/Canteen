@@ -1,23 +1,16 @@
 import React from "react";
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Footer from '../Components/Footer/Footer';
 import Header from '../Components/Header/Header';
 import "./Order.css";
 
 export default function Order() {
+  const location = useLocation();
   const navigate = useNavigate();
 
-  // Hardcoded order details
-  const orderDetails = {
-    orderId: "L312",
-    items: [
-      { id: 1, name: "Rice and Curry (VEG)", price: 100, quantity: 1, imageUrl: "placeholder_image_url_here" },
-      { id: 2, name: "Chicken Portion", price: 80, quantity: 1, imageUrl: "placeholder_image_url_here" },
-      { id: 3, name: "Boiled Egg", price: 70, quantity: 2, imageUrl: "placeholder_image_url_here" },
-    ]
-  };
+  // Accessing order details passed from FoodSelection
+  const { orderNumber, items = [], totalPrice, pickupTime } = location.state || {};
 
-  // Handle the cancel order functionality
   const handleCancelOrder = () => {
     alert("Order canceled successfully.");
     navigate('/home'); // Redirect user after cancellation
@@ -35,11 +28,11 @@ export default function Order() {
             <div>
               <div className="order-details">
                 <p className="order-no">Order No:</p>
-                <p className="order-no-value">{orderDetails.orderId}</p>
+                <p className="order-no-value">{orderNumber}</p>
               </div>
 
               <div className="space-y-6 mt-6">
-                {orderDetails.items.map((item, index) => (
+                {items.map((item, index) => (
                   <div key={index} className="product-item">
                     <div className="flex items-center">
                       <img

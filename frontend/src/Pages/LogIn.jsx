@@ -34,6 +34,7 @@ const LogIn = () => {
       const token = response.data.jwt;
       console.log('Token:', token);
 
+      // Decode the JWT token to get the role
       const decodedToken = JSON.parse(atob(token.split('.')[1]));
       const role = decodedToken.role;
 
@@ -41,14 +42,27 @@ const LogIn = () => {
       storage.setItem('token', token);
       storage.setItem('role', role);
 
+      // Redirect based on role
       if (role === 'OWNER') {
         navigate('/dashboard');
-      } else if (role === 'user') { // Redirect users with "user" role to Home page
-        navigate('/home');
+
+      }
+
+        else if (role === 'ADMIN'){
+
+        navigate('/admin');
+        }
+
+
+       else if (role === 'USER' || role === 'user') {
+              navigate('/home');
+      }
+  else {
+        setErrorMessage('Unknown role. Please contact support.');
       }
     } catch (error) {
       console.error('Error during login:', error);
-      alert('Login failed. Check your credentials.');
+      setErrorMessage('Login failed. Check your credentials.');
     } finally {
       setIsLoading(false);
     }

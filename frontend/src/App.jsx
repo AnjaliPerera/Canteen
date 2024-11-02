@@ -8,6 +8,7 @@ import SignUp from './Pages/SignUp.jsx';
 import Contact from './Pages/Contact.jsx';
 import Home from './Pages/Home.jsx';
 import Order from './Pages/Order.jsx';
+import AdminDashboard from './Pages/AdminDashboard.jsx'; // Import AdminDashboard
 
 function ProtectedRoute({ children, roleRequired }) {
   const token = localStorage.getItem('token');
@@ -65,8 +66,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
-        {/* Contact page, accessible by all logged-in users */}
         <Route
           path="/contact"
           element={
@@ -76,27 +75,27 @@ function App() {
           }
         />
 
-        {/* Order page with dynamic order number */}
-        <Route
-          path="/order/:orderNumber"
-          element={
-            <ProtectedRoute>
-              <Order />
-            </ProtectedRoute>
-          }
-        />
-
         {/* Protected route for OWNER role to access AddProduct (Dashboard) */}
         <Route
           path="/dashboard"
           element={
-            <ProtectedRoute roleRequired="ADMIN">
+            <ProtectedRoute roleRequired="OWNER">
               <AddProduct />
             </ProtectedRoute>
           }
         />
 
-        {/* Fallback to Home */}
+        {/* Protected route for ADMIN role to access AdminDashboard */}
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute roleRequired="ADMIN">
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Fallback route */}
         <Route path="*" element={<Navigate to="/home" />} />
       </Routes>
     </BrowserRouter>
