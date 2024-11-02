@@ -23,6 +23,7 @@ const LogIn = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrorMessage(''); // Clear previous errors
 
     try {
       setIsLoading(true);
@@ -34,35 +35,29 @@ const LogIn = () => {
       const token = response.data.jwt;
       console.log('Token:', token);
 
-      // Decode the JWT token to get the role
+      // Decode the JWT token to extract the user's role
       const decodedToken = JSON.parse(atob(token.split('.')[1]));
       const role = decodedToken.role;
+      console.log('Role:', role);
 
+      // Store token and role in either localStorage or sessionStorage
       const storage = formData.rememberMe ? localStorage : sessionStorage;
       storage.setItem('token', token);
       storage.setItem('role', role);
 
-      // Redirect based on role
+      // Redirect based on user's role
       if (role === 'OWNER') {
         navigate('/dashboard');
-
-      }
-
-        else if (role === 'ADMIN'){
-
+      } else if (role === 'USER' || role === 'user') {
+        navigate('/home');
+      } else if (role === 'ADMIN') {
         navigate('/admin');
-        }
-
-
-       else if (role === 'USER' || role === 'user') {
-              navigate('/home');
-      }
-  else {
+      } else {
         setErrorMessage('Unknown role. Please contact support.');
       }
     } catch (error) {
       console.error('Error during login:', error);
-      setErrorMessage('Login failed. Check your credentials.');
+      setErrorMessage('Login failed. Please check your credentials.');
     } finally {
       setIsLoading(false);
     }
