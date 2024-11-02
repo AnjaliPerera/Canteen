@@ -1,0 +1,34 @@
+/* OwnerDashboard Layout */
+.owner-dashboard {
+    display: flex;
+    height: 100vh;
+    background-color: #f7e7d7; /* Softer background color for the dashboard */
+    width: 100%;
+}
+
+/* Dashboard Content Area */
+.dashboard-content {
+    flex-grow: 1; /* Allows content to expand to fill available space */
+    padding: 40px;
+    background-color: #ffffff;
+    margin: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center; /* Center form horizontally */
+    align-items: flex-start; /* Align form to the top */
+    width: calc(100% - 270px); /* Calculate width to fill space left by sidebar */
+}
+
+@media (max-width: 768px) {
+    .owner-dashboard {
+        flex-direction: column;
+    }
+
+    .dashboard-content {
+        margin: 10px;
+        padding: 20px;
+        justify-content: center;
+        align-items: flex-start;
+    }
+}

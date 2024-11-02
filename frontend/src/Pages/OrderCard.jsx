@@ -1,4 +1,3 @@
-// Components/OrderCard/OrderCard.jsx
 import React from 'react';
 import './OrderCard.css';
 

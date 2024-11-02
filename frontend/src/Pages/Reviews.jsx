@@ -1,6 +1,5 @@
-// Components/Reviews/Reviews.js
 import React from 'react';
-import ReviewCard from '../ReviewCard/ReviewCard';
+import ReviewCard from './ReviewCard';
 import './Reviews.css';
 
 
@@ -15,7 +14,7 @@ function Reviews() {
           rating: 4.5,
         },
         // Add more review objects as needed
-        
+
         {
           id: 2, // Added unique ID for better key management
           reviewer: { name: 'Jon Sena', profileImage: 'path/to/image.jpg', timeAgo: '2 days ago' },
