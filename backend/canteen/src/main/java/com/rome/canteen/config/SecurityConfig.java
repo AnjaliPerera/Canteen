@@ -80,14 +80,16 @@ public class SecurityConfig {
                 // Authorization configuration for different endpoints
                 .authorizeHttpRequests(authorize -> authorize
                         // Public endpoints
-                        .requestMatchers("/auth/login", "/auth/signup", "/auth/forgot-password", "/auth/reset-password").permitAll()
+                        .requestMatchers("/auth/login", "/auth/signup", "/auth/forgot-password", "/api/ratings","/auth/reset-password").permitAll()
                         .requestMatchers("/api/contact/submit", "/api/fooditems/**").permitAll()
                         .requestMatchers("/api/orders/**").permitAll()
+
 
                         // Restricted endpoints
                         .requestMatchers("/api/fooditems/add", "/api/fooditems/delete/**", "/api/fooditems/{id}").hasRole("OWNER") // Only OWNER role can add/delete food items
                         .requestMatchers("/auth/users/**").hasAnyRole("ADMIN", "OWNER") // ADMIN or OWNER can access user-related endpoints
                         .requestMatchers("/api/contact/messages").hasAnyRole("ADMIN", "OWNER") // ADMIN or OWNER can view contact messages
+
 
 
                         .anyRequest().authenticated() // All other requests require authentication

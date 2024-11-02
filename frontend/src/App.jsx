@@ -7,8 +7,6 @@ import Menu from './Pages/Menu.jsx';
 import SignUp from './Pages/SignUp.jsx';
 import Contact from './Pages/Contact.jsx';
 import Home from './Pages/Home.jsx';
-import Order from './Pages/Order.jsx';
-import AdminDashboard from './Pages/AdminDashboard.jsx'; // Import AdminDashboard
 
 function ProtectedRoute({ children, roleRequired }) {
   const token = localStorage.getItem('token');
@@ -19,9 +17,16 @@ function ProtectedRoute({ children, roleRequired }) {
     return <Navigate to="/" />;
   }
 
+  // Redirect "USER" role directly to Home if not already there
+  if (role === "USER" && roleRequired !== "USER") {
+    console.log("Redirecting to home: Role is USER");
+    return <Navigate to="/home" />;
+  }
+
+  // Redirect to Menu if the required role doesn't match
   if (roleRequired && role !== roleRequired) {
-    console.log(`Redirecting to appropriate route: Role is ${role}, but ${roleRequired} required`);
-    return role === "USER" ? <Navigate to="/home" /> : <Navigate to="/menu" />;
+    console.log(`Redirecting to menu: Role is ${role}, but ${roleRequired} required`);
+    return <Navigate to="/menu" />;
   }
 
   return children;
@@ -30,6 +35,7 @@ function ProtectedRoute({ children, roleRequired }) {
 function App() {
   const [selectedItems, setSelectedItems] = useState([]);
 
+  // Update selected items when toggled in Menu
   const updateSelectedItems = (items) => {
     setSelectedItems(items);
   };
@@ -41,39 +47,13 @@ function App() {
         <Route path="/" element={<LogIn />} />
         <Route path="/signup" element={<SignUp />} />
 
-        {/* Routes accessible after login */}
-        <Route
-          path="/home"
-          element={
-            <ProtectedRoute>
-              <Home />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/menu"
-          element={
-            <ProtectedRoute>
-              <Menu updateSelectedItems={updateSelectedItems} />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/foodselection"
-          element={
-            <ProtectedRoute>
-              <FoodSelection selectedItems={selectedItems} />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/contact"
-          element={
-            <ProtectedRoute>
-              <Contact />
-            </ProtectedRoute>
-          }
-        />
+        {/* Home and menu accessible after login */}
+        <Route path="/home" element={<Home />} />
+        <Route path="/menu" element={<Menu updateSelectedItems={updateSelectedItems} />} />
+
+        {/* Food Selection and Contact pages */}
+        <Route path="/foodselection" element={<FoodSelection selectedItems={selectedItems} />} />
+        <Route path="/contact" element={<Contact />} />
 
         {/* Protected route for OWNER role to access AddProduct (Dashboard) */}
         <Route
@@ -85,18 +65,25 @@ function App() {
           }
         />
 
-        {/* Protected route for ADMIN role to access AdminDashboard */}
+         <Route
+                  path="/admin"
+                  element={
+                    <ProtectedRoute roleRequired="ADMIN">
+                      <AddProduct />
+                    </ProtectedRoute>
+                  }
+                />
+
+
+        {/* Protected route for USER role to access Home */}
         <Route
-          path="/admin"
+          path="/home"
           element={
-            <ProtectedRoute roleRequired="ADMIN">
-              <AdminDashboard />
+            <ProtectedRoute roleRequired="USER">
+              <Home />
             </ProtectedRoute>
           }
         />
-
-        {/* Fallback route */}
-        <Route path="*" element={<Navigate to="/home" />} />
       </Routes>
     </BrowserRouter>
   );
