@@ -16,6 +16,7 @@ function FoodSelection() {
   const [searchQuery, setSearchQuery] = useState('');
   const [orderCounter, setOrderCounter] = useState(1); // Counter for unique order numbers within a session
 
+  // Fetch Extra Curry Items on Mount
   useEffect(() => {
     const fetchExtraCurryItems = async () => {
       try {
@@ -27,14 +28,16 @@ function FoodSelection() {
           fromMenu: false,
         }));
 
+        // Merge with selected items from the menu
         const mergedItems = fetchedItems.map(item => {
           const menuItem = selectedItems.find(selected => selected.id === item.id);
           if (menuItem) {
-            return { ...item, selected: true, quantity: 1, fromMenu: true };
+            return { ...item, selected: true, quantity: menuItem.quantity, fromMenu: true };
           }
           return item;
         });
 
+        // Include items selected from the main menu but not in fetched extra curry items
         const newMenuItems = selectedItems.filter(
           selected => !fetchedItems.some(item => item.id === selected.id)
         ).map(item => ({ ...item, selected: true, quantity: 1, fromMenu: true }));
@@ -49,6 +52,15 @@ function FoodSelection() {
     fetchExtraCurryItems();
   }, [selectedItems]);
 
+  // Calculate total price when order items are updated
+  useEffect(() => {
+    const total = orderItems.reduce((acc, item) =>
+      item.selected ? acc + item.price * item.quantity : acc
+    , 0);
+    setTotalPrice(total);
+  }, [orderItems]);
+
+  // Handle adding item quantity
   const handleAdd = (id) => {
     setOrderItems(prevItems =>
       prevItems.map(item =>
@@ -57,6 +69,7 @@ function FoodSelection() {
     );
   };
 
+  // Handle removing item quantity
   const handleRemove = (id) => {
     setOrderItems(prevItems =>
       prevItems.map(item =>
@@ -65,6 +78,7 @@ function FoodSelection() {
     );
   };
 
+  // Toggle item selection
   const handleToggleSelect = (id) => {
     setOrderItems(prevItems =>
       prevItems.map(item =>
@@ -73,6 +87,7 @@ function FoodSelection() {
     );
   };
 
+  // Cancel order and reset selections
   const handleCancelOrder = () => {
     const resetOrder = orderItems.map(item => ({
       ...item,
@@ -82,6 +97,7 @@ function FoodSelection() {
     setOrderItems(resetOrder);
   };
 
+  // Place order and navigate to Order page with order details
   const handleSendOrder = async () => {
     const selectedItems = orderItems.filter(item => item.selected);
     if (selectedItems.length === 0) {
@@ -89,7 +105,7 @@ function FoodSelection() {
       return;
     }
 
-    // Determine the category based on time of day
+    // Determine category (B - Breakfast, L - Lunch, D - Dinner)
     const category = pickupTime.includes("7:00") || pickupTime.includes("10:30") ? "B" :
                      pickupTime.includes("12:00") || pickupTime.includes("16:30") ? "L" : "D";
 
@@ -120,7 +136,7 @@ function FoodSelection() {
         // Increment the order counter for the next order in the same session
         setOrderCounter(prevCounter => prevCounter + 1);
 
-        handleCancelOrder();
+        handleCancelOrder(); // Reset selections after placing the order
       } else {
         alert('Failed to place the order. Please try again.');
       }
@@ -130,13 +146,7 @@ function FoodSelection() {
     }
   };
 
-  useEffect(() => {
-    const total = orderItems.reduce((acc, item) =>
-      item.selected ? acc + item.price * item.quantity : acc
-    , 0);
-    setTotalPrice(total);
-  }, [orderItems]);
-
+  // Handle search input change
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };

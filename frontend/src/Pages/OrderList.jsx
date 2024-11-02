@@ -17,7 +17,6 @@ const OrderList = ({ mealType }) => {
     return (
         <div className="order-list">
             <h2>Order List</h2>
-            
             {/* Meal type heading */}
             <div className="meal-type">
                 <h3>{mealType}</h3> {/* Display the selected meal type */}

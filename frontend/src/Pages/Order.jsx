@@ -8,23 +8,27 @@ export default function Order() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Accessing order details passed from FoodSelection
-  const { orderNumber, items = [], totalPrice, pickupTime } = location.state || {};
+  // Retrieve passed order details from location.state
+  const { orderNumber, items, totalPrice, pickupTime } = location.state || {};
+
+  if (!orderNumber || !items) {
+    // Redirect to home if no order details are found
+    navigate("/home");
+    return null;
+  }
 
   const handleCancelOrder = () => {
     alert("Order canceled successfully.");
-    navigate('/home'); // Redirect user after cancellation
+    navigate('/menu');
   };
 
   return (
     <>
       <Header />
-
       <div className="order-container">
         <div className="profile-section">
           <h3 className="profile-title">Your Order</h3>
           <div className="grid-container">
-            {/* Order details section */}
             <div>
               <div className="order-details">
                 <p className="order-no">Order No:</p>
@@ -53,7 +57,11 @@ export default function Order() {
                 ))}
               </div>
 
-              {/* Cancel Order Button */}
+              <div className="order-summary">
+                <p>Total Price: LKR {totalPrice}</p>
+                <p>Pickup Time: {pickupTime}</p>
+              </div>
+
               <div className="cancel-button-container">
                 <button className="cancel-order-button" onClick={handleCancelOrder}>
                   Cancel Order
@@ -62,19 +70,20 @@ export default function Order() {
             </div>
 
             {/* Order conditions */}
-            <div>
-              <h3 className="conditions-title">Conditions</h3>
-              <ul className="conditions-list">
-                <li>You may cancel your order within 30 minutes of placing it. After this period, cancellations will not be accepted.</li>
-                <li>Orders can be collected at the university canteen premises. Payment upon collection can be made in cash.</li>
-                <li>If your order is not collected within the selected time slot, it will be automatically canceled after 30 minutes.</li>
-                <li>Once your order has been collected, you will receive a pop-up message on our website requesting you to rate our service. We appreciate and welcome your feedback.</li>
-              </ul>
-            </div>
+                                                        <div>
+                                                          <h3 className="conditions-title">Conditions</h3>
+                                                          <ul className="conditions-list">
+                                                            <li>You may cancel your order within 30 minutes of placing it. After this period, cancellations will not be accepted.</li>
+                                                            <li>Orders can be collected at the university canteen premises. Payment upon collection can be made in cash.</li>
+                                                            <li>If your order is not collected within the selected time slot, it will be automatically canceled after 30 minutes.</li>
+                                                            <li>Once your order has been collected, you will receive a pop-up message on our website requesting you to rate our service. We appreciate and welcome your feedback.</li>
+                                                          </ul>
+                                                        </div>
+
+
           </div>
         </div>
       </div>
-
       <Footer />
     </>
   );
