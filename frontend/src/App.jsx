@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
+
+import Contact from './Pages/Contact.jsx';
+import About from './Pages/About.jsx'
 import AddProduct from './Pages/AddProduct.jsx';
-import FoodSelection from './Pages/FoodSelection.jsx';
-import LogIn from './Pages/LogIn.jsx';
-import Menu from './Pages/Menu.jsx';
-import SignUp from './Pages/SignUp.jsx';
-import Order from './Pages/Order.jsx';
 import Home from './Pages/Home.jsx';
+import Menu from './Pages/Menu.jsx';
+import FoodSelection from './Pages/FoodSelection.jsx';
+import Order from './Pages/Order.jsx';
+import LogIn from './Pages/LogIn.jsx';
+import SignUp from './Pages/SignUp.jsx';
+
+
 
 function ProtectedRoute({ children, roleRequired }) {
   const token = localStorage.getItem('token');
@@ -55,7 +60,8 @@ function App() {
         <Route path="/foodselection" element={<FoodSelection selectedItems={selectedItems} />} />
         <Route path="/order" element={<Order />} />
 
-
+        <Route path="/contact" element={<Contact />} />
+         <Route path="/about" element={<About />} />
         {/* Protected route for OWNER role to access AddProduct (Dashboard) */}
         <Route
           path="/dashboard"
@@ -74,8 +80,6 @@ function App() {
                     </ProtectedRoute>
                   }
                 />
-
-
         {/* Protected route for USER role to access Home */}
         <Route
           path="/home"

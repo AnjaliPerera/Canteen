@@ -1,9 +1,8 @@
-// src/components/AboutUs.jsx
-import React from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
 import './About.css'; // Create a separate CSS file for AboutUs styles
-
-import chefImage from '../../assets/a1.png';
-import canteenImage from '../../assets/a2.png';
+import chefImage from '../assets/a1.png';
+import canteenImage from '../assets/a2.png';
 
 const AboutUs = () => {
   return (

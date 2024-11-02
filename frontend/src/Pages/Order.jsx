@@ -70,17 +70,15 @@ export default function Order() {
             </div>
 
             {/* Order conditions */}
-                                                        <div>
-                                                          <h3 className="conditions-title">Conditions</h3>
-                                                          <ul className="conditions-list">
-                                                            <li>You may cancel your order within 30 minutes of placing it. After this period, cancellations will not be accepted.</li>
-                                                            <li>Orders can be collected at the university canteen premises. Payment upon collection can be made in cash.</li>
-                                                            <li>If your order is not collected within the selected time slot, it will be automatically canceled after 30 minutes.</li>
+          <div>
+          <h3 className="conditions-title">Conditions</h3>
+       <ul className="conditions-list">
+      <li>You may cancel your order within 30 minutes of placing it. After this period, cancellations will not be accepted.</li>
+       <li>Orders can be collected at the university canteen premises. Payment upon collection can be made in cash.</li>
+      <li>If your order is not collected within the selected time slot, it will be automatically canceled after 30 minutes.</li>
                                                             <li>Once your order has been collected, you will receive a pop-up message on our website requesting you to rate our service. We appreciate and welcome your feedback.</li>
                                                           </ul>
                                                         </div>
-
-
           </div>
         </div>
       </div>
