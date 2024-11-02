@@ -14,6 +14,7 @@ function FoodSelection() {
   const [totalPrice, setTotalPrice] = useState(0);
   const [pickupTime, setPickupTime] = useState(timeSlots[0] || ""); // Default to the first time slot
   const [searchQuery, setSearchQuery] = useState('');
+  const [orderCounter, setOrderCounter] = useState(1); // Counter for unique order numbers within a session
 
   useEffect(() => {
     const fetchExtraCurryItems = async () => {
@@ -88,7 +89,18 @@ function FoodSelection() {
       return;
     }
 
+    // Determine the category based on time of day
+    const category = pickupTime.includes("7:00") || pickupTime.includes("10:30") ? "B" :
+                     pickupTime.includes("12:00") || pickupTime.includes("16:30") ? "L" : "D";
+
+    // Format time for the order ID
+    const formattedTime = pickupTime.replace(":", "").replace(" ", ""); // E.g., "1230" for "12:30 - 13:00"
+
+    // Generate the order ID
+    const orderId = `${category}${formattedTime}${orderCounter.toString().padStart(2, '0')}`;
+
     const order = {
+      orderId, // Set the generated order ID
       items: selectedItems,
       totalPrice: totalPrice,
       pickupTime: pickupTime,
@@ -100,11 +112,13 @@ function FoodSelection() {
       });
 
       if (response.status === 200 || response.status === 201) {
-        const orderId = response.data.orderId;
         alert(`Your order has been placed successfully! Order ID: ${orderId}`);
 
         // Navigate to the Order page and pass order details
         navigate('/order', { state: { orderNumber: orderId, items: selectedItems, totalPrice, pickupTime } });
+
+        // Increment the order counter for the next order in the same session
+        setOrderCounter(prevCounter => prevCounter + 1);
 
         handleCancelOrder();
       } else {
