@@ -1,6 +1,7 @@
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import React, { useState } from 'react';
-import './Header.css'; // Import the external CSS file
+import { NavLink } from 'react-router-dom';
+import './Header.css';
 
 const Header = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -8,33 +9,30 @@ const Header = () => {
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
   };
-  
+
   const handleBackButtonClick = () => {
     window.history.back(); // Navigate to the previous page
+  };
+
+  const closeSidebar = () => {
+    setSidebarOpen(false); // Close sidebar on link click for better UX
   };
 
   return (
     <header className="header">
       <div className="logo-section">
         <img src="/logo.jpg" alt="Logo" className="logo" />
-        
       </div>
 
       <div className="nav-links">
         <ul>
-          <li><a href="#">Home</a></li>
-          <li><a href="#">Menu</a></li>
-          <li><a href="#">Extra Curry</a></li>
-          <li><a href="#">Order</a></li>
-          <li><a href="#">Contact</a></li>
-          <li><a href="#">About</a></li>
-          
+          <li><NavLink to="/home" activeClassName="active">Home</NavLink></li>
+          <li><NavLink to="/menu" activeClassName="active">Menu</NavLink></li>
+          <li><NavLink to="/foodselection" activeClassName="active">Extra Curry</NavLink></li>
+          <li><NavLink to="/order" activeClassName="active">Order</NavLink></li>
+          <li><NavLink to="/contact" activeClassName="active">Contact</NavLink></li>
+          <li><NavLink to="/about" activeClassName="active">About</NavLink></li>
         </ul>
-      </div>
-
-      <div className="search-bar">
-        <input type="text" placeholder="Search meals..." />
-        <button><i className="fa fa-search"></i></button>
       </div>
 
       <button className="back-button" onClick={handleBackButtonClick}>
@@ -49,12 +47,12 @@ const Header = () => {
       {/* Sidebar for small screens */}
       <nav className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
         <ul>
-          <li><a href="#">Home</a></li>
-          <li><a href="#">Menu</a></li>
-          <li><a href="#">Extra Curry</a></li>
-          <li><a href="#">Order</a></li>
-          <li><a href="#">Contact</a></li>
-          <li><a href="#">About</a></li>
+          <li><NavLink to="/home" activeClassName="active" onClick={closeSidebar}>Home</NavLink></li>
+          <li><NavLink to="/menu" activeClassName="active" onClick={closeSidebar}>Menu</NavLink></li>
+          <li><NavLink to="/foodselection" activeClassName="active" onClick={closeSidebar}>Extra Curry</NavLink></li>
+          <li><NavLink to="/order" activeClassName="active" onClick={closeSidebar}>Order</NavLink></li>
+          <li><NavLink to="/contact" activeClassName="active" onClick={closeSidebar}>Contact</NavLink></li>
+          <li><NavLink to="/about" activeClassName="active" onClick={closeSidebar}>About</NavLink></li>
         </ul>
       </nav>
     </header>

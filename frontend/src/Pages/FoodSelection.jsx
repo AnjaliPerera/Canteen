@@ -31,10 +31,7 @@ function FoodSelection() {
         // Merge with selected items from the menu
         const mergedItems = fetchedItems.map(item => {
           const menuItem = selectedItems.find(selected => selected.id === item.id);
-          if (menuItem) {
-            return { ...item, selected: true, quantity: menuItem.quantity, fromMenu: true };
-          }
-          return item;
+          return menuItem ? { ...item, selected: true, quantity: menuItem.quantity, fromMenu: true } : item;
         });
 
         // Include items selected from the main menu but not in fetched extra curry items
@@ -55,12 +52,10 @@ function FoodSelection() {
   // Calculate total price when order items are updated
   useEffect(() => {
     const total = orderItems.reduce((acc, item) =>
-      item.selected ? acc + item.price * item.quantity : acc
-    , 0);
+      item.selected ? acc + item.price * item.quantity : acc, 0);
     setTotalPrice(total);
   }, [orderItems]);
 
-  // Handle adding item quantity
   const handleAdd = (id) => {
     setOrderItems(prevItems =>
       prevItems.map(item =>
@@ -69,7 +64,6 @@ function FoodSelection() {
     );
   };
 
-  // Handle removing item quantity
   const handleRemove = (id) => {
     setOrderItems(prevItems =>
       prevItems.map(item =>
@@ -78,7 +72,6 @@ function FoodSelection() {
     );
   };
 
-  // Toggle item selection
   const handleToggleSelect = (id) => {
     setOrderItems(prevItems =>
       prevItems.map(item =>
@@ -87,17 +80,12 @@ function FoodSelection() {
     );
   };
 
-  // Cancel order and reset selections
   const handleCancelOrder = () => {
-    const resetOrder = orderItems.map(item => ({
-      ...item,
-      selected: false,
-      quantity: 1,
-    }));
-    setOrderItems(resetOrder);
+    setOrderItems(prevItems =>
+      prevItems.map(item => ({ ...item, selected: false, quantity: 1 }))
+    );
   };
 
-  // Place order and navigate to Order page with order details
   const handleSendOrder = async () => {
     const selectedItems = orderItems.filter(item => item.selected);
     if (selectedItems.length === 0) {
@@ -105,21 +93,16 @@ function FoodSelection() {
       return;
     }
 
-    // Determine category (B - Breakfast, L - Lunch, D - Dinner)
     const category = pickupTime.includes("7:00") || pickupTime.includes("10:30") ? "B" :
                      pickupTime.includes("12:00") || pickupTime.includes("16:30") ? "L" : "D";
-
-    // Format time for the order ID
-    const formattedTime = pickupTime.replace(":", "").replace(" ", ""); // E.g., "1230" for "12:30 - 13:00"
-
-    // Generate the order ID
+    const formattedTime = pickupTime.replace(":", "").replace(" ", "");
     const orderId = `${category}${formattedTime}${orderCounter.toString().padStart(2, '0')}`;
 
     const order = {
-      orderId, // Set the generated order ID
+      orderId,
       items: selectedItems,
-      totalPrice: totalPrice,
-      pickupTime: pickupTime,
+      totalPrice,
+      pickupTime,
     };
 
     try {
@@ -127,16 +110,11 @@ function FoodSelection() {
         headers: { 'Content-Type': 'application/json' },
       });
 
-      if (response.status === 200 || response.status === 201) {
+      if (response.status === 201) {
         alert(`Your order has been placed successfully! Order ID: ${orderId}`);
-
-        // Navigate to the Order page and pass order details
         navigate('/order', { state: { orderNumber: orderId, items: selectedItems, totalPrice, pickupTime } });
-
-        // Increment the order counter for the next order in the same session
         setOrderCounter(prevCounter => prevCounter + 1);
-
-        handleCancelOrder(); // Reset selections after placing the order
+        handleCancelOrder();
       } else {
         alert('Failed to place the order. Please try again.');
       }
@@ -146,7 +124,6 @@ function FoodSelection() {
     }
   };
 
-  // Handle search input change
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
@@ -161,7 +138,6 @@ function FoodSelection() {
       <div className="food-selection">
         <h2>Extra Curry Selection</h2>
 
-        {/* Search Bar */}
         <div className="search-bar">
           <input
             type="text"
@@ -171,7 +147,6 @@ function FoodSelection() {
           />
         </div>
 
-        {/* Food Items */}
         <div className="food-items">
           {filteredItems
             .filter(item => !item.fromMenu)
@@ -196,7 +171,6 @@ function FoodSelection() {
             ))}
         </div>
 
-        {/* Order Summary */}
         <div className="order-summary">
           {orderItems
             .filter(item => item.selected)
