@@ -45,12 +45,38 @@ const FoodDetails = () => {
         },
       });
 
-      // Remove the deleted item from the list
       setFoodItems(prevItems => prevItems.filter(food => food.id !== id));
       console.log(`Deleted item with id: ${id}`);
     } catch (err) {
       console.error('Error deleting item:', err);
       setError('Failed to delete item.');
+    }
+  };
+
+  const handleToggleAvailability = async (id) => {
+    try {
+      const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+      if (!token) {
+        setError('No token found. Please log in again.');
+        return;
+      }
+
+      await axios.put(`http://localhost:8080/api/fooditems/${id}/toggle-availability`, {}, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      // Update the availability status in the local state
+      setFoodItems(prevItems =>
+        prevItems.map(food =>
+          food.id === id ? { ...food, available: !food.available } : food
+        )
+      );
+      console.log(`Toggled availability for item with id: ${id}`);
+    } catch (err) {
+      console.error('Error toggling availability:', err);
+      setError('Failed to toggle availability.');
     }
   };
 
@@ -80,7 +106,10 @@ const FoodDetails = () => {
               <td>{food.foodType}</td>
               <td>LKR {food.price.toFixed(2)}</td>
               <td>
-                <button className={food.available ? 'available' : 'unavailable'}>
+                <button
+                  className={food.available ? 'available' : 'unavailable'}
+                  onClick={() => handleToggleAvailability(food.id)}
+                >
                   {food.available ? 'ON' : 'OFF'}
                 </button>
               </td>

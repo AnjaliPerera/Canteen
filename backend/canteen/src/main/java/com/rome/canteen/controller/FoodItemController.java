@@ -4,6 +4,7 @@ import com.rome.canteen.model.FoodItem;
 import com.rome.canteen.service.FoodItemService;
 import com.google.firebase.cloud.StorageClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -99,6 +100,22 @@ public class FoodItemController {
             return ResponseEntity.status(500).body("Error: " + e.getMessage());
         }
     }
+
+
+    // PUT endpoint for toggling availability of a food item
+    @PutMapping("/{id}/toggle-availability")
+    public ResponseEntity<String> toggleAvailability(@PathVariable String id) {
+        Optional<FoodItem> foodItemOptional = foodItemService.getFoodItemById(id);
+        if (foodItemOptional.isPresent()) {
+            FoodItem foodItem = foodItemOptional.get();
+            foodItem.setAvailable(!foodItem.isAvailable()); // Toggle availability
+            foodItemService.updateFoodItem(id, foodItem);
+            return ResponseEntity.ok("Food item availability toggled successfully!");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Food item not found");
+        }
+    }
+
 
 
 
