@@ -81,12 +81,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         // Public endpoints
                         .requestMatchers("/auth/login", "/auth/signup", "/auth/forgot-password", "/api/ratings","/auth/reset-password").permitAll()
-                        .requestMatchers("/api/contact/submit", "/api/fooditems/**").permitAll()
+                        .requestMatchers("/api/contact/submit", "/api/fooditems/**","/auth/users/**").permitAll()
                         .requestMatchers("/api/orders/**").permitAll()
 
 
                         // Restricted endpoints
-                        .requestMatchers("/api/fooditems/add", "/api/fooditems/delete/**", "/api/fooditems/{id}").hasRole("OWNER") // Only OWNER role can add/delete food items
+                        .requestMatchers("/api/fooditems/add", "/api/fooditems/delete/**", "/api/fooditems/{id}","/auth/users").hasRole("OWNER") // Only OWNER role can add/delete food items
                         .requestMatchers("/auth/users/**").hasAnyRole("ADMIN", "OWNER") // ADMIN or OWNER can access user-related endpoints
                         .requestMatchers("/api/contact/messages").hasAnyRole("ADMIN", "OWNER") // ADMIN or OWNER can view contact messages
 

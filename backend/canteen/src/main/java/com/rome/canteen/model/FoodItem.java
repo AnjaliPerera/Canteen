@@ -19,27 +19,32 @@ public class FoodItem {
 
     private boolean available; // Field to indicate availability, defaults to true
 
+    private int quantity; // New field for quantity
+
     // No-argument constructor for Spring Data
     public FoodItem() {
         this.available = true; // Default to available if not explicitly set
+        this.quantity = 1; // Default quantity to 1 if not explicitly set
     }
 
     // Parameterized constructor for ease of object creation
-    public FoodItem(String name, double price, String foodType, String imageUrl) {
+    public FoodItem(String name, double price, String foodType, String imageUrl, int quantity) {
         this.name = name;
         this.price = price;
         this.foodType = foodType;
         this.imageUrl = imageUrl;
         this.available = true; // Default to available if not explicitly set
+        this.quantity = quantity; // Set initial quantity
     }
 
     // Optionally add another constructor to explicitly set 'available' status if needed
-    public FoodItem(String name, double price, String foodType, String imageUrl, boolean available) {
+    public FoodItem(String name, double price, String foodType, String imageUrl, boolean available, int quantity) {
         this.name = name;
         this.price = price;
         this.foodType = foodType;
         this.imageUrl = imageUrl;
         this.available = available; // Allows flexibility to set availability
+        this.quantity = quantity; // Set initial quantity
     }
 
     // Getters and Setters
@@ -61,6 +66,9 @@ public class FoodItem {
     public boolean isAvailable() { return available; }
     public void setAvailable(boolean available) { this.available = available; }
 
+    public int getQuantity() { return quantity; }
+    public void setQuantity(int quantity) { this.quantity = quantity; }
+
     @Override
     public String toString() {
         return "FoodItem{" +
@@ -70,6 +78,7 @@ public class FoodItem {
                 ", foodType='" + foodType + '\'' +
                 ", imageUrl='" + imageUrl + '\'' +
                 ", available=" + available +
+                ", quantity=" + quantity +
                 '}';
     }
 }

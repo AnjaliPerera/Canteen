@@ -1,53 +1,77 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import OrderCard from './OrderCard';
 import './Orders.css';
 
-const sampleOrders = [
-  {
-    id: 1,
-    date: '2024-11-03',
-    time: '12:30 PM',
-    items: [
-      { name: 'Dhal Curry and Bread', price: 120, qty: 1 },
-      { name: 'Boiled Egg', price: 30, qty: 2 },
-    ],
-    status: 'pending',
-  },
-  {
-    id: 2,
-    date: '2024-11-03',
-    time: '1:00 PM',
-    items: [
-      { name: 'Rice and Curry', price: 150, qty: 1 },
-    ],
-    status: 'completed',
-  },
-  // Add more orders as needed
-];
-
 const Orders = () => {
-  const handleAccept = (orderId) => {
+  const [orders, setOrders] = useState([]);
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+
+      if (!token) {
+        setError('No token found. Please log in again.');
+        setIsLoading(false);
+        return;
+      }
+
+      try {
+        const response = await axios.get('http://localhost:8080/api/orders', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setOrders(response.data);
+      } catch (err) {
+        console.error('Error fetching orders:', err);
+        setError('Failed to fetch orders.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchOrders();
+  }, []);
+
+  const handleAccept = async (orderId) => {
     console.log(`Accepted order ${orderId}`);
-    // Add additional logic to handle acceptance
+    // Implement backend API call for accepting the order if needed
+    // await axios.post(`http://localhost:8080/api/orders/${orderId}/accept`);
   };
 
-  const handleReject = (orderId) => {
+  const handleReject = async (orderId) => {
     console.log(`Rejected order ${orderId}`);
-    // Add additional logic to handle rejection
+    // Implement backend API call for rejecting the order if needed
+    // await axios.post(`http://localhost:8080/api/orders/${orderId}/reject`);
   };
+
+  if (isLoading) {
+    return <p>Loading orders...</p>;
+  }
+
+  if (error) {
+    return <p>Error loading orders: {error}</p>;
+  }
 
   return (
     <div className="orders-dashboard">
       <h2>Orders</h2>
       <div className="orders-list">
-        {sampleOrders.map((order) => (
-          <OrderCard
-            key={order.id}
-            order={order}
-            onAccept={handleAccept}
-            onReject={handleReject}
-          />
-        ))}
+        {orders.length > 0 ? (
+          orders.map((order) => (
+            <OrderCard
+              key={order.orderId} // Use orderId as the key
+              order={order}
+              onAccept={handleAccept}
+              onReject={handleReject}
+            />
+          ))
+        ) : (
+          <p>No orders available.</p>
+        )}
       </div>
     </div>
   );

@@ -1,125 +1,34 @@
-/* General styling for the customer table container */
 .customer-table-container {
-    display: flex;
-    justify-content: center;
-    width: 100%;
     padding: 20px;
-    min-height: 100vh; /* Ensures container height can expand dynamically */
-    box-sizing: border-box;
+    background-color: #FFF6E5;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Customer table styling */
-.customer-table {
-    width: 100%;
-    max-width: 900px; /* Increase max width for wider columns */
-    border-collapse: collapse;
-    margin-top: 20px;
-    font-family: Arial, sans-serif;
-}
-
-/* Heading styling */
 .customer-table h3 {
     font-size: 24px;
     color: #333;
     margin-bottom: 20px;
 }
 
-/* Table styling */
 .customer-table table {
     width: 100%;
     border-collapse: collapse;
-    background-color: #fff;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    font-size: 16px;
 }
 
-/* Table header styling */
-.customer-table th {
-    background-color: #f4f4f4;
+.customer-table th, .customer-table td {
     padding: 12px;
     text-align: left;
-    font-weight: bold;
-    color: #555;
-    min-width: 120px; /* Increase column width */
+    border-bottom: 1px solid #ccc;
 }
 
-/* Table body styling */
-.customer-table td {
-    padding: 15px;
-    border-bottom: 1px solid #ddd;
+.customer-table th {
+    background-color: #f3f3f3;
     color: #333;
-    min-width: 120px; /* Increase column width */
+    font-weight: bold;
 }
 
-/* Button styling */
-.view-history {
-    background-color: #34d399;
-    color: white;
-    border: none;
-    padding: 6px 12px;
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 14px;
-}
-
-/* Hover effect on button */
-.view-history:hover {
-    background-color: #2bb17c;
-}
-
-/* Responsive styling for tablets and smaller devices */
-@media (max-width: 768px) {
-    .customer-table-container {
-        padding: 10px;
-    }
-
-    .customer-table h3 {
-        font-size: 20px;
-    }
-
-    .customer-table th, .customer-table td {
-        font-size: 14px;
-        padding: 10px;
-    }
-
-    .customer-table table {
-        display: block;
-        width: 100%;
-        overflow-x: auto;
-    }
-
-    .customer-table tr {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        border-bottom: 1px solid #ddd;
-    }
-
-    .customer-table th, .customer-table td {
-        display: block;
-        width: 100%;
-    }
-
-    .view-history {
-        width: 100%;
-        text-align: center;
-        padding: 10px;
-    }
-}
-
-/* Extra small devices */
-@media (max-width: 480px) {
-    .customer-table h3 {
-        font-size: 18px;
-        margin-bottom: 15px;
-    }
-
-    .customer-table th, .customer-table td {
-        font-size: 12px;
-        padding: 8px;
-    }
-
-    .view-history {
-        font-size: 13px;
-        padding: 8px;
-    }
+.customer-table td {
+    color: #555;
 }

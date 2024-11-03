@@ -1,3 +1,4 @@
+// LogIn.jsx
 import React, { useState } from 'react';
 import axios from 'axios';
 import './LogIn.css';
@@ -36,25 +37,26 @@ const LogIn = () => {
       console.log('Token:', token);
 
       // Decode the JWT token to extract the user's role
-      const decodedToken = JSON.parse(atob(token.split('.')[1]));
+      let decodedToken;
+      try {
+        decodedToken = JSON.parse(atob(token.split('.')[1]));
+      } catch (decodeError) {
+        console.error('Token decoding failed:', decodeError);
+        setErrorMessage('Invalid token received. Please try logging in again.');
+        setIsLoading(false);
+        return;
+      }
+
       const role = decodedToken.role;
       console.log('Role:', role);
 
-      // Store token and role in either localStorage or sessionStorage
+      // Store token and role in either localStorage or sessionStorage based on the 'rememberMe' checkbox
       const storage = formData.rememberMe ? localStorage : sessionStorage;
       storage.setItem('token', token);
       storage.setItem('role', role);
 
-      // Redirect based on user's role
-      if (role === 'OWNER') {
-        navigate('/dashboard');
-      } else if (role === 'USER' || role === 'user') {
-        navigate('/home');
-      } else if (role === 'ADMIN') {
-        navigate('/admin');
-      } else {
-        setErrorMessage('Unknown role. Please contact support.');
-      }
+      // Navigate based on the user's role
+      navigate(role === 'OWNER' ? '/dashboard' : '/home');
     } catch (error) {
       console.error('Error during login:', error);
       setErrorMessage('Login failed. Please check your credentials.');
