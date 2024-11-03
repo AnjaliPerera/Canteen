@@ -5,9 +5,7 @@ import homemain from '../assets/restaurants-in-vietnam.jpg';
 import './Home.css';
 
 const Home = () => {
-  const [shortEats, setShortEats] = useState([]);
-  const [drinks, setDrinks] = useState([]);
-  const [desserts, setDesserts] = useState([]);
+  const [availableFoodItems, setAvailableFoodItems] = useState([]);
   const [count, setCount] = useState(0);
   const [count1, setCount1] = useState(0);
   const [count2, setCount2] = useState(0);
@@ -15,19 +13,14 @@ const Home = () => {
   const [searchQuery, setSearchQuery] = useState(''); // State for search query
   const navigate = useNavigate();
 
-  // Fetch data from backend
+  // Fetch available food items from the backend
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const shortEatsResponse = await axios.get('http://localhost:8080/api/fooditems/type/Short%20Eats');
-        const drinksResponse = await axios.get('http://localhost:8080/api/fooditems/type/Drinks');
-        const dessertsResponse = await axios.get('http://localhost:8080/api/fooditems/type/Desserts');
-
-        setShortEats(shortEatsResponse.data);
-        setDrinks(drinksResponse.data);
-        setDesserts(dessertsResponse.data);
+        const response = await axios.get('http://localhost:8080/api/fooditems/available');
+        setAvailableFoodItems(response.data);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Error fetching available food items:', error);
       }
     };
 
@@ -48,14 +41,11 @@ const Home = () => {
     return () => window.removeEventListener('resize', updateVisibleItems);
   }, []);
 
-  const handleSlideChange = (type, listLength, isPrimary, isSecondary = false) => {
-    const currentCount = isPrimary ? count : isSecondary ? count1 : count2;
-    const setCurrentCount = isPrimary ? setCount : isSecondary ? setCount1 : setCount2;
-
+  const handleSlideChange = (type, listLength, count, setCount) => {
     if (type === "increment") {
-      setCurrentCount(currentCount >= listLength - visibleItems ? currentCount : currentCount + 1);
+      setCount(count >= listLength - visibleItems ? count : count + 1);
     } else {
-      setCurrentCount(currentCount <= 0 ? 0 : currentCount - 1);
+      setCount(count <= 0 ? 0 : count - 1);
     }
   };
 
@@ -71,6 +61,11 @@ const Home = () => {
   const filterItems = (items) => items.filter(item =>
     item.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  // Separate food items by type for the different sections
+  const shortEats = filterItems(availableFoodItems.filter(item => item.foodType === "Short Eats"));
+  const drinks = filterItems(availableFoodItems.filter(item => item.foodType === "Drinks"));
+  const desserts = filterItems(availableFoodItems.filter(item => item.foodType === "Desserts"));
 
   return (
     <div className='Home-container'>
@@ -99,20 +94,19 @@ const Home = () => {
           <h1>Short Eats</h1>
           <div className="card-list">
             <div className="card-item">
-              <div className='arr1 left' onClick={() => handleSlideChange("decrement", shortEats.length, true)}>
+              <div className='arr1 left' onClick={() => handleSlideChange("decrement", shortEats.length, count, setCount)}>
                 <div></div>
               </div>
-              {filterItems(shortEats).slice(count, count + visibleItems).map(({ imageUrl, price, name, rating }, index) => (
+              {shortEats.slice(count, count + visibleItems).map(({ id, imageUrl, price, name, rating }, index) => (
                 <ReviewUser
-                  key={index}
+                  key={id}
                   imageUrl={imageUrl}
                   price={price}
                   productTitle={name}
                   rating={rating || 0}
-                  id={index}
                 />
               ))}
-              <div className='arr right' onClick={() => handleSlideChange("increment", shortEats.length, true)}>
+              <div className='arr right' onClick={() => handleSlideChange("increment", shortEats.length, count, setCount)}>
                 <div></div>
               </div>
             </div>
@@ -124,20 +118,19 @@ const Home = () => {
           <h1>Drinks</h1>
           <div className="card-list">
             <div className="card-item">
-              <div className='arr1 left' onClick={() => handleSlideChange("decrement", drinks.length, false, true)}>
+              <div className='arr1 left' onClick={() => handleSlideChange("decrement", drinks.length, count1, setCount1)}>
                 <div></div>
               </div>
-              {filterItems(drinks).slice(count1, count1 + visibleItems).map(({ imageUrl, price, name, rating }, index) => (
+              {drinks.slice(count1, count1 + visibleItems).map(({ id, imageUrl, price, name, rating }, index) => (
                 <ReviewUser
-                  key={index}
+                  key={id}
                   imageUrl={imageUrl}
                   price={price}
                   productTitle={name}
                   rating={rating || 0}
-                  id={index}
                 />
               ))}
-              <div className='arr right' onClick={() => handleSlideChange("increment", drinks.length, false, true)}>
+              <div className='arr right' onClick={() => handleSlideChange("increment", drinks.length, count1, setCount1)}>
                 <div></div>
               </div>
             </div>
@@ -149,20 +142,19 @@ const Home = () => {
           <h1>Desserts</h1>
           <div className="card-list">
             <div className="card-item">
-              <div className='arr1 left' onClick={() => handleSlideChange("decrement", desserts.length, false, false)}>
+              <div className='arr1 left' onClick={() => handleSlideChange("decrement", desserts.length, count2, setCount2)}>
                 <div></div>
               </div>
-              {filterItems(desserts).slice(count2, count2 + visibleItems).map(({ imageUrl, price, name, rating }, index) => (
+              {desserts.slice(count2, count2 + visibleItems).map(({ id, imageUrl, price, name, rating }, index) => (
                 <ReviewUser
-                  key={index}
+                  key={id}
                   imageUrl={imageUrl}
                   price={price}
                   productTitle={name}
                   rating={rating || 0}
-                  id={index}
                 />
               ))}
-              <div className='arr right' onClick={() => handleSlideChange("increment", desserts.length, false, false)}>
+              <div className='arr right' onClick={() => handleSlideChange("increment", desserts.length, count2, setCount2)}>
                 <div></div>
               </div>
             </div>

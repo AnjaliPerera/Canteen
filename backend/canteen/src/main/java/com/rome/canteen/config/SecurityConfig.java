@@ -17,6 +17,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.http.HttpMethod;
+
 
 @Configuration
 @EnableWebSecurity
@@ -86,9 +88,11 @@ public class SecurityConfig {
 
 
                         // Restricted endpoints
-                        .requestMatchers("/api/fooditems/add", "/api/fooditems/delete/**", "/api/fooditems/{id}","/auth/users").hasRole("OWNER") // Only OWNER role can add/delete food items
+                        .requestMatchers("/api/fooditems/add", "/api/fooditems/delete/**", "/api/fooditems/{id}","/auth/users","/api/fooditems/{id}/toggle-availability").hasRole("OWNER") // Only OWNER role can add/delete food items
                         .requestMatchers("/auth/users/**").hasAnyRole("ADMIN", "OWNER") // ADMIN or OWNER can access user-related endpoints
                         .requestMatchers("/api/contact/messages").hasAnyRole("ADMIN", "OWNER") // ADMIN or OWNER can view contact messages
+                        .requestMatchers(HttpMethod.PUT, "/api/fooditems/{id}/toggle-availability").hasRole("OWNER")
+
 
 
 
