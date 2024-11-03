@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -48,7 +49,8 @@ public class FoodItemController {
             @RequestParam("price") double price,
             @RequestParam("foodType") String foodType,
             @RequestParam("imageUrl") String imageUrl, // URL from Firebase
-            @RequestParam(value = "available", defaultValue = "true") boolean available) {
+            @RequestParam(value = "available", defaultValue = "true") boolean available,
+            @RequestParam(value = "quantity", defaultValue = "1") int quantity) {
 
         try {
             // Create a new FoodItem object with the received parameters
@@ -58,6 +60,7 @@ public class FoodItemController {
             foodItem.setFoodType(foodType);
             foodItem.setImageUrl(imageUrl); // Image URL with Firebase token
             foodItem.setAvailable(available);
+            foodItem.setQuantity(quantity);
 
             // Save the food item using the service
             foodItemService.addFoodItem(foodItem);
@@ -65,10 +68,8 @@ public class FoodItemController {
             return ResponseEntity.ok("Food item added successfully with image uploaded to Firebase!");
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error: " + e.getMessage());
-
         }
     }
-
 
     // PUT update an existing food item by ID
     @PutMapping("/{id}")
@@ -76,8 +77,9 @@ public class FoodItemController {
                                                  @RequestParam("name") String name,
                                                  @RequestParam("price") double price,
                                                  @RequestParam("foodType") String foodType,
-                                                 @RequestParam(value = "image", required = false) MultipartFile image,
-                                                 @RequestParam("available") boolean available) {
+                                                 @RequestParam("imageUrl") String imageUrl, // URL from Firebase
+                                                 @RequestParam("available") boolean available,
+                                                 @RequestParam("quantity") int quantity) {
         try {
             Optional<FoodItem> existingFoodItem = foodItemService.getFoodItemById(id);
             if (existingFoodItem.isEmpty()) {
@@ -89,8 +91,7 @@ public class FoodItemController {
             foodItem.setPrice(price);
             foodItem.setFoodType(foodType);
             foodItem.setAvailable(available);
-
-
+            foodItem.setQuantity(quantity);
 
             foodItemService.updateFoodItem(id, foodItem);
             return ResponseEntity.ok("Food item updated successfully!");
@@ -98,6 +99,9 @@ public class FoodItemController {
             return ResponseEntity.status(500).body("Error: " + e.getMessage());
         }
     }
+
+
+
 
     // DELETE a food item by ID
     @DeleteMapping("/{id}")
@@ -110,14 +114,10 @@ public class FoodItemController {
         }
     }
 
-
     // Endpoint for searching food items by name
     @GetMapping("api/search")
     public ResponseEntity<List<FoodItem>> searchFoodItemsByName(@RequestParam("name") String name) {
         List<FoodItem> items = foodItemService.getFoodItemsByName(name);
         return items.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(items);
     }
-
-
-
 }

@@ -1,43 +1,65 @@
-// CustomerTable.jsx
-import React from 'react';
-import './CustomerTable.css';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
-const customers = [
-    { name: "Jane Cooper", id: "SC/2020/0001", phone: "(225) 555-0118", email: "jane@microsoft.com", type: "Student" },
-    { name: "Floyd Miles", id: "SC/2020/0002", phone: "(205) 555-0100", email: "floyd@yahoo.com", type: "Student" },
-    // Add more customer data as needed
-];
+const CustomerTable = () => {
+  const [customers, setCustomers] = useState([]);
+  const [error, setError] = useState('');
 
-export default function CustomerTable() {
-    return (
-        <div className="customer-table-container">
-            <div className="customer-table">
-                <h3>All Customers</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Customer Name</th>
-                            <th>Customer Id</th>
-                            <th>Phone Number</th>
-                            <th>Email</th>
-                            <th>Type</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {customers.map((customer) => (
-                            <tr key={customer.id}>
-                                <td>{customer.name}</td>
-                                <td>{customer.id}</td>
-                                <td>{customer.phone}</td>
-                                <td>{customer.email}</td>
-                                <td>{customer.type}</td>
-                                <td><button className="view-history">View History</button></td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    );
-}
+  useEffect(() => {
+    const fetchCustomers = async () => {
+      try {
+        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+
+        if (!token) {
+          setError('No token found. Please log in again.');
+          return;
+        }
+
+        const response = await axios.get('http://localhost:8080/auth/users', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        setCustomers(response.data);
+      } catch (err) {
+        console.error('Error fetching customers:', err);
+        setError('Failed to fetch customers');
+      }
+    };
+
+    fetchCustomers();
+  }, []);
+
+  if (error) {
+    return <p>Error loading customers: {error}</p>;
+  }
+
+  return (
+    <div>
+      <h3>Customer List</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Customer Name</th>
+            <th>Customer ID</th>
+            <th>Email</th>
+            <th>Role</th>
+          </tr>
+        </thead>
+        <tbody>
+          {customers.map((customer) => (
+            <tr key={customer.id}>
+              <td>{customer.name}</td>
+              <td>{customer.userId || "N/A"}</td>
+              <td>{customer.email}</td>
+              <td>{customer.role}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
+export default CustomerTable;
