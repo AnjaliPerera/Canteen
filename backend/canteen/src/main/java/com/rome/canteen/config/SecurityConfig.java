@@ -88,13 +88,12 @@ public class SecurityConfig {
                 // Authorization configuration for different endpoints
                 .authorizeHttpRequests(authorize -> authorize
                         // Public endpoints (accessible without authentication)
-                        .requestMatchers("/auth/login", "/auth/signup", "/auth/forgot-password", "/api/ratings", "/auth/reset-password").permitAll()
-                        .requestMatchers("/api/contact/submit", "/api/fooditems/**", "/auth/users/**","/api/contact/messages").permitAll()
-                        // Allow all access to orders endpoints
-                        .requestMatchers("/api/orders/**").permitAll()
+                        .requestMatchers("/auth/login", "/auth/signup", "/auth/forgot-password", "/auth/reset-password").permitAll()
+                        .requestMatchers("/api/ratings", "/api/contact/submit", "/api/fooditems/**", "/auth/users/**", "/api/contact/messages").permitAll()
+                        .requestMatchers("/api/orders/**", "/api/generate-otp","/api/reset-password").permitAll()  // Include OTP generation as a public endpoint
 
                         // Restricted endpoints based on roles
-                        .requestMatchers("/api/fooditems/add", "/api/fooditems/delete/**", "/api/fooditems/{id}", "/auth/users", "/api/fooditems/{id}/toggle-availability").hasRole("OWNER")
+                        .requestMatchers("/api/fooditems/add", "/api/fooditems/delete/**", "/auth/users", "/api/fooditems/{id}", "/api/fooditems/{id}/toggle-availability").hasRole("OWNER")
                         .requestMatchers("/auth/users/**").hasAnyRole("ADMIN", "OWNER")
                         .requestMatchers("/api/contact/messages").hasAnyRole("ADMIN", "OWNER")
                         .requestMatchers(HttpMethod.PUT, "/api/fooditems/{id}/toggle-availability").hasRole("OWNER")

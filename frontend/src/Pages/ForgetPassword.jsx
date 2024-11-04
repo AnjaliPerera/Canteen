@@ -3,16 +3,21 @@ import './ForgetPassword.css';
 
 const ForgetPassword = () => {
   const [email, setEmail] = useState('');
+  const [otp, setOtp] = useState('');
   const [message, setMessage] = useState('');
 
-  const handleChange = (e) => {
+  const handleEmailChange = (e) => {
     setEmail(e.target.value);
+  };
+
+  const handleOtpChange = (e) => {
+    setOtp(e.target.value);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Add your password reset logic here (e.g., send email to backend)
-    console.log('Email submitted for password reset:', email);
+    // Add your password reset logic here (e.g., send email and OTP to backend)
+    console.log('Email and OTP submitted for password reset:', email, otp);
     setMessage('If the email exists in our system, a reset link will be sent.');
   };
 
@@ -28,7 +33,18 @@ const ForgetPassword = () => {
           id="email"
           placeholder="Enter your email"
           value={email}
-          onChange={handleChange}
+          onChange={handleEmailChange}
+          required
+        />
+
+        <label htmlFor="otp">OTP</label>
+        <input
+          type="text"
+          name="otp"
+          id="otp"
+          placeholder="Enter your OTP"
+          value={otp}
+          onChange={handleOtpChange}
           required
         />
 

@@ -11,7 +11,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,7 +19,7 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final EmailService emailService;  // Inject EmailService
+    private final EmailService emailService;
 
     public UserService(UserRepository userRepository, @Lazy PasswordEncoder passwordEncoder, EmailService emailService) {
         this.userRepository = userRepository;
@@ -44,14 +43,18 @@ public class UserService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("User not found with email: " + email);
         }
-        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getRole().toUpperCase()));
+        List<SimpleGrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().toUpperCase()));
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
     }
 
     // Find user by email
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    // Save or update a user
+    public void saveUser(User user) {
+        userRepository.save(user);
     }
 
     // Get all users
@@ -62,29 +65,27 @@ public class UserService implements UserDetailsService {
     // Update user details
     public void updateUser(User updatedUser) {
         User existingUser = userRepository.findByEmail(updatedUser.getEmail());
-        if (existingUser != null) {
-            existingUser.setName(updatedUser.getName());
-            if (!updatedUser.getPassword().equals(existingUser.getPassword())) {
-                existingUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
-            }
-            existingUser.setRole(updatedUser.getRole());
-            userRepository.save(existingUser);
-        } else {
+        if (existingUser == null) {
             throw new UsernameNotFoundException("User not found with email: " + updatedUser.getEmail());
         }
+        existingUser.setName(updatedUser.getName());
+        if (!passwordEncoder.matches(updatedUser.getPassword(), existingUser.getPassword())) {
+            existingUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+        }
+        existingUser.setRole(updatedUser.getRole());
+        userRepository.save(existingUser);
     }
 
     // Delete user by email
     public void deleteUser(String email) {
         User user = userRepository.findByEmail(email);
-        if (user != null) {
-            userRepository.delete(user);
-        } else {
+        if (user == null) {
             throw new UsernameNotFoundException("User not found with email: " + email);
         }
+        userRepository.delete(user);
     }
 
-    // Generate password reset token
+    // Generate password reset token and send password reset email
     public void generatePasswordResetToken(String email) {
         User user = userRepository.findByEmail(email);
         if (user == null) {
@@ -95,21 +96,23 @@ public class UserService implements UserDetailsService {
         user.setTokenExpiration(LocalDateTime.now().plusMinutes(30)); // Token expires in 30 minutes
         userRepository.save(user);
 
-        // Send password reset email
+        // Send password reset email with reset URL
         String resetUrl = "http://localhost:8080/auth/reset-password?token=" + token;
-        emailService.sendEmail(user.getEmail(), "Password Reset Request", "To reset your password, click the link below:\n" + resetUrl);
+        String message = "To reset your password, click the link below:\n" + resetUrl;
+        emailService.sendEmail(user.getEmail(), "Password Reset Request", message);
     }
 
-    // Reset password with the token
+    // Reset password using the provided token and new password
     public boolean resetPassword(String token, String newPassword) {
         User user = userRepository.findByResetToken(token);
-        if (user != null && user.getTokenExpiration().isAfter(LocalDateTime.now())) {
-            user.setPassword(passwordEncoder.encode(newPassword));
-            user.setResetToken(null); // Clear the token after use
-            user.setTokenExpiration(null);
-            userRepository.save(user);
-            return true;
+        if (user == null || user.getTokenExpiration() == null || user.getTokenExpiration().isBefore(LocalDateTime.now())) {
+            return false; // Token is either invalid or expired
         }
-        return false;
+
+        user.setPassword(passwordEncoder.encode(newPassword));
+        user.setResetToken(null); // Clear the token after use
+        user.setTokenExpiration(null); // Clear the expiration time
+        userRepository.save(user);
+        return true;
     }
 }

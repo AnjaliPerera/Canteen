@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.io.InputStream;
 @SpringBootApplication
 @EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class })
-
 public class CanteenApplication {
 
 	public static void main(String[] args) {
