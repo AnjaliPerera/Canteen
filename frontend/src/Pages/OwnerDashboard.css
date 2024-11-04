@@ -1,9 +1,17 @@
 /* OwnerDashboard Layout */
 .owner-dashboard {
-    display: flex;
     height: 100vh;
-    background-color: #f7e7d7; /* Softer background color for the dashboard */
+   /* Softer background color for the dashboard */
     width: 100%;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    width: 270px;
+    background-color: #ffffff;
+    border-right: 1px solid #ddd;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 /* Dashboard Content Area */
@@ -14,21 +22,72 @@
     margin: 20px;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    display: flex;
-    justify-content: center; /* Center form horizontally */
-    align-items: flex-start; /* Align form to the top */
-    width: calc(100% - 270px); /* Calculate width to fill space left by sidebar */
+    display: block; /* Changed to block to avoid centering issues */
 }
 
+/* Table Styling */
+.food-details table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.food-details th, .food-details td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.food-details th {
+    font-weight: bold;
+}
+
+.food-details td img {
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+}
+
+/* Availability and Delete Button Styling */
+.food-details .available {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.food-details .unavailable {
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.food-details .delete-btn {
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Mobile Responsive Styles */
 @media (max-width: 768px) {
     .owner-dashboard {
         flex-direction: column;
     }
 
+    .sidebar {
+        width: 100%;
+    }
+
     .dashboard-content {
         margin: 10px;
         padding: 20px;
-        justify-content: center;
-        align-items: flex-start;
+        width: 100%; /* Ensures content takes full width in mobile view */
     }
 }

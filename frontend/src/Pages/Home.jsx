@@ -5,7 +5,9 @@ import homemain from '../assets/restaurants-in-vietnam.jpg';
 import './Home.css';
 
 const Home = () => {
-  const [availableFoodItems, setAvailableFoodItems] = useState([]);
+  const [shortEats, setShortEats] = useState([]);
+  const [drinks, setDrinks] = useState([]);
+  const [desserts, setDesserts] = useState([]);
   const [count, setCount] = useState(0);
   const [count1, setCount1] = useState(0);
   const [count2, setCount2] = useState(0);
@@ -13,14 +15,28 @@ const Home = () => {
   const [searchQuery, setSearchQuery] = useState(''); // State for search query
   const navigate = useNavigate();
 
-  // Fetch available food items from the backend
+  // Fetch data from backend with JWT token
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/api/fooditems/available');
-        setAvailableFoodItems(response.data);
+        // Retrieve the JWT token from localStorage
+        const token = localStorage.getItem('token');
+
+        // Set up headers with the token
+        const headers = {
+          Authorization: `Bearer ${token}`
+        };
+
+        // Send requests with headers including the JWT token
+        const shortEatsResponse = await axios.get('http://localhost:8080/api/fooditems/type/Short%20Eats', { headers });
+        const drinksResponse = await axios.get('http://localhost:8080/api/fooditems/type/Drinks', { headers });
+        const dessertsResponse = await axios.get('http://localhost:8080/api/fooditems/type/Desserts', { headers });
+
+        setShortEats(shortEatsResponse.data);
+        setDrinks(drinksResponse.data);
+        setDesserts(dessertsResponse.data);
       } catch (error) {
-        console.error('Error fetching available food items:', error);
+        console.error('Error fetching data:', error);
       }
     };
 
@@ -41,11 +57,14 @@ const Home = () => {
     return () => window.removeEventListener('resize', updateVisibleItems);
   }, []);
 
-  const handleSlideChange = (type, listLength, count, setCount) => {
+  const handleSlideChange = (type, listLength, isPrimary, isSecondary = false) => {
+    const currentCount = isPrimary ? count : isSecondary ? count1 : count2;
+    const setCurrentCount = isPrimary ? setCount : isSecondary ? setCount1 : setCount2;
+
     if (type === "increment") {
-      setCount(count >= listLength - visibleItems ? count : count + 1);
+      setCurrentCount(currentCount >= listLength - visibleItems ? currentCount : currentCount + 1);
     } else {
-      setCount(count <= 0 ? 0 : count - 1);
+      setCurrentCount(currentCount <= 0 ? 0 : currentCount - 1);
     }
   };
 
@@ -61,11 +80,6 @@ const Home = () => {
   const filterItems = (items) => items.filter(item =>
     item.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
-
-  // Separate food items by type for the different sections
-  const shortEats = filterItems(availableFoodItems.filter(item => item.foodType === "Short Eats"));
-  const drinks = filterItems(availableFoodItems.filter(item => item.foodType === "Drinks"));
-  const desserts = filterItems(availableFoodItems.filter(item => item.foodType === "Desserts"));
 
   return (
     <div className='Home-container'>
@@ -94,19 +108,20 @@ const Home = () => {
           <h1>Short Eats</h1>
           <div className="card-list">
             <div className="card-item">
-              <div className='arr1 left' onClick={() => handleSlideChange("decrement", shortEats.length, count, setCount)}>
+              <div className='arr1 left' onClick={() => handleSlideChange("decrement", shortEats.length, true)}>
                 <div></div>
               </div>
-              {shortEats.slice(count, count + visibleItems).map(({ id, imageUrl, price, name, rating }, index) => (
+              {filterItems(shortEats).slice(count, count + visibleItems).map(({ imageUrl, price, name, rating }, index) => (
                 <ReviewUser
-                  key={id}
+                  key={index}
                   imageUrl={imageUrl}
                   price={price}
                   productTitle={name}
                   rating={rating || 0}
+                  id={index}
                 />
               ))}
-              <div className='arr right' onClick={() => handleSlideChange("increment", shortEats.length, count, setCount)}>
+              <div className='arr right' onClick={() => handleSlideChange("increment", shortEats.length, true)}>
                 <div></div>
               </div>
             </div>
@@ -118,19 +133,20 @@ const Home = () => {
           <h1>Drinks</h1>
           <div className="card-list">
             <div className="card-item">
-              <div className='arr1 left' onClick={() => handleSlideChange("decrement", drinks.length, count1, setCount1)}>
+              <div className='arr1 left' onClick={() => handleSlideChange("decrement", drinks.length, false, true)}>
                 <div></div>
               </div>
-              {drinks.slice(count1, count1 + visibleItems).map(({ id, imageUrl, price, name, rating }, index) => (
+              {filterItems(drinks).slice(count1, count1 + visibleItems).map(({ imageUrl, price, name, rating }, index) => (
                 <ReviewUser
-                  key={id}
+                  key={index}
                   imageUrl={imageUrl}
                   price={price}
                   productTitle={name}
                   rating={rating || 0}
+                  id={index}
                 />
               ))}
-              <div className='arr right' onClick={() => handleSlideChange("increment", drinks.length, count1, setCount1)}>
+              <div className='arr right' onClick={() => handleSlideChange("increment", drinks.length, false, true)}>
                 <div></div>
               </div>
             </div>
@@ -142,19 +158,20 @@ const Home = () => {
           <h1>Desserts</h1>
           <div className="card-list">
             <div className="card-item">
-              <div className='arr1 left' onClick={() => handleSlideChange("decrement", desserts.length, count2, setCount2)}>
+              <div className='arr1 left' onClick={() => handleSlideChange("decrement", desserts.length, false, false)}>
                 <div></div>
               </div>
-              {desserts.slice(count2, count2 + visibleItems).map(({ id, imageUrl, price, name, rating }, index) => (
+              {filterItems(desserts).slice(count2, count2 + visibleItems).map(({ imageUrl, price, name, rating }, index) => (
                 <ReviewUser
-                  key={id}
+                  key={index}
                   imageUrl={imageUrl}
                   price={price}
                   productTitle={name}
                   rating={rating || 0}
+                  id={index}
                 />
               ))}
-              <div className='arr right' onClick={() => handleSlideChange("increment", desserts.length, count2, setCount2)}>
+              <div className='arr right' onClick={() => handleSlideChange("increment", desserts.length, false, false)}>
                 <div></div>
               </div>
             </div>

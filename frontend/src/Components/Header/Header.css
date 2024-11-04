@@ -7,7 +7,7 @@
   background-color: #e4d2b9;
   position: relative;
   flex-wrap: wrap;
-  
+
 }
 .back-button {
   position: absolute; /* Position it absolutely */
@@ -144,11 +144,11 @@
     display: none;
   }
 
-  
+
   .back-button {
     padding: 8px 12px;
-    font-size: 14px; 
-    margin-left: 10px; 
+    font-size: 14px;
+    margin-left: 10px;
 }
   .sidebar-toggle {
     display: block;
@@ -175,9 +175,9 @@
   }
   .search-bar button {
     margin-left: -20px;
-    
+
   }
-  
+
   .header {
     flex-direction: column;
     justify-content: space-between;

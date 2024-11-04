@@ -71,6 +71,9 @@ public class OrderService {
         return orderRepository.findAll();
     }
 
+
+
+
     // Optional: Reset the slot counts at midnight if needed
     public void resetTimeSlotOrderCounts() {
         timeSlotOrderCount.clear();

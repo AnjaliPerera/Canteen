@@ -89,7 +89,10 @@
             <version>4.0.1</version> <!-- Java Servlet API version -->
             <scope>provided</scope> <!-- Provided by the application server -->
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
         <!-- Jakarta Servlet API, an alternative to javax.servlet for servlet handling -->
         <dependency>
             <groupId>jakarta.servlet</groupId>

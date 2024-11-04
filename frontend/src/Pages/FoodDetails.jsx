@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './FoodDetails.css';
+import SearchBar from './SearchBar1'; // Import SearchBar component
 
 const FoodDetails = () => {
   const [foodItems, setFoodItems] = useState([]);
   const [error, setError] = useState('');
+  const [searchTerm, setSearchTerm] = useState(''); // State for search term
+  const [mealType, setMealType] = useState('All'); // State for meal type filter
 
   useEffect(() => {
     const fetchFoodItems = async () => {
@@ -67,7 +70,6 @@ const FoodDetails = () => {
         },
       });
 
-      // Update the availability status in the local state
       setFoodItems(prevItems =>
         prevItems.map(food =>
           food.id === id ? { ...food, available: !food.available } : food
@@ -80,6 +82,12 @@ const FoodDetails = () => {
     }
   };
 
+  // Filter food items based on search term and meal type
+  const filteredFoodItems = foodItems.filter(food =>
+    food.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+    (mealType === 'All' || food.foodType === mealType)
+  );
+
   if (error) {
     return <p>Error loading food items: {error}</p>;
   }
@@ -87,6 +95,15 @@ const FoodDetails = () => {
   return (
     <div className="food-details">
       <h2>Food Details</h2>
+
+      {/* Integrated SearchBar component with search term and meal type */}
+      <SearchBar
+        mealType={mealType}
+        setMealType={setMealType}
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+      />
+
       <table>
         <thead>
           <tr>
@@ -99,7 +116,7 @@ const FoodDetails = () => {
           </tr>
         </thead>
         <tbody>
-          {foodItems.map(food => (
+          {filteredFoodItems.map(food => (
             <tr key={food.id}>
               <td><img src={food.imageUrl} alt={food.name} style={{ width: '50px', height: '50px' }} /></td>
               <td>{food.name}</td>

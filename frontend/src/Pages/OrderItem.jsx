@@ -4,17 +4,17 @@ import './OrderItem.css';
 const OrderItem = ({ order }) => {
     return (
         <div className="order-item">
-            <img 
+            <img
                 src={`/images/${order.image}`} // Dynamically add the image path
-                alt={order.name} 
+                alt={order.name}
             />
             <div className="order-details">
                 <span>{order.name}</span>
-                
+
             </div>
-            
+
             <div className="order-quantity">
-                
+
                 <span>{order.quantity}</span>
             </div>
         </div>

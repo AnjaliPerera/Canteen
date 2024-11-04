@@ -6,12 +6,16 @@ import com.google.firebase.FirebaseOptions;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+
 import javax.annotation.PostConstruct;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
 @SpringBootApplication
+@EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class })
+
 public class CanteenApplication {
 
 	public static void main(String[] args) {

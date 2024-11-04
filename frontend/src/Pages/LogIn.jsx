@@ -1,4 +1,3 @@
-// LogIn.jsx
 import React, { useState } from 'react';
 import axios from 'axios';
 import './LogIn.css';
@@ -50,16 +49,21 @@ const LogIn = () => {
       const role = decodedToken.role;
       console.log('Role:', role);
 
-      // Store token and role in either localStorage or sessionStorage based on the 'rememberMe' checkbox
+      // Store token, role, and email in either localStorage or sessionStorage based on the 'rememberMe' checkbox
       const storage = formData.rememberMe ? localStorage : sessionStorage;
       storage.setItem('token', token);
       storage.setItem('role', role);
+      storage.setItem('email', formData.email); // Store email if needed for other components
 
       // Navigate based on the user's role
       navigate(role === 'OWNER' ? '/dashboard' : '/home');
     } catch (error) {
       console.error('Error during login:', error);
-      setErrorMessage('Login failed. Please check your credentials.');
+      if (error.response && error.response.status === 401) {
+        setErrorMessage('Incorrect email or password.');
+      } else {
+        setErrorMessage('Login failed. Please try again later.');
+      }
     } finally {
       setIsLoading(false);
     }
