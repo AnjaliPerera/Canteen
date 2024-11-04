@@ -10,6 +10,7 @@ import FoodSelection from './Pages/FoodSelection.jsx';
 import Order from './Pages/Order.jsx';
 import LogIn from './Pages/LogIn.jsx';
 import SignUp from './Pages/SignUp.jsx';
+import Rating from './Pages/Rating.jsx';
 
 function ProtectedRoute({ children, roleRequired }) {
     const token = localStorage.getItem('token');
@@ -51,6 +52,7 @@ function App() {
                 <Route path="/order" element={<Order />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/about" element={<About />} />
+                <Route path="/Rating" element={<Rating/>} />
 
                 {/* Protected route for OWNER role to access OwnerDashboard */}
                 <Route
