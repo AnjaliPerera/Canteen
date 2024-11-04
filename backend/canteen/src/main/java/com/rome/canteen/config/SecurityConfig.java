@@ -19,7 +19,6 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.http.HttpMethod;
 
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -79,32 +78,30 @@ public class SecurityConfig {
                 // Enable CORS settings defined in `corsConfigurer`
                 .cors()
                 .and()
-                // Authorization configuration for different endpoints
-                .authorizeHttpRequests(authorize -> authorize
-                        // Public endpoints
-                        .requestMatchers("/auth/login", "/auth/signup", "/auth/forgot-password", "/api/ratings","/auth/reset-password").permitAll()
-                        .requestMatchers("/api/contact/submit", "/api/fooditems/**","/auth/users/**").permitAll()
-                        .requestMatchers("/api/orders/**").permitAll()
-
-
-                        // Restricted endpoints
-                        .requestMatchers("/api/fooditems/add", "/api/fooditems/delete/**", "/api/fooditems/{id}","/auth/users","/api/fooditems/{id}/toggle-availability").hasRole("OWNER") // Only OWNER role can add/delete food items
-                        .requestMatchers("/auth/users/**").hasAnyRole("ADMIN", "OWNER") // ADMIN or OWNER can access user-related endpoints
-                        .requestMatchers("/api/contact/messages").hasAnyRole("ADMIN", "OWNER") // ADMIN or OWNER can view contact messages
-                        .requestMatchers(HttpMethod.PUT, "/api/fooditems/{id}/toggle-availability").hasRole("OWNER")
-
-
-
-
-                        .anyRequest().authenticated() // All other requests require authentication
-                )
                 // Set session management to stateless as we are using JWT for authentication
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 // Register the custom authentication provider and JWT filter
                 .authenticationProvider(authenticationProvider())
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                // Authorization configuration for different endpoints
+                .authorizeHttpRequests(authorize -> authorize
+                        // Public endpoints (accessible without authentication)
+                        .requestMatchers("/auth/login", "/auth/signup", "/auth/forgot-password", "/api/ratings", "/auth/reset-password").permitAll()
+                        .requestMatchers("/api/contact/submit", "/api/fooditems/**", "/auth/users/**","/api/contact/messages").permitAll()
+                        // Allow all access to orders endpoints
+                        .requestMatchers("/api/orders/**").permitAll()
+
+                        // Restricted endpoints based on roles
+                        .requestMatchers("/api/fooditems/add", "/api/fooditems/delete/**", "/api/fooditems/{id}", "/auth/users", "/api/fooditems/{id}/toggle-availability").hasRole("OWNER")
+                        .requestMatchers("/auth/users/**").hasAnyRole("ADMIN", "OWNER")
+                        .requestMatchers("/api/contact/messages").hasAnyRole("ADMIN", "OWNER")
+                        .requestMatchers(HttpMethod.PUT, "/api/fooditems/{id}/toggle-availability").hasRole("OWNER")
+
+                        // All other requests require authentication
+                        .anyRequest().authenticated()
+                );
 
         return http.build();
     }

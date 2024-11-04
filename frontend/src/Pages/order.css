@@ -7,13 +7,13 @@
     text-align: center;
     position: relative;
   }
-  
+
   .welcome-image {
     width: 1040px;
     height: 600px;
     background-color: #FFF3E0;
   }
-  
+
   .welcome-text {
     position: absolute;
     top: 12rem; /* Adjust based on positioning */
@@ -26,7 +26,7 @@
     font-family: monospace;
     text-shadow: -1px -1px 0px black, 1px -1px 0px black, -1px 1px 0px black, 1px 1px 0px black;
   }
-  
+
   .order-button {
     position: absolute;
     top: 24rem;
@@ -38,25 +38,25 @@
     font-weight: bold;
     border-radius: 9999px;
   }
-  
+
   .profile-section {
     background-color: #FFF3E0;
     width: 1040px;
   }
-  
+
   .profile-title {
     margin-top: 5rem;
     font-size: 2.5rem;
     font-weight: bold;
   }
-  
+
   .grid-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 7rem;
     margin-top: 5rem;
   }
-  
+
   .order-details {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -64,13 +64,13 @@
     border-bottom: 2px dashed #9E9E9E;
     margin-bottom: 2rem;
   }
-  
+
   .order-no {
     font-size: 2rem;
     font-weight: 600;
     text-transform: uppercase;
   }
-  
+
   .order-no-value {
     font-size: 2rem;
     font-weight: 600;
@@ -78,7 +78,7 @@
     text-transform: uppercase;
     margin-right: 1.25rem;
   }
-  
+
   .product-item {
     display: flex;
     justify-content: space-between;
@@ -88,46 +88,46 @@
     border-radius: 0.5rem;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
-  
+
   .product-image {
     width: 5rem;
     height: 5rem;
     object-fit: cover;
     border-radius: 0.25rem;
   }
-  
+
   .product-details {
     margin-left: 1.5rem;
     text-align: left;
   }
-  
+
   .product-name {
     font-size: 1.125rem;
     text-transform: uppercase;
   }
-  
+
   .product-price {
     font-size: 2rem;
     color: black;
     font-weight: 600;
   }
-  
+
   .quantity-section {
     display: flex;
     flex-direction: column;
     align-items: center;
   }
-  
+
   .quantity-label {
     font-size: 1.25rem;
     text-transform: uppercase;
   }
-  
+
   .quantity-value {
     font-size: 1.5rem;
     font-weight: 800;
   }
-  
+
   .cancel-order-button {
     margin-top: 2.5rem;
     padding: 1rem 1.5rem;
@@ -136,12 +136,12 @@
     text-transform: uppercase;
     background-color: #EA4B48;
   }
-  
+
   .conditions-title {
     font-size: 1.875rem;
     margin-bottom: 1.25rem;
   }
-  
+
   .conditions-list {
     list-style-type: decimal;
     text-align: left;
@@ -150,4 +150,3 @@
     padding-left: 1.25rem;
     margin-right: 2rem;
   }
-  

@@ -8,6 +8,7 @@ import Home from './Pages/Home.jsx';
 import Menu from './Pages/Menu.jsx';
 import FoodSelection from './Pages/FoodSelection.jsx';
 import Order from './Pages/Order.jsx';
+import ForgetPassword from './Pages/ForgetPassword';
 import LogIn from './Pages/LogIn.jsx';
 import SignUp from './Pages/SignUp.jsx';
 
@@ -44,7 +45,8 @@ function App() {
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<LogIn />} />
-                <Route path="/signup" element={<SignUp />} />
+                 <Route path="/signup" element={<SignUp />} />
+                <Route path="/forgot-password" element={<ForgetPassword />} />
                 <Route path="/home" element={<Home />} />
                 <Route path="/menu" element={<Menu updateSelectedItems={updateSelectedItems} />} />
                 <Route path="/foodselection" element={<FoodSelection selectedItems={selectedItems} />} />

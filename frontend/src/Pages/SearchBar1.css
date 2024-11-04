@@ -1,0 +1,29 @@
+.search-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px; /* Space between search bar and the next element */
+    padding: 8px; /* Optional: Adds some padding to the container */
+    border-radius: 8px; /* Rounded corners for the container */
+    background-color: #f9f9f9; /* Light background color for distinction */
+}
+
+.search-bar input[type="text"] {
+    padding: 10px 12px; /* Padding to match dropdown height */
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    flex: 1;
+    height: 40px; /* Set a consistent height */
+    box-sizing: border-box; /* Ensure padding doesn’t increase input height */
+}
+
+.search-bar select {
+    padding: 8px 12px; /* Adjust padding for alignment */
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    height: 40px; /* Match input height */
+    box-sizing: border-box; /* Ensure padding doesn’t increase select height */
+}

@@ -93,13 +93,33 @@ function FoodSelection() {
       return;
     }
 
+    // Retrieve and decode the JWT token to get the user's email
+    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+    if (!token) {
+      alert('No token found. Please log in again.');
+      return;
+    }
+
+    let email = '';
+    try {
+      const decodedToken = JSON.parse(atob(token.split('.')[1])); // Decode JWT payload
+      email = decodedToken.email;
+    } catch (error) {
+      console.error('Failed to decode token:', error);
+      alert('Invalid token. Please log in again.');
+      return;
+    }
+
+    // Generate the order ID
     const category = pickupTime.includes("7:00") || pickupTime.includes("10:30") ? "B" :
                      pickupTime.includes("12:00") || pickupTime.includes("16:30") ? "L" : "D";
     const formattedTime = pickupTime.replace(":", "").replace(" ", "");
     const orderId = `${category}${formattedTime}${orderCounter.toString().padStart(2, '0')}`;
 
+    // Construct the order object, now including the user's email
     const order = {
       orderId,
+      email,           // Include email in the order
       items: selectedItems,
       totalPrice,
       pickupTime,
@@ -107,7 +127,10 @@ function FoodSelection() {
 
     try {
       const response = await axios.post('http://localhost:8080/api/orders', order, {
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`, // Include token in the request headers
+        },
       });
 
       if (response.status === 201) {
